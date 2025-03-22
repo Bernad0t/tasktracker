@@ -1,20 +1,36 @@
 import { DataSource } from "typeorm";
 import dotenv from "dotenv";
-import { ProjectORM, UserORM, UserProjectORM } from "./orm/userOrm";
-import { CommentsORM, TaskORM } from "./orm/taskOrm";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+dotenv.config({ path: __dirname + '/../../.env' });
 
-export const db = new DataSource({
+//npx typeorm-ts-node-esm migration:generate -d src/db/db.ts src/db/migrations/initial // сгенерировать
+// npx typeorm-ts-node-esm migration:run -d src/db/db.ts // применить
+
+const db = new DataSource({
     type: "postgres",
     host: process.env.DB_HOST,
     port: Number(process.env.DB_PORT),
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DP_NAME,
-    synchronize: true,
+    database: process.env.DB_NAME,
+    synchronize: false,
     logging: true,
-    entities: [UserORM, TaskORM, ProjectORM, UserProjectORM, CommentsORM],
+    entities: ["src/db/orm/*.ts"],
     subscribers: [],
-    migrations: [],
+    migrations: ["dist/db/migrations/*.js"],
 })
+
+// Инициализация источника данных
+db.initialize()
+    .then(() => {
+        console.log('Data Source has been initialized!');
+    })
+    .catch((err) => {
+        console.error('Error during Data Source initialization:', err);
+    });
+
+export default db;

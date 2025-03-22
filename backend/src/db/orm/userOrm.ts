@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, ManyToOne, OneToMany, JoinColumn } from "typeorm"
 import { Role, TypeProject } from "../../schemas/enums/userEnum"
-import { TaskORM } from "./taskOrm"
+import type { TaskORM } from "./taskOrm"
 
 @Entity()
 export class UserORM {
@@ -13,7 +13,7 @@ export class UserORM {
     @Column()
     username!: string
 
-    @Column()
+    @Column({ type: "text" })
     password!: string
 
     @Column()
@@ -22,10 +22,10 @@ export class UserORM {
     @OneToMany(() => UserProjectORM, (userProject) => userProject.project)
     projects?: UserProjectORM[]
 
-    @OneToMany(() => TaskORM, (task) => task.assigned_id)
+    @OneToMany("TaskORM", (task: TaskORM) => task.assigned_id)
     assigned_tasks?: TaskORM[]
 
-    @OneToMany(() => TaskORM, (task) => task.reviewer_id)
+    @OneToMany("TaskORM", (task: TaskORM) => task.reviewer_id)
     reviewed_tasks?: TaskORM[]
 }
 
@@ -40,13 +40,13 @@ export class ProjectORM {
     @Column()
     description?: string
 
-    @Column()
+    @Column({type: "enum", enum: TypeProject})
     type!: TypeProject
 
     @OneToMany(() => UserProjectORM, (userProject) => userProject.user)
     users!: UserProjectORM[]
 
-    @OneToMany(() => TaskORM, (task) => task.project)
+    @OneToMany("TaskORM", (task: TaskORM) => task.project)
     tasks?: TaskORM[]
 }
 
@@ -63,7 +63,7 @@ export class UserProjectORM {
     @JoinColumn()
     project!: ProjectORM;
 
-    @Column()
+    @Column({type: "enum", enum: Role})
     role!: Role;
 
     @Column()

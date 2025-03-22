@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
-        "target": "es6",
-        "module": "commonjs",
+        "target": "es5",
+        "module": "esnext",
         "outDir": "./dist",
         "rootDir": "./src",
         "strict": true,                          // Включает целый ряд строгих проверок
@@ -16,5 +16,7 @@
         "forceConsistentCasingInFileNames": true, // Требует согласования регистра символов в именах файлов
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
-    }
+        "moduleResolution": "node"
+    },
+    "ts-node": { "esm": true, "experimentalSpecifierResolution": "node" }
   }

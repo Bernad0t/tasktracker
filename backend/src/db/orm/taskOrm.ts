@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm"
-import { ProjectORM, UserORM } from "./userOrm"
+import type { ProjectORM, UserORM } from "./userOrm"
 import { StatusTask } from "../../schemas/enums/userEnum"
 
 @Entity()
@@ -13,7 +13,7 @@ export class TaskORM {
     @Column()
     description?: string
 
-    @Column()
+    @Column({type: "enum", enum: StatusTask})
     status?: StatusTask
 
     @Column()
@@ -22,15 +22,15 @@ export class TaskORM {
     @Column()
     priority!: number
 
-    @ManyToOne(() => UserORM, (user) => user.reviewed_tasks, { cascade: true, onDelete: 'SET NULL' })
+    @ManyToOne("UserORM", (user: UserORM) => user.reviewed_tasks, { cascade: true, onDelete: 'SET NULL' })
     @JoinColumn()
     reviewer_id?: UserORM
 
-    @ManyToOne(() => UserORM, (user) => user.assigned_tasks, {cascade: true, onDelete: 'CASCADE'})
+    @ManyToOne("UserORM", (user: UserORM) => user.assigned_tasks, {cascade: true, onDelete: 'CASCADE'})
     @JoinColumn()
     assigned_id!: UserORM
 
-    @ManyToOne(() => ProjectORM, (project) => project.tasks, {cascade: true, onDelete: 'CASCADE'})
+    @ManyToOne("ProjectORM", (project: ProjectORM) => project.tasks, {cascade: true, onDelete: 'CASCADE'})
     @JoinColumn()
     project!: ProjectORM
 
@@ -48,7 +48,7 @@ export class CommentsORM{
     @Column()
     date!: Date
 
-    @ManyToOne(() => UserORM, {cascade: true, onDelete: 'CASCADE'})
+    @ManyToOne("UserORM", {cascade: true, onDelete: 'CASCADE'}) // я не хочу у юзеров подгружать их комменты
     @JoinColumn()
     reviewer!: UserORM
 

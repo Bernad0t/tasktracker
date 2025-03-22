@@ -3,14 +3,12 @@ export interface UserDataDTO{
     username: string
 }
 
-interface UserCreateBase{
+export interface UserLoginDTO{
+    loginField: string // может быть почта или логин
     password: string
 }
 
-export interface UserLoginDTO extends UserCreateBase{
-    loginField: string // может быть почта или логин
-}
-
-export interface UserCreateDTO extends UserCreateBase, UserDataDTO{
+export interface UserCreateDTO extends UserDataDTO{
     login: string
+    password: string
 }
