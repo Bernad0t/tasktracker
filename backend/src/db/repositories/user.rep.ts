@@ -9,5 +9,5 @@ export const UserRepository = db.getRepository(UserORM).extend({
             where: condition.filter(cond => cond != undefined) as FindOptionsWhere<UserORM>[]
         })
         return user[0]
-    }
+    },
 })

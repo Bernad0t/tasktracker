@@ -1,12 +1,17 @@
 import { NextFunction, Request, Response } from "express";
-import { KeysCookie } from "../schemas/enums/configEnum";
-import checkValidToken from "./utils/checkValidToken";
+import decodeToken from "./utils/checkValidToken";
 
 const isLoginedMiddleware = function (req: Request, res: Response, next: NextFunction) {
-    const token = req.cookies[KeysCookie.access_token]
+    const token = req.headers['authorization']?.split(' ')[1] // Bearer TOKEN
     if (token){
-        if (checkValidToken(token))
+        const decodedToken = decodeToken(token)
+        if (decodedToken){
+            console.log("decoded token", decodedToken)
+            req.tokenPayload = decodedToken
             next()
-        else throw new Error('Invalid cookies')
-    } else throw new Error('Invalid cookies')
-}  
+        }
+        else res.status(401).json("unauthorization")
+    } else res.status(401).json("unauthorization")
+}
+
+export default isLoginedMiddleware
