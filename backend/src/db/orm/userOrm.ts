@@ -37,13 +37,13 @@ export class ProjectORM {
     @Column()
     name!: string
 
-    @Column()
+    @Column({nullable: true})
     description?: string
 
     @Column({type: "enum", enum: TypeProject})
     type!: TypeProject
 
-    @OneToMany(() => UserProjectORM, (userProject) => userProject.user)
+    @OneToMany(() => UserProjectORM, (userProject) => userProject.project)
     users!: UserProjectORM[]
 
     @OneToMany("TaskORM", (task: TaskORM) => task.project)
@@ -67,5 +67,5 @@ export class UserProjectORM {
     role!: Role;
 
     @Column()
-    priority!: number; // отображает порядок, в котором проекты сортируются. пусть будет по убыванию 
+    priority!: number; // отображает порядок, в котором проекты сортируются. пусть будет по убыванию, а по умолчанию 0 
 }

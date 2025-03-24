@@ -9,6 +9,7 @@ dotenv.config({ path: __dirname + '/../../.env' });
 
 //npx typeorm-ts-node-esm migration:generate -d src/db/db.ts src/db/migrations/initial // сгенерировать
 // npx typeorm-ts-node-esm migration:run -d src/db/db.ts // применить
+// не забывай компилить
 
 const db = new DataSource({
     type: "postgres",

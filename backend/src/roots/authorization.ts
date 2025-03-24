@@ -18,7 +18,6 @@ function processAuthError(res: Response, err: unknown){
     }
 }
 
-// Декоратор для обработки ошибок
 function authorizationDecorator() {
     return function(target: any, propertyName: string, descriptor: PropertyDescriptor){
         const originalMethod = descriptor.value;
@@ -57,7 +56,6 @@ class AuthController {
     }
 }
 
-// Создаем экземпляр контроллера, чтобы зарегистрировать маршруты
 new AuthController();
 
 export { router }

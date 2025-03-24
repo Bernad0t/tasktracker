@@ -13,10 +13,10 @@ export class TaskORM {
     @Column()
     description?: string
 
-    @Column({type: "enum", enum: StatusTask})
+    @Column({type: "enum", enum: StatusTask, nullable: true})
     status?: StatusTask
 
-    @Column()
+    @Column({nullable: true})
     deadline?: Date
 
     @Column()
