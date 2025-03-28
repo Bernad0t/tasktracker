@@ -1,7 +1,8 @@
 import express, { NextFunction, type Request, type Response } from 'express';
-import { CreateProjectDTO, ProjectDTO, UpdatePriorityProjectDTO, UserRoleInProjectDTO } from '../schemas/dto/projectDTO';
+import { CreateProjectDTO, ProjectDTO, ProjectDTORelation, UpdatePriorityProjectDTO, UserRoleInProjectDTO } from '../schemas/dto/projectDTO';
 import { ProjectService } from '../app/projectService';
 import { Role } from '../schemas/enums/userEnum';
+import { ApiOperationDelete } from 'swagger-express-ts';
 
 const projectRouter = express.Router()
 
@@ -44,6 +45,7 @@ class ProjectController{
         projectRouter.post("/add-user-to-project", this.addUserIntoProject);
         projectRouter.patch('/update-project', this.updateProject)
         projectRouter.delete('/delete-project', this.deleteProject)
+        projectRouter.patch('/change-priority', this.changePriority)
     }
     
     @handlerError()
@@ -73,7 +75,7 @@ class ProjectController{
     @handlerError()
     @validateAccess()
     async updateProject(req: Request, res: Response){  
-        const project: ProjectDTO = req.body
+        const project: ProjectDTORelation = req.body
         await ProjectService.updateProject(project)
         res.status(200).json("successfull")
     }
@@ -90,7 +92,8 @@ class ProjectController{
     async changePriority(req: Request, res: Response){
         const project: UpdatePriorityProjectDTO = req.body
         const userId = req.tokenPayload.id
-        
+        await ProjectService.changePriority(project, userId)
+        res.status(200).json("successfull")
     }
 
     // get project вместе с тсками, таски вместе с комментариями, так что отложу пока их не сделаю

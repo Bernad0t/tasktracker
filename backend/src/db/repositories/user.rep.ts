@@ -20,7 +20,7 @@ export const UserRepository = db.getRepository(UserORM).extend({
             where: {
                 user: {id: userInProject.id},
                 project: {id: project.id},
-                parentProject: undefined
+                parent: undefined
             }
         }) 
 
@@ -32,8 +32,8 @@ export const UserRepository = db.getRepository(UserORM).extend({
         userProject.user = user;
         userProject.project = project;
         userProject.role = userInProject.role;
-        userProject.childrenProjects = headProject?.childrenProjects
-        userProject.parentProject = undefined
+        userProject.child = headProject
+        userProject.parent = null
         // userProject.priority = 0; // Или любое другое значение по умолчанию
 
         // Сохраняем в базе данных

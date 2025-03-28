@@ -18,7 +18,9 @@ export interface CreateProjectDTO extends ProjectBaseDTO{
     users: UserRoleInProjectDTO[] // информация про создателя, если direct, иначе много пользователей. id будет как короткое имя для поиска
 }
 
+export interface ProjectDTORelation extends CreateProjectDTO, ProjectDTO{}
+
 export interface UpdatePriorityProjectDTO{
     project: ProjectDTO
-    newPriority: number
+    replacedId: number
 }

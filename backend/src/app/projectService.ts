@@ -2,7 +2,8 @@ import db from "../db/db";
 import { ProjectORM } from "../db/orm/userOrm";
 import { ProjectRepository } from "../db/repositories/project.rep";
 import { UserRepository } from "../db/repositories/user.rep";
-import { CreateProjectDTO, ProjectDTO, UserRoleInProjectDTO } from "../schemas/dto/projectDTO";
+import { UserProjectRepository } from "../db/repositories/userProject.rep";
+import { CreateProjectDTO, ProjectDTO, ProjectDTORelation, UpdatePriorityProjectDTO, UserRoleInProjectDTO } from "../schemas/dto/projectDTO";
 
 export const ProjectService = {
     async addProject(project: CreateProjectDTO){
@@ -34,8 +35,11 @@ export const ProjectService = {
         await UserRepository.addProject(project, user)
     },
 
-    async updateProject(project: ProjectDTO){
+    async updateProject(project: ProjectDTORelation){
         await ProjectRepository.updateProject(project)
+        for (const user of project.users){
+            await UserProjectRepository.updateRole(project.id, user.id, user.role)
+        }
     },
 
     async deleteProject(projectId: number){
@@ -44,5 +48,9 @@ export const ProjectService = {
 
     async getRoleUser(projectId: number, userId: number){
         return await ProjectRepository.getRoleUser(projectId, userId)
+    },
+
+    async changePriority(data: UpdatePriorityProjectDTO, userId: number){
+        await UserProjectRepository.changePriority(data, userId)
     }
 }

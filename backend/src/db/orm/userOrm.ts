@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, ManyToOne, OneToMany, JoinColumn, Tree, TreeParent, TreeChildren } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, ManyToOne, OneToMany, JoinColumn, Tree, TreeParent, TreeChildren, OneToOne } from "typeorm"
 import { Role, TypeProject } from "../../schemas/enums/userEnum"
 import type { TaskORM } from "./taskOrm"
 
@@ -51,7 +51,6 @@ export class ProjectORM {
 }
 
 @Entity()
-@Tree("closure-table")
 export class UserProjectORM {
     @PrimaryGeneratedColumn()
     id!: number;
@@ -67,9 +66,11 @@ export class UserProjectORM {
     @Column({type: "enum", enum: Role})
     role!: Role;
 
-    @TreeChildren()
-    childrenProjects!: UserProjectORM[] | undefined;
+    @OneToOne(() => UserProjectORM, project => project.child) // для приоритетности
+    @JoinColumn()
+    parent!: UserProjectORM | null
 
-    @TreeParent()
-    parentProject!: UserProjectORM | undefined;
+    @OneToOne(() => UserProjectORM, project => project.parent)
+    @JoinColumn()
+    child!: UserProjectORM | null
 }

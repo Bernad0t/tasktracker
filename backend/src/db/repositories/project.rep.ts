@@ -2,6 +2,7 @@ import { EntityManager } from "typeorm";
 import { ProjectBaseDTO, ProjectDTO, UpdatePriorityProjectDTO } from "../../schemas/dto/projectDTO";
 import db from "../db";
 import { ProjectORM, UserProjectORM } from "../orm/userOrm";
+import { UserProjectRepository } from "./userProject.rep";
 
 export const ProjectRepository = db.getRepository(ProjectORM).extend({
     async addProject(projectData: ProjectBaseDTO, manager?: EntityManager) {
@@ -36,7 +37,7 @@ export const ProjectRepository = db.getRepository(ProjectORM).extend({
         return project
     },
 
-    async updateProject(newData: ProjectDTO){
+    async updateProject(newData: ProjectDTO, manager?: EntityManager){
         const project = await this.findOne({
             where: {id: newData.id}
         })
@@ -46,13 +47,28 @@ export const ProjectRepository = db.getRepository(ProjectORM).extend({
             const typedKey = key as keyof ProjectDTO;  // Уточнение типа ключа
             (project as any)[typedKey] = newData[typedKey];
         })
-        await this.save(project)
+        if (!manager)
+            await this.save(project)
+        else
+            await manager.save(project)
     },
 
     async deleteProject(idProject: number){
-        const result = await this.delete(idProject);
-        if (result.affected === 0) {
-            throw new Error("Project not found");
+        const queryRunner = db.createQueryRunner()
+        await queryRunner.connect()
+        await queryRunner.startTransaction()
+        try{
+            await UserProjectRepository.connectChildAndParent(idProject, queryRunner.manager)
+            const result = await this.delete(idProject);
+            if (result.affected === 0) {
+                throw new Error("Project not found");
+            }
+            await queryRunner.commitTransaction()
+        } catch (error){
+            await queryRunner.rollbackTransaction()
+            throw(error)
+        } finally{
+            await queryRunner.release()
         }
     },
 
@@ -63,16 +79,5 @@ export const ProjectRepository = db.getRepository(ProjectORM).extend({
         if (!project)
             throw new Error("user dont exist in project")
         return project.role
-    },
-
-    async changePriority(data: UpdatePriorityProjectDTO, userId: number){
-        // const getProjByPriority = async (priority: number) => {
-        //     return await db.getRepository(UserProjectORM).findOne({
-        //         where: {user: {id: userId}, project: {id: data.project.id}, priority: priority}
-        //     })
-        // }
-
-        // const userProjectFirst = await getProjByPriority(data.newPriority)
-        // const userProjectSecond = await getProjByPriority(data.project.priority)
     }
 })
