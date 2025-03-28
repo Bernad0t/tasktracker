@@ -1,9 +1,12 @@
-import { Role, TypeProject } from "../enums/userEnum"
+import { Role } from "../enums/userEnum"
 
-export interface ProjectBaseDTO{
+export interface ProjectBaseDTO{ // type не нужен, нет смысла ограничивать
     name: string
     description?: string
-    type: TypeProject
+}
+
+export interface ProjectDTO extends ProjectBaseDTO{
+    id: number
 }
 
 export interface UserRoleInProjectDTO{
@@ -13,4 +16,9 @@ export interface UserRoleInProjectDTO{
 
 export interface CreateProjectDTO extends ProjectBaseDTO{
     users: UserRoleInProjectDTO[] // информация про создателя, если direct, иначе много пользователей. id будет как короткое имя для поиска
+}
+
+export interface UpdatePriorityProjectDTO{
+    project: ProjectDTO
+    newPriority: number
 }

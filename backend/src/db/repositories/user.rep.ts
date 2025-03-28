@@ -1,4 +1,4 @@
-import { EntityManager, FindOptionsWhere } from "typeorm";
+import { EntityManager, FindOptionsWhere, Repository } from "typeorm";
 import db from "../db";
 import { ProjectORM, UserORM, UserProjectORM } from "../orm/userOrm";
 import { Role } from "../../schemas/enums/userEnum";
@@ -15,19 +15,26 @@ export const UserRepository = db.getRepository(UserORM).extend({
 
     async addProject(project: ProjectORM, userInProject: UserRoleInProjectDTO, manager?: EntityManager){
         const userProjectRep = db.getRepository(UserProjectORM)
-        // Получаем экземпляры связанных сущностей
         const user = await this.findUserQueryOR({id: userInProject.id});
+        const headProject = await userProjectRep.findOne({
+            where: {
+                user: {id: userInProject.id},
+                project: {id: project.id},
+                parentProject: undefined
+            }
+        }) 
 
         if (!user || !project) {
             throw new Error('User or Project not found');
         }
 
-        // Создаем новый экземпляр UserProjectORM
         const userProject = new UserProjectORM();
         userProject.user = user;
         userProject.project = project;
         userProject.role = userInProject.role;
-        userProject.priority = 0; // Или любое другое значение по умолчанию
+        userProject.childrenProjects = headProject?.childrenProjects
+        userProject.parentProject = undefined
+        // userProject.priority = 0; // Или любое другое значение по умолчанию
 
         // Сохраняем в базе данных
         if (manager){

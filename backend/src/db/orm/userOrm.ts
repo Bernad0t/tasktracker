@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, ManyToOne, OneToMany, JoinColumn } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, ManyToOne, OneToMany, JoinColumn, Tree, TreeParent, TreeChildren } from "typeorm"
 import { Role, TypeProject } from "../../schemas/enums/userEnum"
 import type { TaskORM } from "./taskOrm"
 
@@ -51,6 +51,7 @@ export class ProjectORM {
 }
 
 @Entity()
+@Tree("closure-table")
 export class UserProjectORM {
     @PrimaryGeneratedColumn()
     id!: number;
@@ -66,6 +67,9 @@ export class UserProjectORM {
     @Column({type: "enum", enum: Role})
     role!: Role;
 
-    @Column()
-    priority!: number; // отображает порядок, в котором проекты сортируются. пусть будет по убыванию, а по умолчанию 0 
+    @TreeChildren()
+    childrenProjects!: UserProjectORM[] | undefined;
+
+    @TreeParent()
+    parentProject!: UserProjectORM | undefined;
 }
