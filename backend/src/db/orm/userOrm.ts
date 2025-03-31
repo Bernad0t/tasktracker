@@ -7,25 +7,25 @@ export class UserORM {
     @PrimaryGeneratedColumn()
     id!: number
 
-    @Column()
+    @Column({nullable: false})
     login!: string
 
-    @Column()
+    @Column({nullable: false})
     username!: string
 
     @Column({ type: "text" })
     password!: string
 
-    @Column()
+    @Column({nullable: false})
     email!: string
 
     @OneToMany(() => UserProjectORM, (userProject) => userProject.project)
     projects?: UserProjectORM[]
 
-    @OneToMany("TaskORM", (task: TaskORM) => task.assigned_id)
+    @OneToMany("TaskORM", (task: TaskORM) => task.assigned)
     assigned_tasks?: TaskORM[]
 
-    @OneToMany("TaskORM", (task: TaskORM) => task.reviewer_id)
+    @OneToMany("TaskORM", (task: TaskORM) => task.reviewer)
     reviewed_tasks?: TaskORM[]
 }
 

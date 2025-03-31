@@ -1,42 +1,10 @@
 import express, { NextFunction, type Request, type Response } from 'express';
-import { CreateProjectDTO, ProjectDTO, ProjectDTORelation, UpdatePriorityProjectDTO, UserRoleInProjectDTO } from '../schemas/dto/projectDTO';
+import { CreateProjectDTO, ProjectDTO, ProjectDTORelation, ProjectDTOUserRoles, UpdatePriorityProjectDTO, UserRoleInProjectDTO } from '../schemas/dto/projectDTO';
 import { ProjectService } from '../app/projectService';
 import { Role } from '../schemas/enums/userEnum';
-import { ApiOperationDelete } from 'swagger-express-ts';
+import { handlerError, roleValidateAccess } from './components/decorators';
 
 const projectRouter = express.Router()
-
-function handlerError(){
-    return function(target: any, propertyName: string, descriptor: PropertyDescriptor){
-        const originalMethod = descriptor.value;
-
-        descriptor.value = async function (req: Request, res: Response, next: NextFunction) {
-            try {
-                await originalMethod.apply(this, [req, res, next]);
-            } catch (error){
-                console.error(error);
-                res.status(500).json({ message: (error as any).message ?? 'Internal Server Error' });
-            }
-        };
-    }
-}
-
-function validateAccess(){
-    return function(target: any, propertyName: string, descriptor: PropertyDescriptor){
-        const originalMethod = descriptor.value;
-
-        descriptor.value = async function (req: Request, res: Response, next: NextFunction) {
-            const userId = req.tokenPayload.id
-            const projectId = req.body.idProject
-            const role = await ProjectService.getRoleUser(projectId, userId)
-            if (role != Role.admin){
-                res.status(409).json("Недостаточно прав")
-                return
-            }
-            await originalMethod.apply(this, [req, res, next]);
-        };
-    }
-}
 
 class ProjectController{
     constructor() {
@@ -64,7 +32,7 @@ class ProjectController{
     }
 
     @handlerError()
-    @validateAccess()
+    @roleValidateAccess()
     async addUserIntoProject(req: Request, res: Response){ // user в body, idProject в query
         const user: UserRoleInProjectDTO = req.body
         const idProject: number = Number(req.query.idProject)
@@ -73,15 +41,15 @@ class ProjectController{
     }
 
     @handlerError()
-    @validateAccess()
+    @roleValidateAccess()
     async updateProject(req: Request, res: Response){  
-        const project: ProjectDTORelation = req.body
+        const project: ProjectDTOUserRoles = req.body
         await ProjectService.updateProject(project)
         res.status(200).json("successfull")
     }
 
     @handlerError()
-    @validateAccess()
+    @roleValidateAccess()
     async deleteProject(req: Request, res: Response){
         const idProject: number = Number(req.query.idProject)
         await ProjectService.deleteProject(idProject)
@@ -96,14 +64,21 @@ class ProjectController{
         res.status(200).json("successfull")
     }
 
-    // get project вместе с тсками, таски вместе с комментариями, так что отложу пока их не сделаю
+    @handlerError()
+    async getProjects(req: Request, res: Response){
+        const userId = req.tokenPayload.id
+        const projects: ProjectDTO[] = await ProjectService.getProjects(userId)
+        res.status(200).json(projects)
+    }
+
+    @handlerError()
+    async getInfoProject(req: Request, res: Response){
+        const projectId = Number(req.query.projectId)
+        const project: ProjectDTORelation = await ProjectService.getProjectInfo(projectId)
+        res.status(200).json(project)
+    }
 }
 
 new ProjectController()
-
-projectRouter.get("/get-project", (req: Request, res: Response)=> {
-    console.log("happy")
-    res.status(200).json("getted")
-})
 
 export default projectRouter

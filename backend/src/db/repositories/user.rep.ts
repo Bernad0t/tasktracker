@@ -1,8 +1,8 @@
 import { EntityManager, FindOptionsWhere, Repository } from "typeorm";
 import db from "../db";
 import { ProjectORM, UserORM, UserProjectORM } from "../orm/userOrm";
-import { Role } from "../../schemas/enums/userEnum";
 import { UserRoleInProjectDTO } from "../../schemas/dto/projectDTO";
+import { UserDTORelation } from "../../schemas/dto/userDTO";
 
 export const UserRepository = db.getRepository(UserORM).extend({
     async findUserQueryOR<T extends Object>(userData: T){
@@ -44,5 +44,16 @@ export const UserRepository = db.getRepository(UserORM).extend({
         else{
             await userProjectRep.save(userProject);
         }
+    },
+
+    async getData(id: number){
+        const user = await this.findOne({
+            where: { id: id },
+            relations: ["projects", "projects.project"], // Загружаем связанные проекты
+        });
+        if (!user)
+            throw new Error("user dont exist")
+        const result: UserDTORelation = {...user, projects: user?.projects?.map(userproj => userproj.project) ?? []}
+        return result
     }
 })

@@ -1,4 +1,6 @@
 import { Role } from "../enums/userEnum"
+import { TaskDTORelation } from "./taskDTO"
+import { type UserDataRolesDTO } from "./userDTO"
 
 export interface ProjectBaseDTO{ // type не нужен, нет смысла ограничивать
     name: string
@@ -18,7 +20,14 @@ export interface CreateProjectDTO extends ProjectBaseDTO{
     users: UserRoleInProjectDTO[] // информация про создателя, если direct, иначе много пользователей. id будет как короткое имя для поиска
 }
 
-export interface ProjectDTORelation extends CreateProjectDTO, ProjectDTO{}
+export interface ProjectDTOUserRoles extends CreateProjectDTO{
+    id: number
+}
+
+export interface ProjectDTORelation extends ProjectDTO{
+    users?: UserDataRolesDTO[]
+    tasks?: TaskDTORelation[]
+}
 
 export interface UpdatePriorityProjectDTO{
     project: ProjectDTO

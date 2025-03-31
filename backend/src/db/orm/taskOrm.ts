@@ -10,25 +10,25 @@ export class TaskORM {
     @Column()
     name!: string
 
-    @Column()
+    @Column() // добавь nullable
     description?: string
 
-    @Column({type: "enum", enum: StatusTask, nullable: true})
+    @Column({type: "enum", enum: StatusTask, nullable: true}) // nullable будто лучше убрать
     status?: StatusTask
 
     @Column({nullable: true})
     deadline?: Date
 
     @Column()
-    priority!: number
+    priority!: number // убери
 
     @ManyToOne("UserORM", (user: UserORM) => user.reviewed_tasks, { cascade: true, onDelete: 'SET NULL' })
     @JoinColumn()
-    reviewer_id?: UserORM
+    reviewer?: UserORM
 
     @ManyToOne("UserORM", (user: UserORM) => user.assigned_tasks, {cascade: true, onDelete: 'CASCADE'})
     @JoinColumn()
-    assigned_id!: UserORM
+    assigned!: UserORM
 
     @ManyToOne("ProjectORM", (project: ProjectORM) => project.tasks, {cascade: true, onDelete: 'CASCADE'})
     @JoinColumn()
@@ -36,6 +36,10 @@ export class TaskORM {
 
     @OneToMany(() => CommentsORM, (comm) => comm.task)
     comments?: CommentsORM[]
+
+    constructor(init?: Partial<TaskORM>) {
+        Object.assign(this, init);
+    }
 }
 
 @Entity()
@@ -55,4 +59,8 @@ export class CommentsORM{
     @ManyToOne(() => TaskORM, (task) => task.comments, {cascade: true, onDelete: 'CASCADE'})
     @JoinColumn()
     task!: TaskORM
+
+    constructor(init?: Partial<CommentsORM>) {
+        Object.assign(this, init);
+    }
 }

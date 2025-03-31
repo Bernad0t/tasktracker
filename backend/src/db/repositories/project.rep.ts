@@ -1,5 +1,5 @@
 import { EntityManager } from "typeorm";
-import { ProjectBaseDTO, ProjectDTO, UpdatePriorityProjectDTO } from "../../schemas/dto/projectDTO";
+import { ProjectBaseDTO, ProjectDTO, ProjectDTORelation, UpdatePriorityProjectDTO } from "../../schemas/dto/projectDTO";
 import db from "../db";
 import { ProjectORM, UserProjectORM } from "../orm/userOrm";
 import { UserProjectRepository } from "./userProject.rep";
@@ -79,5 +79,27 @@ export const ProjectRepository = db.getRepository(ProjectORM).extend({
         if (!project)
             throw new Error("user dont exist in project")
         return project.role
+    },
+
+    async getRelationProject(projectId: number){
+        const project = await this.findOne({
+            where: {id: projectId},
+            relations: ["users", "users.user"]
+        })
+        if (!project)
+            throw new Error("project dont exist")
+        const result: ProjectDTORelation = {
+            ...project, 
+            users: project.users.map(userproject => {return {...userproject.user, role: userproject.role}}),
+            tasks: [] // отдельным запросом лучше, чтобы не перегружать запрос
+        }
+        return result
+    },
+
+    async getProjects(userId: number){
+        const project = await this.find({
+            where: {users: {user: {id: userId}}}
+        })
+        return project
     }
 })

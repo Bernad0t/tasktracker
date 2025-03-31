@@ -1,9 +1,11 @@
 import db from "../db/db";
 import { ProjectORM } from "../db/orm/userOrm";
 import { ProjectRepository } from "../db/repositories/project.rep";
+import { TaskRepostiry } from "../db/repositories/task.rep";
 import { UserRepository } from "../db/repositories/user.rep";
 import { UserProjectRepository } from "../db/repositories/userProject.rep";
-import { CreateProjectDTO, ProjectDTO, ProjectDTORelation, UpdatePriorityProjectDTO, UserRoleInProjectDTO } from "../schemas/dto/projectDTO";
+import { CreateProjectDTO, ProjectDTO, ProjectDTORelation, ProjectDTOUserRoles, UpdatePriorityProjectDTO, UserRoleInProjectDTO } from "../schemas/dto/projectDTO";
+import { TaskDTORelation } from "../schemas/dto/taskDTO";
 
 export const ProjectService = {
     async addProject(project: CreateProjectDTO){
@@ -35,7 +37,7 @@ export const ProjectService = {
         await UserRepository.addProject(project, user)
     },
 
-    async updateProject(project: ProjectDTORelation){
+    async updateProject(project: ProjectDTOUserRoles){
         await ProjectRepository.updateProject(project)
         for (const user of project.users){
             await UserProjectRepository.updateRole(project.id, user.id, user.role)
@@ -52,5 +54,17 @@ export const ProjectService = {
 
     async changePriority(data: UpdatePriorityProjectDTO, userId: number){
         await UserProjectRepository.changePriority(data, userId)
+    },
+
+    async getProjects(userId: number): Promise<ProjectDTO[]>{
+        const projects: ProjectDTO[] = await ProjectRepository.getProjects(userId)
+        return projects 
+    },
+
+    async getProjectInfo(projectId: number): Promise<ProjectDTORelation>{
+        const project: ProjectDTORelation = await ProjectRepository.getRelationProject(projectId)
+        const tasks: TaskDTORelation[] = await TaskRepostiry.getProjectTasks(project.id)
+        project.tasks = tasks
+        return project
     }
 }
