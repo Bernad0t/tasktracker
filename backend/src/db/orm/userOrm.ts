@@ -40,9 +40,6 @@ export class ProjectORM {
     @Column({nullable: true})
     description?: string
 
-    @Column({type: "enum", enum: TypeProject})
-    type!: TypeProject
-
     @OneToMany(() => UserProjectORM, (userProject) => userProject.project)
     users!: UserProjectORM[]
 
@@ -66,11 +63,11 @@ export class UserProjectORM {
     @Column({type: "enum", enum: Role})
     role!: Role;
 
-    @OneToOne(() => UserProjectORM, project => project.child) // для приоритетности
+    @OneToOne(() => UserProjectORM, project => project.child, {cascade: false}) // для приоритетности
     @JoinColumn()
     parent!: UserProjectORM | null
 
-    @OneToOne(() => UserProjectORM, project => project.parent)
+    @OneToOne(() => UserProjectORM, project => project.parent, {cascade: false})
     @JoinColumn()
     child!: UserProjectORM | null
 }

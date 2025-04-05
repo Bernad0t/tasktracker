@@ -9,6 +9,8 @@ export interface ProjectBaseDTO{ // type не нужен, нет смысла о
 
 export interface ProjectDTO extends ProjectBaseDTO{
     id: number
+    parent?: ProjectDTO
+    child?: ProjectDTO
 }
 
 export interface UserRoleInProjectDTO{

@@ -1,20 +1,14 @@
 import { EntityManager } from "typeorm";
-import { ProjectBaseDTO, ProjectDTO, ProjectDTORelation, UpdatePriorityProjectDTO } from "../../schemas/dto/projectDTO";
+import { ProjectBaseDTO, ProjectDTO, ProjectDTORelation } from "../../schemas/dto/projectDTO";
 import db from "../db";
 import { ProjectORM, UserProjectORM } from "../orm/userOrm";
 import { UserProjectRepository } from "./userProject.rep";
 
 export const ProjectRepository = db.getRepository(ProjectORM).extend({
     async addProject(projectData: ProjectBaseDTO, manager?: EntityManager) {
-        if (manager){
-            const project = manager.create(ProjectORM, projectData);
-            const savedProject = await manager.save(ProjectORM, project);
-            return savedProject;  
-        }
-        else{
-            const savedProject = await this.save(projectData);
-            return savedProject;
-        }    
+        const repository = manager?.getRepository(ProjectORM) ?? this
+        const savedProject = await repository.save({name: projectData.name, description: projectData.description});
+        return savedProject;
     },
 
     async getFilteredProject(id: number, name: string){
@@ -23,7 +17,6 @@ export const ProjectRepository = db.getRepository(ProjectORM).extend({
             .leftJoinAndSelect("userproject.user", "user")
             .where("user.id = :id", { id })
             .andWhere('project.name LIKE :name', { name: `%${name}%` })
-            .orderBy("userproject.priority", "DESC")
             .getMany();
         return projects       
     },
@@ -81,7 +74,7 @@ export const ProjectRepository = db.getRepository(ProjectORM).extend({
         return project.role
     },
 
-    async getRelationProject(projectId: number){
+    async getRelationProject(projectId: number){ // не учел порядок
         const project = await this.findOne({
             where: {id: projectId},
             relations: ["users", "users.user"]
@@ -98,7 +91,8 @@ export const ProjectRepository = db.getRepository(ProjectORM).extend({
 
     async getProjects(userId: number){
         const project = await this.find({
-            where: {users: {user: {id: userId}}}
+            where: {users: {user: {id: userId}}},
+            relations: ["parent", "child"]
         })
         return project
     }

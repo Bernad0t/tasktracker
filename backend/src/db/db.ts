@@ -19,7 +19,7 @@ const db = new DataSource({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     synchronize: false,
-    logging: true,
+    logging: false,
     entities: ["src/db/orm/*.ts"],
     subscribers: [],
     migrations: ["dist/db/migrations/*.js"],

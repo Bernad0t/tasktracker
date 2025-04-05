@@ -8,8 +8,8 @@ const taskRouter = express.Router()
 class TaskController{
     constructor() {
         taskRouter.post("/add-task", this.addTask);
-        taskRouter.patch("/add-task", this.updateTask);
-        taskRouter.delete("/add-task", this.deleteTask);
+        taskRouter.patch("/update-task", this.updateTask);
+        taskRouter.delete("/delete-task", this.deleteTask);
     }
 
     @handlerError()

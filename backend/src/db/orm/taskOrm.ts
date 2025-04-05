@@ -10,7 +10,7 @@ export class TaskORM {
     @Column()
     name!: string
 
-    @Column() // добавь nullable
+    @Column({nullable: true}) // добавь nullable
     description?: string
 
     @Column({type: "enum", enum: StatusTask, nullable: true}) // nullable будто лучше убрать
@@ -18,9 +18,6 @@ export class TaskORM {
 
     @Column({nullable: true})
     deadline?: Date
-
-    @Column()
-    priority!: number // убери
 
     @ManyToOne("UserORM", (user: UserORM) => user.reviewed_tasks, { cascade: true, onDelete: 'SET NULL' })
     @JoinColumn()

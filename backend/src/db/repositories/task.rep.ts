@@ -32,7 +32,7 @@ export const TaskRepostiry = db.getRepository(TaskORM).extend({
     async getProjectTasks(projectId: number){
         const tasks = await this.find({
             where: {project: {id: projectId}},
-            relations: ["comments", "comments.reviewer"]
+            relations: ["comments", "comments.reviewer", "reviewer", "assigned"]
         })
         const result: TaskDTORelation[] = tasks.map(task => {
             return {

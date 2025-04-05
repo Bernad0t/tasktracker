@@ -1,4 +1,4 @@
-import { EntityManager, FindOptionsWhere, Repository } from "typeorm";
+import { EntityManager, FindOptionsWhere, IsNull, Repository } from "typeorm";
 import db from "../db";
 import { ProjectORM, UserORM, UserProjectORM } from "../orm/userOrm";
 import { UserRoleInProjectDTO } from "../../schemas/dto/projectDTO";
@@ -14,13 +14,12 @@ export const UserRepository = db.getRepository(UserORM).extend({
     },
 
     async addProject(project: ProjectORM, userInProject: UserRoleInProjectDTO, manager?: EntityManager){
-        const userProjectRep = db.getRepository(UserProjectORM)
+        const userProjectRep = manager?.getRepository(UserProjectORM) ?? db.getRepository(UserProjectORM)
         const user = await this.findUserQueryOR({id: userInProject.id});
         const headProject = await userProjectRep.findOne({
             where: {
                 user: {id: userInProject.id},
-                project: {id: project.id},
-                parent: undefined
+                parent: IsNull()
             }
         }) 
 
@@ -28,21 +27,21 @@ export const UserRepository = db.getRepository(UserORM).extend({
             throw new Error('User or Project not found');
         }
 
+        console.log("project", project)
+
         const userProject = new UserProjectORM();
         userProject.user = user;
         userProject.project = project;
         userProject.role = userInProject.role;
         userProject.child = headProject
         userProject.parent = null
-        // userProject.priority = 0; // Или любое другое значение по умолчанию
 
         // Сохраняем в базе данных
-        if (manager){
-            const project = manager.create(UserProjectORM, userProject);
-            await manager.save(UserProjectORM, project);
-        }
-        else{
-            await userProjectRep.save(userProject);
+        await userProjectRep.save(userProject);
+
+        if (headProject){
+            headProject.parent = userProject;
+            await userProjectRep.save(headProject);
         }
     },
 

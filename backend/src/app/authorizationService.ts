@@ -1,8 +1,11 @@
+import sessionConf from "../config/sessionConf";
 import { AuthRepository } from "../db/repositories/auth.rep";
 import { UserRepository } from "../db/repositories/user.rep";
 import { FindUserError } from "../exceptions/userExceptions";
 import { UserCreateDTO, UserLoginDTO } from "../schemas/dto/userDTO";
 import { comparePasswords, hashPassword } from "./utils/passwordUtils";
+import jwt, { JwtPayload } from "jsonwebtoken";
+
 
 export const AuthorizationService = {
     async login(data: UserLoginDTO){
@@ -29,6 +32,12 @@ export const AuthorizationService = {
         const hashedData = {...data, password: (await hashPassword(data.password))}
         const savedUserId = await AuthRepository.authorizationQuery(hashedData)
         return savedUserId
+    },
+
+    refreshToken(refreshToken: string){
+        const id = (jwt.verify(refreshToken, sessionConf.SECRET_KEY_TOKEN) as JwtPayload).id
+        const accessToken = jwt.sign({ id: id }, sessionConf.SECRET_KEY_TOKEN, { expiresIn: sessionConf.EXPIRE_ACCESS_TOKEN});
+        return accessToken
     }
 
 }

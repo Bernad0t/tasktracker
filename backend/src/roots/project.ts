@@ -3,6 +3,7 @@ import { CreateProjectDTO, ProjectDTO, ProjectDTORelation, ProjectDTOUserRoles, 
 import { ProjectService } from '../app/projectService';
 import { Role } from '../schemas/enums/userEnum';
 import { handlerError, roleValidateAccess } from './components/decorators';
+import { ProjectORM } from '../db/orm/userOrm';
 
 const projectRouter = express.Router()
 
@@ -14,6 +15,8 @@ class ProjectController{
         projectRouter.patch('/update-project', this.updateProject)
         projectRouter.delete('/delete-project', this.deleteProject)
         projectRouter.patch('/change-priority', this.changePriority)
+        projectRouter.get('/get-projects', this.getProjects)
+        projectRouter.get('/get-info-project', this.getInfoProject)
     }
     
     @handlerError()
@@ -27,7 +30,7 @@ class ProjectController{
     async getFilteredProject(req: Request, res: Response){
         const userId = req.tokenPayload.id
         const projectFilter = req.query.name as string ?? "" 
-        const projects = await ProjectService.getFilteredProject(userId, projectFilter);
+        const projects: ProjectORM[] = await ProjectService.getFilteredProject(userId, projectFilter);
         res.status(200).json(projects);
     }
 

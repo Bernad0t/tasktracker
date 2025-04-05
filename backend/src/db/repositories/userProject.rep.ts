@@ -62,5 +62,13 @@ export const UserProjectRepository = db.getRepository(UserProjectORM).extend({
             throw new Error("project dont exist")
         project.role = newRole
         await this.save(project)
+    },
+
+    async getProjects(userId: number){
+        const projects = await this.find({
+            where: {user: {id: userId}},
+            relations: ["project", "parent", "child", "parent.project", "child.project"]
+        })
+        return projects
     }
 })

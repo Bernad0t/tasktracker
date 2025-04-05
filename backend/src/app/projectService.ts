@@ -6,6 +6,7 @@ import { UserRepository } from "../db/repositories/user.rep";
 import { UserProjectRepository } from "../db/repositories/userProject.rep";
 import { CreateProjectDTO, ProjectDTO, ProjectDTORelation, ProjectDTOUserRoles, UpdatePriorityProjectDTO, UserRoleInProjectDTO } from "../schemas/dto/projectDTO";
 import { TaskDTORelation } from "../schemas/dto/taskDTO";
+import createProjectOrder from "./utils/createProjectOrder";
 
 export const ProjectService = {
     async addProject(project: CreateProjectDTO){
@@ -15,7 +16,7 @@ export const ProjectService = {
         try{
             const projectOrm: ProjectORM = await ProjectRepository.addProject(project, queryRunner.manager)
             for (let user of project.users){
-                await UserRepository.addProject(projectOrm, user, queryRunner.manager)
+                await UserRepository.addProject({...projectOrm}, user, queryRunner.manager)
             }
             await queryRunner.commitTransaction();
         } catch (error) {
@@ -57,13 +58,23 @@ export const ProjectService = {
     },
 
     async getProjects(userId: number): Promise<ProjectDTO[]>{
-        const projects: ProjectDTO[] = await ProjectRepository.getProjects(userId)
-        return projects 
+        const userprojects = await UserProjectRepository.getProjects(userId)
+        const projects: ProjectDTO[] = userprojects.map(proj => {
+            return {
+                ...proj.project,
+                parent: proj.parent?.project,
+                child: proj.child?.project
+            }
+        })
+        const ordered = createProjectOrder(projects)
+        return ordered 
     },
 
     async getProjectInfo(projectId: number): Promise<ProjectDTORelation>{
-        const project: ProjectDTORelation = await ProjectRepository.getRelationProject(projectId)
-        const tasks: TaskDTORelation[] = await TaskRepostiry.getProjectTasks(project.id)
+        const [project, tasks] = await Promise.all([
+            ProjectRepository.getRelationProject(projectId),
+            TaskRepostiry.getProjectTasks(projectId)
+        ]);
         project.tasks = tasks
         return project
     }
