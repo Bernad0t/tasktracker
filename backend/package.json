@@ -2,29 +2,53 @@
   "name": "backend",
   "version": "1.0.0",
   "main": "app.ts",
+  "type": "module",
   "scripts": {
-    "start": "ts-node src/app.ts",
+    "start": "nodemon src/app.ts",
     "build": "tsc",
-    "serve": "node dist/app.js"
+    "serve": "node dist/app.js",
+    "typeorm": "typeorm-ts-node-esm",
+    "migration:generate": "typeorm-ts-node-esm migration:generate src/db/migrations -d ./src/db/db.ts",
+    "migration:run": "typeorm-ts-node-esm migration:run -d ./src/db/db.ts",
+    "migration:revert": "typeorm-ts-node-esm migration:revert -d ./src/db/db.ts"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@types/yup": "^0.29.14",
     "bcrypt": "^5.1.1",
+    "bcryptjs": "^3.0.2",
+    "body-parser": "^1.20.3",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
     "pg": "^8.13.3",
     "reflect-metadata": "^0.2.2",
-    "typeorm": "^0.3.21"
+    "tsconfig-paths": "^4.2.0",
+    "typeorm": "^0.3.21",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/body-parser": "^1.19.5",
     "@types/cookie-parser": "^1.4.8",
     "@types/express": "^5.0.0",
-    "@types/node": "^22.13.10",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^22.13.11",
+    "concurrently": "^9.1.2",
+    "nodemon": "^3.1.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2"
-  }
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

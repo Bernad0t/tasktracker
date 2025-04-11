@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm"
-import { ProjectORM, UserORM } from "./userOrm"
+import type { ProjectORM, UserORM } from "./userOrm"
 import { StatusTask } from "../../schemas/enums/userEnum"
 
 @Entity()
@@ -10,32 +10,33 @@ export class TaskORM {
     @Column()
     name!: string
 
-    @Column()
+    @Column({nullable: true}) // добавь nullable
     description?: string
 
-    @Column()
+    @Column({type: "enum", enum: StatusTask, nullable: true}) // nullable будто лучше убрать
     status?: StatusTask
 
-    @Column()
+    @Column({nullable: true})
     deadline?: Date
 
-    @Column()
-    priority!: number
-
-    @ManyToOne(() => UserORM, (user) => user.reviewed_tasks, { cascade: true, onDelete: 'SET NULL' })
+    @ManyToOne("UserORM", (user: UserORM) => user.reviewed_tasks, { cascade: true, onDelete: 'SET NULL' })
     @JoinColumn()
-    reviewer_id?: UserORM
+    reviewer?: UserORM
 
-    @ManyToOne(() => UserORM, (user) => user.assigned_tasks, {cascade: true, onDelete: 'CASCADE'})
+    @ManyToOne("UserORM", (user: UserORM) => user.assigned_tasks, {cascade: true, onDelete: 'CASCADE'})
     @JoinColumn()
-    assigned_id!: UserORM
+    assigned!: UserORM
 
-    @ManyToOne(() => ProjectORM, (project) => project.tasks, {cascade: true, onDelete: 'CASCADE'})
+    @ManyToOne("ProjectORM", (project: ProjectORM) => project.tasks, {cascade: true, onDelete: 'CASCADE'})
     @JoinColumn()
     project!: ProjectORM
 
     @OneToMany(() => CommentsORM, (comm) => comm.task)
     comments?: CommentsORM[]
+
+    constructor(init?: Partial<TaskORM>) {
+        Object.assign(this, init);
+    }
 }
 
 @Entity()
@@ -48,11 +49,15 @@ export class CommentsORM{
     @Column()
     date!: Date
 
-    @ManyToOne(() => UserORM, {cascade: true, onDelete: 'CASCADE'})
+    @ManyToOne("UserORM", {cascade: true, onDelete: 'CASCADE'}) // я не хочу у юзеров подгружать их комменты
     @JoinColumn()
     reviewer!: UserORM
 
     @ManyToOne(() => TaskORM, (task) => task.comments, {cascade: true, onDelete: 'CASCADE'})
     @JoinColumn()
     task!: TaskORM
+
+    constructor(init?: Partial<CommentsORM>) {
+        Object.assign(this, init);
+    }
 }

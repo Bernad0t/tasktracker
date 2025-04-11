@@ -1,31 +1,31 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, ManyToOne, OneToMany, JoinColumn } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, ManyToOne, OneToMany, JoinColumn, Tree, TreeParent, TreeChildren, OneToOne } from "typeorm"
 import { Role, TypeProject } from "../../schemas/enums/userEnum"
-import { TaskORM } from "./taskOrm"
+import type { TaskORM } from "./taskOrm"
 
 @Entity()
 export class UserORM {
     @PrimaryGeneratedColumn()
     id!: number
 
-    @Column()
+    @Column({nullable: false})
     login!: string
 
-    @Column()
+    @Column({nullable: false})
     username!: string
 
-    @Column()
+    @Column({ type: "text" })
     password!: string
 
-    @Column()
+    @Column({nullable: false})
     email!: string
 
     @OneToMany(() => UserProjectORM, (userProject) => userProject.project)
     projects?: UserProjectORM[]
 
-    @OneToMany(() => TaskORM, (task) => task.assigned_id)
+    @OneToMany("TaskORM", (task: TaskORM) => task.assigned)
     assigned_tasks?: TaskORM[]
 
-    @OneToMany(() => TaskORM, (task) => task.reviewer_id)
+    @OneToMany("TaskORM", (task: TaskORM) => task.reviewer)
     reviewed_tasks?: TaskORM[]
 }
 
@@ -37,16 +37,13 @@ export class ProjectORM {
     @Column()
     name!: string
 
-    @Column()
+    @Column({nullable: true})
     description?: string
 
-    @Column()
-    type!: TypeProject
-
-    @OneToMany(() => UserProjectORM, (userProject) => userProject.user)
+    @OneToMany(() => UserProjectORM, (userProject) => userProject.project)
     users!: UserProjectORM[]
 
-    @OneToMany(() => TaskORM, (task) => task.project)
+    @OneToMany("TaskORM", (task: TaskORM) => task.project)
     tasks?: TaskORM[]
 }
 
@@ -63,9 +60,14 @@ export class UserProjectORM {
     @JoinColumn()
     project!: ProjectORM;
 
-    @Column()
+    @Column({type: "enum", enum: Role})
     role!: Role;
 
-    @Column()
-    priority!: number; // отображает порядок, в котором проекты сортируются. пусть будет по убыванию 
+    @OneToOne(() => UserProjectORM, project => project.child, {cascade: false}) // для приоритетности
+    @JoinColumn()
+    parent!: UserProjectORM | null
+
+    @OneToOne(() => UserProjectORM, project => project.parent, {cascade: false})
+    @JoinColumn()
+    child!: UserProjectORM | null
 }
