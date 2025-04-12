@@ -10,8 +10,8 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 export const AuthorizationService = {
     async login(data: UserLoginDTO){
         let dataSearching = {
-            login: data.loginField,
-            email: data.loginField
+            login: data.login,
+            email: data.login
         }
         const user = await UserRepository.findUserQueryOR(dataSearching) // хоть поиск ИЛИ, тем не менее регистрируются пользователи с уникальными обоими полями
         if (!user || !(await comparePasswords(data.password, user.password)))

@@ -1,5 +1,5 @@
-import { Role } from "../enums/userEnum"
-import { type ProjectDTO } from "./projectDTO"
+import { Role } from "../enums/project"
+import { ProjectDTO } from "./projectDTO"
 
 export interface UserDataDTO{
     email: string,
@@ -11,7 +11,7 @@ export interface UserDataRolesDTO extends UserDataDTO{
 }
 
 export interface UserLoginDTO{
-    login: string // может быть почта или логин
+    loginField: string // может быть почта или логин
     password: string
 }
 
@@ -22,4 +22,9 @@ export interface UserCreateDTO extends UserDataDTO{
 
 export interface UserDTORelation extends UserDataDTO{
     projects: ProjectDTO[]
+}
+
+export const userDataInitial: UserDataDTO = {
+    email: "email@example.com",
+    username: "username"
 }

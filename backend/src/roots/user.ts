@@ -3,6 +3,7 @@ import { handlerError } from './components/decorators';
 import { TaskDTO, TaskDTORelation } from '../schemas/dto/taskDTO';
 import TaskService from '../app/taskService';
 import UserService from '../app/user';
+import { UserDataDTO } from '../schemas/dto/userDTO';
 
 const userRouter = express.Router()
 
@@ -14,8 +15,8 @@ class UserController{ // рефешни токен
     @handlerError()
     async getData(req: Request, res: Response){
         const userId = req.tokenPayload.id
-        await UserService.getData(userId)
-        res.status(200).json("successful got data")
+        const data: UserDataDTO = await UserService.getData(userId)
+        res.status(200).json(data)
     }
 }
 

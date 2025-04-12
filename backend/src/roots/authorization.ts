@@ -10,13 +10,7 @@ const router = express.Router() //  остается токен
 
 function processAuthError(res: Response, err: unknown){
     console.error(err)
-    if (err instanceof FindUserError) {
-        // Если ошибка является FindUserError, отправляем 401 ошибку
-        res.status(err.status).json({ message: err.message });
-    } else {
-        // Для других ошибок отправляем 500 ошибку
-        res.status((err as any).status ?? 500).json({ message: (err as any).message ?? 'Internal Server Error' });
-    }
+    res.status((err as any).status ?? 500).json({ message: (err as any).message ?? 'Internal Server Error' });
 }
 
 function authorizationDecorator() {
@@ -39,7 +33,7 @@ function authorizationDecorator() {
                     sameSite: 'strict'
                 });
                 const accessToken = jwt.sign({ id: id }, SessionConfig.SECRET_KEY_TOKEN, { expiresIn: SessionConfig.EXPIRE_ACCESS_TOKEN});
-                res.status(200).json(accessToken);
+                res.status(200).json({accessToken: accessToken});
             } catch (err) {
                 processAuthError(res, err);
             }
