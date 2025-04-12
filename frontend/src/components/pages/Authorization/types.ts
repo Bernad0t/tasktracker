@@ -9,7 +9,7 @@ export enum PlaceholderRegistration{ // совпадать с regProps долж�
     login =  "Ivan2020",
     password = "******",
     repeatPassword = "******",
-    email = "ivan@example.com"
+    email = "ivan@example.ru"
 }
 
 export enum PlaceholderEnter{ // совпадать с regProps должен
