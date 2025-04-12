@@ -1,0 +1,31 @@
+.wrapper div{
+    margin-bottom: 5px;
+}
+
+.wrapper{
+    margin-bottom: 10px;
+}
+
+.toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.container {
+    position: relative;
+}
+
+input[type="date"]:focus::-webkit-calendar-picker-indicator {
+    filter: invert(50%) sepia(100%) saturate(200%) hue-rotate(180deg);
+    cursor: pointer;
+}
+
+input[type="date"]{
+    cursor:text;
+}

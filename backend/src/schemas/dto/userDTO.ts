@@ -11,7 +11,7 @@ export interface UserDataRolesDTO extends UserDataDTO{
 }
 
 export interface UserLoginDTO{
-    loginField: string // может быть почта или логин
+    login: string // может быть почта или логин
     password: string
 }
 

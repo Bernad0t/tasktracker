@@ -12,6 +12,6 @@ export const CommentsRepository = db.getRepository(CommentsORM).extend({
     async deleteComm(commId: number){
         const deleted = await this.delete(commId)
         if (!deleted)
-            throw new Error("unreal delete")
+            throw new Error("unreal delete comment")
     }
 })

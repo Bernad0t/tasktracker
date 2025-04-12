@@ -6,8 +6,8 @@ const commentsRouter = express.Router()
 
 class CommentsController{
     constructor(){
-        commentsRouter.post('/add-comm', this.addComment)
-        commentsRouter.delete('/delete-comm', this.deleteComm)
+        commentsRouter.post('/add-comm', this.addComment.bind(this))
+        commentsRouter.delete('/delete-comm', this.deleteComm.bind(this))
     }
 
     async addComment(req: Request, res: Response){
