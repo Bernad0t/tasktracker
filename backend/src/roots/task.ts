@@ -7,9 +7,9 @@ const taskRouter = express.Router()
 
 class TaskController{
     constructor() {
-        taskRouter.post("/add-task", this.addTask);
-        taskRouter.patch("/update-task", this.updateTask);
-        taskRouter.delete("/delete-task", this.deleteTask);
+        taskRouter.post("/add-task", this.addTask.bind(this));
+        taskRouter.patch("/update-task", this.updateTask.bind(this));
+        taskRouter.delete("/delete-task", this.deleteTask.bind(this));
     }
 
     @handlerError()

@@ -6,7 +6,7 @@ export default function decodeToken(token: string){
         return jwt.verify(token, sessionConf.SECRET_KEY_TOKEN)
     }
     catch(err){
-        console.log(err, "token error")
-        return undefined
+        console.error(err)
+        return
     }
 }

@@ -10,7 +10,7 @@ class CommServiceClass{
         const user: UserORM = await UserRepository.findUserQueryOR({id: comm.reviewer})
         const task: TaskORM | null = await TaskRepostiry.getTaskById(comm.task)
         if (!user || !task)
-            throw new Error("unreal add comm")
+            throw new Error("unreal add comment")
         await CommentsRepository.addComm(comm, task, user)
     }
 

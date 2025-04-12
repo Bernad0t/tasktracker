@@ -8,7 +8,7 @@ const userRouter = express.Router()
 
 class UserController{ // рефешни токен
     constructor() {
-        userRouter.get("/get-data", this.getData)
+        userRouter.get("/get-data", this.getData.bind(this))
     }
 
     @handlerError()

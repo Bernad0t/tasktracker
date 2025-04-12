@@ -14,10 +14,8 @@ export const AuthorizationService = {
             email: data.loginField
         }
         const user = await UserRepository.findUserQueryOR(dataSearching) // хоть поиск ИЛИ, тем не менее регистрируются пользователи с уникальными обоими полями
-        if (!user)
-            throw new FindUserError("Такого пользователя не существует")
-        if (!(await comparePasswords(data.password, user.password)))
-            throw new FindUserError("Неверный пароль")
+        if (!user || !(await comparePasswords(data.password, user.password)))
+            throw new FindUserError("Неверный логин или пароль")
         return user.id
     },
 
@@ -28,7 +26,7 @@ export const AuthorizationService = {
         }
         const user = await UserRepository.findUserQueryOR(dataSearching)
         if (user)
-            throw new FindUserError("Такой пользователь уже существует")
+            throw new FindUserError("Неверный логин или пароль")
         const hashedData = {...data, password: (await hashPassword(data.password))}
         const savedUserId = await AuthRepository.authorizationQuery(hashedData)
         return savedUserId

@@ -9,13 +9,13 @@ import { handlerError } from './components/decorators';
 const router = express.Router() //  остается токен 
 
 function processAuthError(res: Response, err: unknown){
+    console.error(err)
     if (err instanceof FindUserError) {
         // Если ошибка является FindUserError, отправляем 401 ошибку
-        res.status(401).json({ message: err.message });
+        res.status(err.status).json({ message: err.message });
     } else {
         // Для других ошибок отправляем 500 ошибку
-        console.log(err)
-        res.status(500).json({ message: 'Internal Server Error' });
+        res.status((err as any).status ?? 500).json({ message: (err as any).message ?? 'Internal Server Error' });
     }
 }
 
@@ -26,7 +26,9 @@ function authorizationDecorator() {
         descriptor.value = async function (req: Request, res: Response, next: NextFunction) {
             try {
                 await originalMethod.apply(this, [req, res, next]);
-                const id = req.body.userId
+                const id = (this as any).userId
+                if (!id)
+                    throw new Error("id dont exist")
 
                 const refreshToken = jwt.sign({ id: id }, SessionConfig.SECRET_KEY_TOKEN, { expiresIn: SessionConfig.EXPIRE_REFRESH_TOKEN}); 
                 res.cookie('refreshToken', refreshToken, { 
@@ -46,22 +48,24 @@ function authorizationDecorator() {
 }
 
 class AuthController {
+    private userId?: number;
+
     constructor() {
-        router.post("/sign-in", this.signIn);
-        router.post("/sign-up", this.signUp);
-        router.get("/refresh", this.refreshToken)
+        router.post("/sign-in", this.signIn.bind(this));
+        router.post("/sign-up", this.signUp.bind(this));
+        router.get("/refresh", this.refreshToken.bind(this))
     }
 
     @authorizationDecorator()
     async signIn(req: Request, res: Response) {
-        const id = await AuthorizationService.login(req.body);
-        req.body = {userId: id}
+        this.userId = await AuthorizationService.login(req.body);
+        // req.body = {userId: id}
     }
 
     @authorizationDecorator()
     async signUp(req: Request, res: Response) {
-        const id = await AuthorizationService.registration(req.body);
-        req.body = {userId: id}    
+        this.userId = await AuthorizationService.registration(req.body);
+        // req.body = {userId: id}    
     }
 
     @handlerError()

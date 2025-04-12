@@ -9,14 +9,14 @@ const projectRouter = express.Router()
 
 class ProjectController{
     constructor() {
-        projectRouter.post("/add-project", this.addProject);
-        projectRouter.get("/get-project-by-name", this.getFilteredProject);
-        projectRouter.post("/add-user-to-project", this.addUserIntoProject);
-        projectRouter.patch('/update-project', this.updateProject)
-        projectRouter.delete('/delete-project', this.deleteProject)
-        projectRouter.patch('/change-priority', this.changePriority)
-        projectRouter.get('/get-projects', this.getProjects)
-        projectRouter.get('/get-info-project', this.getInfoProject)
+        projectRouter.post("/add-project", this.addProject.bind(this));
+        projectRouter.get("/get-project-by-name", this.getFilteredProject.bind(this));
+        projectRouter.post("/add-user-to-project", this.addUserIntoProject.bind(this));
+        projectRouter.patch('/update-project', this.updateProject.bind(this))
+        projectRouter.delete('/delete-project', this.deleteProject.bind(this))
+        projectRouter.patch('/change-priority', this.changePriority.bind(this))
+        projectRouter.get('/get-projects', this.getProjects.bind(this))
+        projectRouter.get('/get-info-project', this.getInfoProject.bind(this))
     }
     
     @handlerError()

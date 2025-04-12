@@ -12,7 +12,7 @@ export function handlerError(){
                 await originalMethod.apply(this, [req, res, next]);
             } catch (error){
                 console.error(error);
-                res.status(500).json({ message: (error as any).message ?? 'Internal Server Error' });
+                res.status((error as any).status ?? 500).json({ message: (error as any).message ?? 'Internal Server Error' });
             }
         };
     }
