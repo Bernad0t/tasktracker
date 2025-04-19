@@ -1,4 +1,4 @@
-const apiBaseUrl = "http://localhost:8080"
+const apiBaseUrl = "http://localhost:8000"
 
 class ServerEndpoints{
     auth = {
@@ -8,6 +8,10 @@ class ServerEndpoints{
     }
     user = {
         get: `${apiBaseUrl}/protected/user/get-data`
+    }
+    project = {
+        get: `${apiBaseUrl}/protected/project/get-projects`,
+        delete: `${apiBaseUrl}/protected/project/delete-project`
     }
 }
 

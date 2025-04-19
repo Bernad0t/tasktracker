@@ -1,7 +1,7 @@
 import { InputHTMLAttributes, memo, useRef, useState } from "react"
 import AuthorizationInput from "../../UI/inputs/AuthorizationInputs/AuthorizationInput"
 
-import css from "./authRow.module.css"
+import css from "./authRow.module.scss"
 import { HideButton, ShowButton } from "./components/buttons"
 import ErrorMessage from "../stylingString/errorMessage"
 

@@ -10,8 +10,9 @@ const isLoginedMiddleware = function (req: Request, res: Response, next: NextFun
             req.tokenPayload = decodedToken
             next()
         }
+        else res.status(401).json("unauthorization")
     }
-    res.status(401).json("unauthorization")
+    else res.status(401).json("unauthorization")
 }
 
 export default isLoginedMiddleware

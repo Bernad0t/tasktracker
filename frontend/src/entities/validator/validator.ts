@@ -37,7 +37,9 @@ export default class Validators{
             email: EmailValidationSchema,
             repeatPassword: Yup.string()
                 .oneOf([Yup.ref('password'), undefined], 'Пароли должны совпадать')
-                .required('Пустое поле')
+                .required('Пустое поле'),
+            username: Yup.string()
+                .required("Пустое поле")
         })]
     }
 }

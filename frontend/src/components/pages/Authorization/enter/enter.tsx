@@ -10,7 +10,7 @@ import { InputAuthorizationRow } from '../../../components/AuthorizationRow/Auth
 import ErrorMessage from '../../../components/stylingString/errorMessage';
 import AuthorizationBaseForm from '../components/AuthorizationBaseForm/Authorization';
 import { PlaceholderEnter } from '../types';
-import useAuthSubmit from '../../../../hooks/useAuthSybmit';
+import useAuthSubmit from '../hooks/useAuthSybmit';
 
 const schemas = Validators.getEnterValidateSchema()
 const errorsKeys = Object.keys(initialAuthorizationProp)
@@ -24,7 +24,7 @@ export const EnterForm = () => {
     errors, 
     apiError, 
     navigate
-  } = useAuthSubmit(initialAuthorizationProp, schemas, errorsKeys, ApiQuery.enter, "Неверный логин или пароль")
+  } = useAuthSubmit(initialAuthorizationProp, schemas, errorsKeys, ApiQuery.authorization.enter, "Неверный логин или пароль")
 
   return(
     <AuthorizationBaseForm isEnter={true} style={{ minWidth: "300px"}}>

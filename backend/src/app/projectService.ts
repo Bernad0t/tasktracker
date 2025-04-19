@@ -10,6 +10,8 @@ import createProjectOrder from "./utils/createProjectOrder";
 
 export const ProjectService = {
     async addProject(project: CreateProjectDTO){
+        if (!project.users)
+            throw new Error("Проект без пользователей не может существовать")
         const queryRunner = db.createQueryRunner()
         await queryRunner.connect()
         await queryRunner.startTransaction();
@@ -40,9 +42,10 @@ export const ProjectService = {
 
     async updateProject(project: ProjectDTOUserRoles){
         await ProjectRepository.updateProject(project)
-        for (const user of project.users){
-            await UserProjectRepository.updateRole(project.id, user.id, user.role)
-        }
+        if (project.users)
+            for (const user of project.users){
+                await UserProjectRepository.updateRole(project.id, user.id, user.role)
+            }
     },
 
     async deleteProject(projectId: number){

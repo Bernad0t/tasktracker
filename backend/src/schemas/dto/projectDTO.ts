@@ -19,7 +19,7 @@ export interface UserRoleInProjectDTO{
 }
 
 export interface CreateProjectDTO extends ProjectBaseDTO{
-    users: UserRoleInProjectDTO[] // информация про создателя, если direct, иначе много пользователей. id будет как короткое имя для поиска
+    users?: UserRoleInProjectDTO[] // информация про создателя, если direct, иначе много пользователей. id будет как короткое имя для поиска
 }
 
 export interface ProjectDTOUserRoles extends CreateProjectDTO{

@@ -1,4 +1,4 @@
-import { HTMLAttributes, memo, useEffect, useRef, useState } from "react";
+import { HTMLAttributes, useEffect, useRef, useState } from "react";
 import Loader from "../UI/Loader/loader";
 
 interface Props extends HTMLAttributes<HTMLDivElement>{
@@ -7,14 +7,14 @@ interface Props extends HTMLAttributes<HTMLDivElement>{
 
 const LoadingComponent = ({loading, children, ...props}: Props) => {
     const [height, setHeight] = useState<number | null>(null);
-    const contentRef = useRef<HTMLDivElement>(null);
+    const contentRef = useRef<HTMLDivElement>(null); // тобы загрузка по центру страницы была
 
-    useEffect(() => {
+    useEffect(() => { 
         if (contentRef.current) {
             setHeight(contentRef.current.clientHeight);
         }
     }, [loading, children]);
-
+    
     return (
         <>
             {loading ? (

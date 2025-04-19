@@ -67,7 +67,7 @@ export const UserProjectRepository = db.getRepository(UserProjectORM).extend({
     async getProjects(userId: number){
         const projects = await this.find({
             where: {user: {id: userId}},
-            relations: ["project", "parent", "child", "parent.project", "child.project"]
+            relations: ["project", "parent", "child", "parent.project", "child.project", "users"]
         })
         return projects
     }

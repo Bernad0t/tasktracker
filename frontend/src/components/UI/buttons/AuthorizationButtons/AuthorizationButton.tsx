@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes } from "react";
 
-import css from "./authButton.module.css"
+import css from "./authButton.module.scss"
 
 export default function AuthorizationBatton({...props}: ButtonHTMLAttributes<HTMLButtonElement>){
     return(

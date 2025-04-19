@@ -17,6 +17,7 @@
   "description": "",
   "dependencies": {
     "@types/yup": "^0.29.14",
+    "cors": "^2.8.5",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^3.0.2",
     "body-parser": "^1.20.3",
@@ -32,6 +33,7 @@
     "yup": "^1.6.1"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/bcrypt": "^5.0.2",
     "@types/bcryptjs": "^2.4.6",
     "@types/body-parser": "^1.19.5",

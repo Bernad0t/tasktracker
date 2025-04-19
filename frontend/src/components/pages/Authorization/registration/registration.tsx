@@ -11,7 +11,7 @@ import { InputAuthorizationRow } from "../../../components/AuthorizationRow/Auth
 import { LabelRegistration, PlaceholderRegistration } from "../types"
 import LoadingComponent from "../../../components/loadingComponent"
 import RegistrationSVGcomp from "../../../components/SVGcomp/registrationSVGcomp/registrationSVGcomp"
-import useAuthSubmit from "../../../../hooks/useAuthSybmit"
+import useAuthSubmit from "../hooks/useAuthSybmit"
 
 const schemas = Validators.getRegisterValidateSchema()
 const errorsKeys = Object.keys(initialRegisrationProp)
@@ -25,7 +25,7 @@ export default function Registration(){
         errors, 
         apiError, 
         navigate
-    } = useAuthSubmit(initialRegisrationProp, schemas, errorsKeys, ApiQuery.register, "Такой пользователь существует")
+    } = useAuthSubmit(initialRegisrationProp, schemas, errorsKeys, ApiQuery.authorization.register, "Такой пользователь существует")
 
     return(
         <>

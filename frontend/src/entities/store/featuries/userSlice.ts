@@ -5,7 +5,7 @@ import { UserDataDTO, userDataInitial } from "../../schemas/dto/userDTO"
 const getUserLK = createAsyncThunk( // от ключей зависит как миниму ред профиля
     'userLK/getData',
     async () => {
-        const user = await ApiQuery.getUser()
+        const user: UserDataDTO = await ApiQuery.user.getUser()
         return user
     }
 )
@@ -15,7 +15,7 @@ const userSlice = createSlice({
     initialState: userDataInitial,
     reducers: {
         update(state, action: PayloadAction<UserDataDTO>){
-            return action.payload
+            state = action.payload
         }
     },
     selectors: {
@@ -26,7 +26,7 @@ const userSlice = createSlice({
     extraReducers: builder => {
         builder
         .addCase(getUserLK.fulfilled, (state, action) => {
-            return action.payload
+            state = action.payload
         })
     }
 })

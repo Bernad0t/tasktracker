@@ -31,7 +31,7 @@ authInstance.interceptors.response.use(
             try {
                 // Выполняем запрос к серверу для обновления токена
                 console.log("expired token")
-                const newToken = await ApiQuery.updateAccessToken();
+                const newToken = await ApiQuery.authorization.updateAccessToken();
                 localStorage.setItem(core.localStorageKeys.access_token, newToken);
                 authInstance.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
                 // Повторяем оригинальный запрос с новым токеном
