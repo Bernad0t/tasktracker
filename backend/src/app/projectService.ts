@@ -62,15 +62,23 @@ export const ProjectService = {
 
     async getProjects(userId: number): Promise<ProjectDTO[]>{
         const userprojects = await UserProjectRepository.getProjects(userId)
-        const projects: ProjectDTO[] = userprojects.map(proj => {
+        const projects: ProjectDTORelation[] = userprojects.map(proj => {
             return {
                 ...proj.project,
                 parent: proj.parent?.project,
-                child: proj.child?.project
+                child: proj.child?.project,
+                tasks: undefined,
+                users: userprojects.filter(filtered => filtered.project.id === proj.id)
+                .map((filtered => {return {
+                    email: filtered.user.email,
+                    id: filtered.user.id,
+                    username: filtered.user.username,
+                    role: filtered.role
+                }}))
             }
         })
         const ordered = createProjectOrder(projects)
-        return ordered 
+        return ordered
     },
 
     async getProjectInfo(projectId: number): Promise<ProjectDTORelation>{
