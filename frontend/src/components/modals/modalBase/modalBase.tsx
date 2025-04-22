@@ -6,6 +6,7 @@ export default function ModalBase({...props}: ReactModal.Props){
         <ReactModal 
             {...props}
             overlayClassName={props.overlayClassName??css.overlay}
+            className={css.modalContent}
         >
             {props.children}
         </ReactModal>

@@ -3,12 +3,10 @@ import core from "../core/core"
 import { AuthorizationProp, RegisrationProp } from "../entities/schemas/dto/authorizationDTO"
 import authInstance from "./authinstance"
 import { UserDataDTO } from "../entities/schemas/dto/userDTO"
-import { ProjectDTO } from "../entities/schemas/dto/projectDTO"
+import { ProjectBaseDTO, ProjectDTORelation } from "../entities/schemas/dto/projectDTO"
+import { Role } from "../entities/schemas/enums/project"
 
 class ApiQueryClass{
-    // private static generateUrlServer(url: string){
-    //     return core.apiBaseUrl + url
-    // }
     authorization = {
         async enter(data: AuthorizationProp){
             await axios.post(core.serverEdnpoints.auth.enterAuth, data, {withCredentials: true})
@@ -33,11 +31,20 @@ class ApiQueryClass{
     }
     project = {
         async getProjects(){
-            return authInstance.get<ProjectDTO[]>(core.serverEdnpoints.project.get)
+            return authInstance.get<ProjectDTORelation[]>(core.serverEdnpoints.project.get)
             .then(({data}) => data)
         },
         async deleteProject(id: number){
             await authInstance.delete(core.serverEdnpoints.project.delete, {params: {idProject: id}})
+        },
+        async addProject(project: ProjectBaseDTO, ownerId: number){
+            const idNewProject = await authInstance.post(
+                core.serverEdnpoints.project.add, {...project, users: [{id: ownerId, role: Role.admin}]}
+            ).then(({data}) => data.idProject)
+            return idNewProject
+        },
+        async updateProject(project: ProjectBaseDTO){
+            await authInstance.patch(core.serverEdnpoints.project.update, project)
         }
     }
 }

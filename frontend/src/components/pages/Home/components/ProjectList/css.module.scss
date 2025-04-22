@@ -1,5 +1,5 @@
-@import "../../../../../../mixins/mixinsCss/sizes.scss";
-@import "../../../../../../mixins/mixinsCss/colors.scss";
+@import "../../../../../assets/MixinCss/sizes.scss";
+@import "../../../../../assets/MixinCss/colors.scss";
 
 .wrap{
     background-color: $primary-background;
@@ -16,6 +16,7 @@
     justify-content: space-around;
     align-items: center;
     padding: 10px 70px 0px 70px;
+    font-size: 18px;
 }
 
 .type:hover{

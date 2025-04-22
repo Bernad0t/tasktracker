@@ -50,9 +50,10 @@ export const ProjectRepository = db.getRepository(ProjectORM).extend({
         const queryRunner = db.createQueryRunner()
         await queryRunner.connect()
         await queryRunner.startTransaction()
+        const ProjectRepository =  queryRunner.manager.getRepository(ProjectORM)
         try{
             await UserProjectRepository.connectChildAndParent(idProject, queryRunner.manager)
-            const result = await this.delete(idProject);
+            const result = await ProjectRepository.delete(idProject);
             if (result.affected === 0) {
                 throw new Error("Project not found");
             }
@@ -92,7 +93,7 @@ export const ProjectRepository = db.getRepository(ProjectORM).extend({
     async getProjects(userId: number){
         const project = await this.find({
             where: {users: {user: {id: userId}}},
-            relations: ["parent", "child"]
+            relations: ["users.parent", "users.child"]
         })
         return project
     }

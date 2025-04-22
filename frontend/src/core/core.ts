@@ -11,7 +11,9 @@ class ServerEndpoints{
     }
     project = {
         get: `${apiBaseUrl}/protected/project/get-projects`,
-        delete: `${apiBaseUrl}/protected/project/delete-project`
+        delete: `${apiBaseUrl}/protected/project/delete-project`,
+        add: `${apiBaseUrl}/protected/project/add-project`,
+        update: `${apiBaseUrl}/protected/project/update-project`
     }
 }
 

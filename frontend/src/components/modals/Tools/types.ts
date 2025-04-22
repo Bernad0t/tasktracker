@@ -1,4 +1,4 @@
-import { ProjectDTO } from "../../../entities/schemas/dto/projectDTO"
+import { ProjectListAdapted } from "../../../entities/schemas/adaptedSchemas/project"
 
 export interface IToolProps{
     isOpen: boolean
@@ -7,5 +7,5 @@ export interface IToolProps{
 }
 
 export interface ProjectToolProps extends IToolProps{
-    project?: ProjectDTO
+    project?: ProjectListAdapted
 }

@@ -1,5 +1,5 @@
-@import "../../../../mixins/mixinsCss/colors.scss";
-@import "../../../../mixins/mixinsCss/sizes.scss";
+@import "../../../../assets/MixinCss/colors.scss";
+@import "../../../../assets/MixinCss/sizes.scss";
 
 .wrapper{
     width: 40px;
@@ -7,33 +7,12 @@
     background-color: $avatar-background;
     display: flex;
     justify-content: center;
+    align-items: center;
     overflow: hidden;
     border-radius: $border-radius-avatar;
 }
 
-.person{
-    width: 75%;
-    margin-top: 20%;
-    height: 100%;
-}
-
-.head_wrapper{
-    width: 100%;
-    justify-content: center;
-    display: flex;
-}
-
-.head{
-    width: 50%;
-    aspect-ratio: 1/1;
-    border-radius: 50%;
-    background-color: $avatar-person;
-    margin-bottom: 10%;
-}
-
-.body{
-    background-color: $avatar-person;
-    width: 100%;
-    aspect-ratio: 1/1;
-    border-radius: 25%;
+.wrapper img{
+    max-height: 80%;
+    max-width: 80%;
 }

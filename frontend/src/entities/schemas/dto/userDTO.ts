@@ -2,6 +2,7 @@ import { Role } from "../enums/project"
 import { ProjectDTO } from "./projectDTO"
 
 export interface UserDataDTO{
+    id: number
     email: string,
     username: string
 }
@@ -25,6 +26,7 @@ export interface UserDTORelation extends UserDataDTO{
 }
 
 export const userDataInitial: UserDataDTO = {
+    id: 0,
     email: "email@example.com",
     username: "username"
 }

@@ -14,7 +14,8 @@ export const UserProjectRepository = db.getRepository(UserProjectORM).extend({
     },
 
     async connectChildAndParent(projectId: number, manager: EntityManager){
-        const userProjects =  await this.find({
+        const UserProjectManager = manager.getRepository(UserProjectORM)
+        const userProjects =  await UserProjectManager.find({
             where: {project: {id: projectId}}
         })
         for (const project of userProjects){
@@ -24,8 +25,11 @@ export const UserProjectRepository = db.getRepository(UserProjectORM).extend({
             const child = project.child
             if (child)
                 child.parent = parent
-            await manager.save(parent)
-            await manager.save(child)
+            if (parent)
+                await manager.save(parent)
+            if (child)
+                await manager.save(child)
+            await UserProjectManager.delete(project.id) 
         }
     },
 
@@ -67,7 +71,12 @@ export const UserProjectRepository = db.getRepository(UserProjectORM).extend({
     async getProjects(userId: number){
         const projects = await this.find({
             where: {user: {id: userId}},
-            relations: ["project", "parent", "child", "parent.project", "child.project", "users"]
+            relations: [
+                "project", "parent", "child", "user",
+                "parent.project", "child.project", "parent.user",  "child.user"
+                // "project.tasks", "parent.project.tasks", "child.project.tasks",
+                // "project.tasks.reviewer", "project.tasks.assigned", 
+            ]
         })
         return projects
     }

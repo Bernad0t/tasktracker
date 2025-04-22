@@ -1,5 +1,5 @@
 import css from "./css.module.scss"
-import template_css from "../../../../../../mixins/mixinsCss/classes.module.scss" 
+import template_css from "../../../../../assets/MixinCss/classes.module.scss" 
 
 export default function SelectedProject(){
     return(

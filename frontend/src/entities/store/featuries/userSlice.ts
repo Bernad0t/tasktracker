@@ -26,7 +26,7 @@ const userSlice = createSlice({
     extraReducers: builder => {
         builder
         .addCase(getUserLK.fulfilled, (state, action) => {
-            state = action.payload
+            return action.payload
         })
     }
 })

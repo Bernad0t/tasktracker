@@ -16,6 +16,7 @@ export const UserRepository = db.getRepository(UserORM).extend({
     async addProject(project: ProjectORM, userInProject: UserRoleInProjectDTO, manager?: EntityManager){
         const userProjectRep = manager?.getRepository(UserProjectORM) ?? db.getRepository(UserProjectORM)
         const user = await this.findUserQueryOR({id: userInProject.id});
+        console.log("project", project, "userInProject", userInProject)
         const headProject = await userProjectRep.findOne({
             where: {
                 user: {id: userInProject.id},
@@ -26,8 +27,6 @@ export const UserRepository = db.getRepository(UserORM).extend({
         if (!user || !project) {
             throw new Error('User or Project not found');
         }
-
-        console.log("project", project)
 
         const userProject = new UserProjectORM();
         userProject.user = user;
@@ -52,7 +51,8 @@ export const UserRepository = db.getRepository(UserORM).extend({
         });
         if (!user)
             throw new Error("user dont exist")
-        const result: UserDTORelation = {...user, projects: user?.projects?.map(userproj => userproj.project) ?? []}
+        const result: UserDTORelation = {
+            id: user.id, email: user.email, username: user.username, projects: user?.projects?.map(userproj => userproj.project) ?? []}
         return result
     }
 })

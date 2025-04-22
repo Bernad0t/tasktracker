@@ -22,8 +22,8 @@ class ProjectController{
     @handlerError()
     async addProject(req: Request, res: Response){
         const project: CreateProjectDTO = req.body
-        await ProjectService.addProject(project)
-        res.status(200).json(`added projects to ${JSON.stringify(project)}`)
+        const idProject = await ProjectService.addProject(project)
+        res.status(200).json({idProject: idProject})
     }
 
     @handlerError()

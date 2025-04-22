@@ -1,19 +1,32 @@
-export class FindUserError extends Error{
+class CustomError extends Error{
     status: number
-    constructor(message: string = "Пользователь не существует") {
+    constructor(message: string = "Серверная ошибка", status: number = 500) {
         super(message); 
+        this.status = status;
+        Object.setPrototypeOf(this, CustomError.prototype)
+    }
+}
+
+export class FindUserError extends CustomError{
+    constructor(message: string = "Пользователь не существует") {
+        super(message, 401); 
         this.name = 'FindUserError';
-        this.status = 401;
         Object.setPrototypeOf(this, FindUserError.prototype)
     }
 }
 
-export class AccessError extends Error{
-    status: number
+export class AccessError extends CustomError{
     constructor(message: string = "Недостаточно прав") {
-        super(message); 
+        super(message, 409); 
         this.name = 'AccessError';
-        this.status = 409;
-        Object.setPrototypeOf(this, FindUserError.prototype)
+        Object.setPrototypeOf(this, AccessError.prototype)
+    }
+}
+
+export class ProjectError extends CustomError{
+    constructor(message: string = "Ошибка при добавлении проекта") {
+        super(message, 409); 
+        this.name = 'ProjectError';
+        Object.setPrototypeOf(this, ProjectError.prototype)
     }
 }

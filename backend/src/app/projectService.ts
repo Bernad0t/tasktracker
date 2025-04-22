@@ -1,10 +1,10 @@
 import db from "../db/db";
-import { ProjectORM } from "../db/orm/userOrm";
+import { ProjectORM, UserProjectORM } from "../db/orm/userOrm";
 import { ProjectRepository } from "../db/repositories/project.rep";
 import { TaskRepostiry } from "../db/repositories/task.rep";
 import { UserRepository } from "../db/repositories/user.rep";
 import { UserProjectRepository } from "../db/repositories/userProject.rep";
-import { CreateProjectDTO, ProjectDTO, ProjectDTORelation, ProjectDTOUserRoles, UpdatePriorityProjectDTO, UserRoleInProjectDTO } from "../schemas/dto/projectDTO";
+import { CreateProjectDTO, ProjectDTORelation, ProjectDTOUserRoles, UpdatePriorityProjectDTO, UserRoleInProjectDTO } from "../schemas/dto/projectDTO";
 import { TaskDTORelation } from "../schemas/dto/taskDTO";
 import createProjectOrder from "./utils/createProjectOrder";
 
@@ -21,6 +21,7 @@ export const ProjectService = {
                 await UserRepository.addProject({...projectOrm}, user, queryRunner.manager)
             }
             await queryRunner.commitTransaction();
+            return projectOrm.id
         } catch (error) {
             // Откат транзакции
             await queryRunner.rollbackTransaction();
@@ -60,15 +61,16 @@ export const ProjectService = {
         await UserProjectRepository.changePriority(data, userId)
     },
 
-    async getProjects(userId: number): Promise<ProjectDTO[]>{
+    async getProjects(userId: number): Promise<ProjectDTORelation[]>{
         const userprojects = await UserProjectRepository.getProjects(userId)
-        const projects: ProjectDTORelation[] = userprojects.map(proj => {
+        const ordered = createProjectOrder<UserProjectORM>(userprojects)
+        const projects: ProjectDTORelation[] = ordered.map(proj => {
             return {
                 ...proj.project,
                 parent: proj.parent?.project,
                 child: proj.child?.project,
-                tasks: undefined,
-                users: userprojects.filter(filtered => filtered.project.id === proj.id)
+                tasks: [],
+                users: ordered.filter(filtered => filtered.project.id === proj.project.id)
                 .map((filtered => {return {
                     email: filtered.user.email,
                     id: filtered.user.id,
@@ -77,8 +79,7 @@ export const ProjectService = {
                 }}))
             }
         })
-        const ordered = createProjectOrder(projects)
-        return ordered
+        return projects
     },
 
     async getProjectInfo(projectId: number): Promise<ProjectDTORelation>{
