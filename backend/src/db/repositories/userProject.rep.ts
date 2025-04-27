@@ -14,23 +14,37 @@ export const UserProjectRepository = db.getRepository(UserProjectORM).extend({
     },
 
     async connectChildAndParent(projectId: number, manager: EntityManager){
-        const UserProjectManager = manager.getRepository(UserProjectORM)
-        const userProjects =  await UserProjectManager.find({
-            where: {project: {id: projectId}}
+        const userProjectRepo = manager.getRepository(UserProjectORM)
+        const userProjects =  await userProjectRepo.find({
+            where: {project: {id: projectId}},
+            relations: ['parent', 'child']
         })
-        for (const project of userProjects){
-            const parent = project.parent
-            if (parent)
-                parent.child = project.child
-            const child = project.child
-            if (child)
-                child.parent = parent
-            if (parent)
-                await manager.save(parent)
-            if (child)
-                await manager.save(child)
-            await UserProjectManager.delete(project.id) 
+
+        for (const up of userProjects) {
+            // Сохраняем ссылки перед обнулением
+            const parent = up.parent;
+            const child = up.child;
+
+            // Разрываем связи
+            if (parent) {
+                parent.child = child || null;
+            }
+            if (child) {
+                child.parent = parent || null;
+            }
+
+            // Обнуляем и сохраняем текущую запись
+            up.parent = null;
+            up.child = null;
+            await userProjectRepo.save(up);
+            parent && await userProjectRepo.save(parent);
+            child && await userProjectRepo.save(child);
         }
+
+        // Затем удаляем все связи проекта
+        await userProjectRepo.delete({
+            project: { id: projectId }
+        });
     },
 
     async changePriority(data: UpdatePriorityProjectDTO, userId: number){ // delete еще отредактируй

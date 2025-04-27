@@ -7,7 +7,8 @@ class ServerEndpoints{
         updateRefresh: `${apiBaseUrl}/authorization/refresh`
     }
     user = {
-        get: `${apiBaseUrl}/protected/user/get-data`
+        get: `${apiBaseUrl}/protected/user/get-data`,
+        find: `${apiBaseUrl}/protected/user/find-user-by-login`
     }
     project = {
         get: `${apiBaseUrl}/protected/project/get-projects`,

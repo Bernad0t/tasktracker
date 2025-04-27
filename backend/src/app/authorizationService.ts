@@ -14,9 +14,9 @@ export const AuthorizationService = {
             email: data.login
         }
         const user = await UserRepository.findUserQueryOR(dataSearching) // хоть поиск ИЛИ, тем не менее регистрируются пользователи с уникальными обоими полями
-        if (!user || !(await comparePasswords(data.password, user.password)))
+        if (!user || !(await comparePasswords(data.password, user[0].password)))
             throw new FindUserError("Неверный логин или пароль")
-        return user.id
+        return user[0].id
     },
 
     async registration(data: UserCreateDTO){

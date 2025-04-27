@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios, { GenericAbortSignal } from "axios"
 import core from "../core/core"
 import { AuthorizationProp, RegisrationProp } from "../entities/schemas/dto/authorizationDTO"
 import authInstance from "./authinstance"
@@ -26,6 +26,10 @@ class ApiQueryClass{
     user = {
         async getUser(){
             return authInstance.get<UserDataDTO>(core.serverEdnpoints.user.get)
+            .then(({data}) => data)
+        },
+        async findUsers(login: string, signal?: GenericAbortSignal | undefined){
+            return authInstance.get<UserDataDTO[] | undefined>(core.serverEdnpoints.user.find, {params: {login}, signal: signal})
             .then(({data}) => data)
         }
     }

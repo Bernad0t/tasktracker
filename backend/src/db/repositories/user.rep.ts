@@ -7,10 +7,10 @@ import { UserDTORelation } from "../../schemas/dto/userDTO";
 export const UserRepository = db.getRepository(UserORM).extend({
     async findUserQueryOR<T extends Object>(userData: T){
         const condition = Object.keys(userData).map(key => {return {[key]: userData[key as keyof typeof userData]}}) // могут быть undef поля
-        const user = await this.find({
+        const users = await this.find({
             where: condition.filter(cond => cond != undefined) as FindOptionsWhere<UserORM>[]
         })
-        return user[0]
+        return users.length === 0 ? undefined : users
     },
 
     async addProject(project: ProjectORM, userInProject: UserRoleInProjectDTO, manager?: EntityManager){
@@ -29,7 +29,7 @@ export const UserRepository = db.getRepository(UserORM).extend({
         }
 
         const userProject = new UserProjectORM();
-        userProject.user = user;
+        userProject.user = user[0];
         userProject.project = project;
         userProject.role = userInProject.role;
         userProject.child = headProject
@@ -54,5 +54,7 @@ export const UserRepository = db.getRepository(UserORM).extend({
         const result: UserDTORelation = {
             id: user.id, email: user.email, username: user.username, projects: user?.projects?.map(userproj => userproj.project) ?? []}
         return result
-    }
+    },
+
+
 })

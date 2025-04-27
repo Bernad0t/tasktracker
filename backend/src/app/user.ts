@@ -6,6 +6,11 @@ class UserServiceClass{
         const data: UserDataDTO = await UserRepository.getData(id)
         return data
     }
+
+    async getUserByLogin(login: string){
+        const data: UserDataDTO[] | undefined = await UserRepository.findUserQueryOR({login: login})
+        return data
+    }
 }
 
 const UserService = new UserServiceClass()

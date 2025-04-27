@@ -1,0 +1,25 @@
+@import "../../../assets/MixinCss/classes.module.scss";
+
+.wrapper{
+    @extend .hide_scroll;
+    width: 100%;
+    max-height: 400px;
+    overflow: hidden;
+}
+
+.users{
+    width: 100%;
+}
+
+.oneUser{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.wrapperSelect{
+    height: 30px;
+    width: 60px;
+    margin-left: 20px;
+}

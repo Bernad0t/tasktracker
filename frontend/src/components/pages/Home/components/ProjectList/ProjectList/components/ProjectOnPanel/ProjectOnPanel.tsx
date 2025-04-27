@@ -4,6 +4,7 @@ import useContextMenu from "../../../../../hooks/useContextMenu";
 import ProjectBaseAvatar from "../../../../../../../components/AvatarsBase/ProjectAvatarBase/ProjectBaseAvatar";
 import { ProjectListAdapted } from "../../../../../../../../entities/schemas/adaptedSchemas/project";
 import ProjectToolModal from "../../../../../../../modals/Tools/ProjectToolModal";
+import EntityOnPanelWrapper from "../../../../../../../components/EntityOnPanel/EntityOnPanel";
 
 function AvatarProject(){
     return(
@@ -34,15 +35,14 @@ const ProjectOnPanel = memo(({...project}: Props) => {
     const {handleContextMenu, showTools, setShowTools, coordinates} = useContextMenu()
     return(
         <>
-        <div 
-            className={css.wrapperChat} 
-            style={{backgroundColor: project.active ? "#006FFD" : "", color: project.active ? "white" : ""}} 
+        <EntityOnPanelWrapper 
+            entity={project}
             onClick={() => project.callback(project.id)}
             onContextMenu={handleContextMenu}
         >
             <AvatarProject/>
             <TextInfo projectName={project.name} description={project.description} active={project.active}/>
-        </div>
+        </EntityOnPanelWrapper>
         <ProjectToolModal 
             project={project} 
             isOpen={showTools} 
