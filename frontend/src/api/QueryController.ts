@@ -49,6 +49,9 @@ class ApiQueryClass{
         },
         async updateProject(project: ProjectBaseDTO){
             await authInstance.patch(core.serverEdnpoints.project.update, project)
+        },
+        async updateUsers(project: ProjectBaseDTO){
+            await authInstance.patch(core.serverEdnpoints.project.updateUsersInProject, project)
         }
     }
 }

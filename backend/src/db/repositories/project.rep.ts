@@ -3,9 +3,10 @@ import { ProjectBaseDTO, ProjectDTO, ProjectDTORelation } from "../../schemas/dt
 import db from "../db";
 import { ProjectORM, UserProjectORM } from "../orm/userOrm";
 import { UserProjectRepository } from "./userProject.rep";
+import { UserDataRolesDTO } from "../../schemas/dto/userDTO";
 
 export const ProjectRepository = db.getRepository(ProjectORM).extend({
-    async addProject(projectData: ProjectBaseDTO, manager?: EntityManager) {
+    async createProject(projectData: ProjectBaseDTO, manager?: EntityManager) {
         const repository = manager?.getRepository(ProjectORM) ?? this
         const savedProject = await repository.save({name: projectData.name, description: projectData.description});
         return savedProject;
@@ -73,6 +74,15 @@ export const ProjectRepository = db.getRepository(ProjectORM).extend({
         if (!project)
             throw new Error("user dont exist in project")
         return project.role
+    },
+
+    async getUsersInProject(projectId: number): Promise<UserDataRolesDTO[]>{
+        const project = await this.findOne({
+            where: {id: projectId},
+            relations: ["users", "users.user"]
+        })
+        const returned: UserDataRolesDTO[] = project?.users.map(projuser => {return {role: projuser.role, ...projuser.user}}) ?? []
+        return returned
     },
 
     async getRelationProject(projectId: number){ // не учел порядок

@@ -50,7 +50,7 @@ const addProject = createAsyncThunk(
 const updateProject = createAsyncThunk(
     'projects/updateProject',
     async (project: ProjectListAdapted) => {
-        await ApiQuery.project.updateProject(project)
+        await ApiQuery.project.updateUsers(project)
         return project
     }
 )

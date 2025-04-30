@@ -17,12 +17,13 @@ class ProjectController{
         projectRouter.patch('/change-priority', this.changePriority.bind(this))
         projectRouter.get('/get-projects', this.getProjects.bind(this))
         projectRouter.get('/get-info-project', this.getInfoProject.bind(this))
+        projectRouter.patch('/update-users', this.updateUserComposition.bind(this))
     }
     
     @handlerError()
     async addProject(req: Request, res: Response){
         const project: CreateProjectDTO = req.body
-        const idProject = await ProjectService.addProject(project)
+        const idProject = await ProjectService.createProject(project)
         res.status(200).json({idProject: idProject})
     }
 
@@ -79,6 +80,14 @@ class ProjectController{
         const projectId = Number(req.query.projectId)
         const project: ProjectDTORelation = await ProjectService.getProjectInfo(projectId)
         res.status(200).json(project)
+    }
+
+    @handlerError()
+    @roleValidateAccess()
+    async updateUserComposition(req: Request, res: Response){
+        const project: ProjectDTORelation = req.body
+        await ProjectService.updateProject(project)
+        res.status(200).json("successfull")
     }
 }
 

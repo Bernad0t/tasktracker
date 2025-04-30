@@ -1,6 +1,6 @@
 import { EntityManager } from "typeorm";
 import db from "../db";
-import { UserProjectORM } from "../orm/userOrm";
+import { ProjectORM, UserORM, UserProjectORM } from "../orm/userOrm";
 import { UpdatePriorityProjectDTO } from "../../schemas/dto/projectDTO";
 import { Role } from "../../schemas/enums/userEnum";
 
@@ -93,5 +93,27 @@ export const UserProjectRepository = db.getRepository(UserProjectORM).extend({
             ]
         })
         return projects
-    }
+    },
+
+    async addUserInProject(project: ProjectORM, user: UserORM, role: Role){
+        const newUserProj = new UserProjectORM()
+        newUserProj.role= role
+        newUserProj.project = project
+        newUserProj.user = user
+
+        const headThisUserProjects = (await this.getProjects(user.id)).find(proj => proj.parent == null) ?? null
+        newUserProj.child = headThisUserProjects
+        await this.save(newUserProj)
+    },
+
+    async updateUserInProject(projectId: number, userId: number, role: Role){
+        const current = await this.findOne({
+            where: {project: {id: projectId}, user: {id: userId}}
+        })
+        if (current){
+            current.role = role
+            await this.save(current)
+        }
+    },
+
 })

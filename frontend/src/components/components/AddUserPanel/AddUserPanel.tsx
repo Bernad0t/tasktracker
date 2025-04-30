@@ -6,7 +6,6 @@ import EntityOnPanelWrapper from "../EntityOnPanel/EntityOnPanel";
 import { IAddUser } from "../../../entities/schemas/adaptedSchemas/user";
 import PersonBaseAvatar from "../AvatarsBase/PersonBaseAvatar/PersonBaseAvatar";
 import css from "./css.module.scss"
-import BlueSelect from "../../UI/select/BlueSelect";
 
 function TextInfo({user}: {user: UserDataDTO}){
     return(
@@ -18,32 +17,25 @@ function TextInfo({user}: {user: UserDataDTO}){
     )
 }
 
-const OneUser = memo(function ({user}: {user: IAddUser}){
+export const OneUser = memo(function ({user}: {user: IAddUser}){
     return(
-        <div className={css.oneUser}>
-            <EntityOnPanelWrapper 
-                entity={user}
-                onClick={() => user.callback(user.id)}
-            >
-                <PersonBaseAvatar/>
-                <TextInfo user={user}/>
-            </EntityOnPanelWrapper>
-            <div className={css.wrapperSelect}>
-                <BlueSelect>
-                    
-                </BlueSelect>
-            </div>
-        </div>
+        <EntityOnPanelWrapper 
+            entity={user}
+            onClick={() => user.callback ? user.callback(user) : {}}
+        >
+            <PersonBaseAvatar/>
+            <TextInfo user={user}/>
+        </EntityOnPanelWrapper>
     )
 })
 
-export default function AddUserPanel({handleSelect}: {handleSelect: (id: number) => void}){
+export default function AddUserPanel({handleSelect}: {handleSelect: (user: UserDataDTO) => void}){
     const [search, setSearch] = useState("")
     const users = useFindUser(search) // по сути приходит только один пользователь
 
-    const handleClick = useCallback((id: number) => {
+    const handleClick = useCallback((user: UserDataDTO) => {
         setSearch("")
-        handleSelect(id)
+        handleSelect(user)
     }, [handleSelect])
 
     return(

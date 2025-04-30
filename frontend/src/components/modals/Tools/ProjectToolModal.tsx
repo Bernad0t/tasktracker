@@ -7,6 +7,7 @@ import { Role } from "../../../entities/schemas/enums/project";
 import { ManageProjectModalContext } from "./hooks/useManageProjectModalContext";
 import UpdateProjectTool from "./components/ListTools/components/Tools/ProjectTool/UpdateProjectTool";
 import LeaveTool from "./components/ListTools/components/Tools/ProjectTool/LeaveTool";
+import AddUSerTool from "./components/ListTools/components/Tools/ProjectTool/AddUserTool";
 
 export function ModalTool({...props}: ReactModal.Props){
     return(
@@ -34,6 +35,7 @@ export default function ProjectToolModal({project, isOpen, coordinates, setIsOpe
                             {
                                 project.role === Role.admin && 
                                 <>
+                                <AddUSerTool projectId={project.id}/>
                                 <UpdateProjectTool projectId={project.id}/>
                                 <DeleteProjectTool projectId={project.id}/>
                                 </>

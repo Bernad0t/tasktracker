@@ -1,0 +1,8 @@
+@import "../../../../assets/MixinCss/colors.scss";
+
+.but{
+    border: none;
+    color: $primary-blue;
+    height: 30px;
+    background-color: inherit;
+}

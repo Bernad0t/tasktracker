@@ -28,16 +28,17 @@ function TextInfo({projectName, description, active}: {projectName: string, desc
 }
 
 interface Props extends ProjectListAdapted{
-    callback: (id: number) => void
+    callback: (project: ProjectListAdapted) => void
 }
 
 const ProjectOnPanel = memo(({...project}: Props) => {
     const {handleContextMenu, showTools, setShowTools, coordinates} = useContextMenu()
+    console.log("showTools", showTools)
     return(
         <>
         <EntityOnPanelWrapper 
             entity={project}
-            onClick={() => project.callback(project.id)}
+            onClick={() => project.callback(project)}
             onContextMenu={handleContextMenu}
         >
             <AvatarProject/>
