@@ -20,25 +20,26 @@ function TextInfo({projectName, description, active}: {projectName: string, desc
             <div>
                 <b>{projectName}</b>
             </div>
-            <div className={css.lastMes} style={{color: active ? "white" : ""}}>
+            <div className={css.lastMes}>
                 {description}
             </div>
         </div>
     )
 }
 
-interface Props extends ProjectListAdapted{
+interface Props{
+    project: ProjectListAdapted
     callback: (project: ProjectListAdapted) => void
 }
 
-const ProjectOnPanel = memo(({...project}: Props) => {
+const ProjectOnPanel = memo(({project, callback}: Props) => {
     const {handleContextMenu, showTools, setShowTools, coordinates} = useContextMenu()
     console.log("showTools", showTools)
     return(
         <>
         <EntityOnPanelWrapper 
             entity={project}
-            onClick={() => project.callback(project)}
+            onClick={() => callback(project)}
             onContextMenu={handleContextMenu}
         >
             <AvatarProject/>

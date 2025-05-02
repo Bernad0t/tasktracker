@@ -20,7 +20,7 @@ export default function ProjectList(){ // скорее всего тут над�
 
     return(
         <div className={css.wrapper}>
-            {localProjects.map(proj => <ProjectOnPanel key={proj.id} {...proj} callback={handleClick}/>)}
+            {localProjects.map(proj => <ProjectOnPanel key={proj.id} project={proj} callback={handleClick}/>)}
         </div>
     )
 }

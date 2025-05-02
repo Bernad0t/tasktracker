@@ -23,7 +23,7 @@ class UserController{ // рефешни токен
     @handlerError()
     async getUserByLogin(req: Request, res: Response){
         const login = String(req.query.login)
-        const data: UserDataDTO[] | undefined = await UserService.getUserByLogin(login)
+        const data: UserDataDTO[] = await UserService.getUserByLogin(login)
         res.status(200).json(data)
     }
 }

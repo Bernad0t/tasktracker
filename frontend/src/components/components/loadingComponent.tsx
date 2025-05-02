@@ -30,7 +30,7 @@ const LoadingComponent = ({loading, children, ...props}: Props) => {
                     <Loader styles={props.style} />
                 </div>
             ) : (
-                <div ref={contentRef}>{children}</div>
+                <div ref={contentRef} {...props}>{children}</div>
             )}
         </>
     );

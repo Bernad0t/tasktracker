@@ -13,10 +13,14 @@ export const UserProjectRepository = db.getRepository(UserProjectORM).extend({
         return await this.findOne({where: {user : {id: userId}, project : {id: projectId}}})
     },
 
-    async connectChildAndParent(projectId: number, manager: EntityManager){
-        const userProjectRepo = manager.getRepository(UserProjectORM)
-        const userProjects =  await userProjectRepo.find({
-            where: {project: {id: projectId}},
+    async connectChildAndParent(projectId: number, manager?: EntityManager, userId?: number){
+        const userProjectRepo = manager ? manager.getRepository(UserProjectORM) : this
+        const whereCondition: any = { project: { id: projectId } };
+        if (userId !== undefined) {
+            whereCondition.user = { id: userId };
+        }
+        const userProjects = await userProjectRepo.find({
+            where: whereCondition,
             relations: ['parent', 'child']
         })
 
@@ -42,9 +46,7 @@ export const UserProjectRepository = db.getRepository(UserProjectORM).extend({
         }
 
         // Затем удаляем все связи проекта
-        await userProjectRepo.delete({
-            project: { id: projectId }
-        });
+        await userProjectRepo.delete(whereCondition);
     },
 
     async changePriority(data: UpdatePriorityProjectDTO, userId: number){ // delete еще отредактируй
@@ -86,8 +88,8 @@ export const UserProjectRepository = db.getRepository(UserProjectORM).extend({
         const projects = await this.find({
             where: {user: {id: userId}},
             relations: [
-                "project", "parent", "child", "user",
-                "parent.project", "child.project", "parent.user",  "child.user"
+                "project", "parent", "child", "parent.project", "child.project", 
+                // "user", "parent.project", "child.project", "parent.user",  "child.user"
                 // "project.tasks", "parent.project.tasks", "child.project.tasks",
                 // "project.tasks.reviewer", "project.tasks.assigned", 
             ]
@@ -100,10 +102,17 @@ export const UserProjectRepository = db.getRepository(UserProjectORM).extend({
         newUserProj.role= role
         newUserProj.project = project
         newUserProj.user = user
+        newUserProj.parent = null
 
-        const headThisUserProjects = (await this.getProjects(user.id)).find(proj => proj.parent == null) ?? null
+        const thisUserProjects = await this.getProjects(user.id)
+        console.log("thisUserProjects", thisUserProjects)
+        const headThisUserProjects = thisUserProjects.find(proj => proj.parent == null) ?? null
         newUserProj.child = headThisUserProjects
         await this.save(newUserProj)
+        if (headThisUserProjects){
+            headThisUserProjects.parent = newUserProj
+            await this.save(headThisUserProjects)
+        }
     },
 
     async updateUserInProject(projectId: number, userId: number, role: Role){

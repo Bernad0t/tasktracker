@@ -9,7 +9,7 @@ import AuthorizationBaseForm from "../components/AuthorizationBaseForm/Authoriza
 import TypeAuthorization from "../components/TypeAuthorization"
 import { InputAuthorizationRow } from "../../../components/AuthorizationRow/AuthorizationRow"
 import { LabelRegistration, PlaceholderRegistration } from "../types"
-import LoadingComponent from "../../../components/loadingComponent"
+import LoadingComponent from "../../../components/LoadingComponent"
 import RegistrationSVGcomp from "../../../components/SVGcomp/registrationSVGcomp/registrationSVGcomp"
 import useAuthSubmit from "../hooks/useAuthSybmit"
 

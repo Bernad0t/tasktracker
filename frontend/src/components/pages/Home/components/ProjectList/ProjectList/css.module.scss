@@ -3,5 +3,5 @@
 .wrapper{
     @extend .hide_scroll;
     width: 100%;
-    overflow: scroll;
+    max-height: 82%;    
 }

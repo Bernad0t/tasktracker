@@ -8,14 +8,15 @@ class ServerEndpoints{
     }
     user = {
         get: `${apiBaseUrl}/protected/user/get-data`,
-        find: `${apiBaseUrl}/protected/user/find-user-by-login`
+        find: `${apiBaseUrl}/protected/user/get-user-by-login`
     }
     project = {
         get: `${apiBaseUrl}/protected/project/get-projects`,
         delete: `${apiBaseUrl}/protected/project/delete-project`,
         add: `${apiBaseUrl}/protected/project/add-project`,
         update: `${apiBaseUrl}/protected/project/update-project`,
-        updateUsersInProject: `${apiBaseUrl}/protected/project/update-users`
+        updateUsersInProject: `${apiBaseUrl}/protected/project/update-users`,
+        leave: `${apiBaseUrl}/protected/project/leave`
     }
 }
 
@@ -31,12 +32,12 @@ enum LocalStorageKeys{
 
 class Core{
     constructor(){
-        this.serverEdnpoints = new ServerEndpoints()
+        this.serverEndnpoints = new ServerEndpoints()
         this.frontendEndpoints = new FrontendEndpoints()
         this.localStorageKeys = LocalStorageKeys
     }
     apiBaseUrl = apiBaseUrl
-    serverEdnpoints
+    serverEndnpoints
     frontendEndpoints
     localStorageKeys
 }

@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import LoadingComponent from "../../components/loadingComponent";
+import LoadingComponent from "../../components/LoadingComponent";
 import css from "./css.module.scss"
 import ProjectBaseAvatar from "../../components/AvatarsBase/ProjectAvatarBase/ProjectBaseAvatar";
 import { InputAuthorizationRow } from "../../components/AuthorizationRow/AuthorizationRow";

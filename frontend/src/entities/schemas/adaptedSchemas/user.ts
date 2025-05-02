@@ -1,5 +1,6 @@
 import { UserDataDTO } from "../dto/userDTO"
 
-export interface IAddUser extends UserDataDTO{
+export interface IAddUser{
+    user: UserDataDTO
     callback?: (user: UserDataDTO) => void
 }

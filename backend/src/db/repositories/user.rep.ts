@@ -17,12 +17,14 @@ export const UserRepository = db.getRepository(UserORM).extend({
         const userProjectRep = manager?.getRepository(UserProjectORM) ?? db.getRepository(UserProjectORM)
         const user = await this.findUserQueryOR({id: userInProject.id});
         console.log("project", project, "userInProject", userInProject)
-        const headProject = await userProjectRep.findOne({
+        const headProjects = await userProjectRep.find({
             where: {
                 user: {id: userInProject.id},
-                parent: IsNull()
-            }
-        }) 
+            },
+            relations: ["child", "parent"]
+        })
+        const headProject = headProjects.find(proj => !proj.parent) ?? null
+        console.log("headProjects", headProjects)
 
         if (!user || !project) {
             throw new Error('User or Project not found');

@@ -5,8 +5,11 @@ import { decodeJWT } from "../../../utils/tokenUtil";
 import core from "../../../core/core";
 import { Role } from "../../schemas/enums/project";
 import { ProjectBaseDTO } from "../../schemas/dto/projectDTO";
-import { UserSliceManager } from "./userSlice";
-import { UserDataDTO } from "../../schemas/dto/userDTO";
+import { ITypeUserSlice, UserSliceManager } from "./userSlice";
+
+interface ITypeSliceData{
+    data: ProjectListAdapted[]
+}
 
 const getProjects = createAsyncThunk(
     'projects/getData',
@@ -30,10 +33,10 @@ const deleteProject = createAsyncThunk(
     }
 )
 
-const addProject = createAsyncThunk(
+const addProject = createAsyncThunk( // потести с новым слайсом юзера
     'projects/addProject',
     async (project: ProjectBaseDTO, thunkAPI) => {
-        const thisUser = UserSliceManager.selectors.selectUser(thunkAPI.getState() as {userData: UserDataDTO}) 
+        const thisUser = UserSliceManager.selectors.selectUser(thunkAPI.getState() as {userData: ITypeUserSlice}) 
         const idProject = await ApiQuery.project.addProject(project, thisUser.id)
         const returnedProject: ProjectListAdapted = {
             ...project, 
@@ -55,7 +58,15 @@ const updateProject = createAsyncThunk(
     }
 )
 
-const initialState: ProjectListAdapted[] = []
+const leaveProject = createAsyncThunk(
+    'projects/leave',
+    async (projectId: number) => {
+        await ApiQuery.project.leave(projectId)
+        return projectId
+    }
+)
+
+const initialState: ITypeSliceData = {data: []}
 
 const projectSlice = createSlice({
     name: "projects",
@@ -65,30 +76,32 @@ const projectSlice = createSlice({
     },
     selectors: {
         selectProjects: (state) => {
-            return state
+            return state.data
         },
         selectProjectById: (state, projectId: number) => {
-            return state.find(proj => proj.id === projectId)
+            return state.data.find(proj => proj.id === projectId)
         }
     },
     extraReducers: builder => {
         builder
         .addCase(getProjects.fulfilled, (state, action) => {
-            return action.payload
+            state.data = action.payload
         })
         .addCase(deleteProject.fulfilled, (state, action) => {
-            return state.filter(proj => proj.id !== action.payload)
+            state.data = state.data.filter(proj => proj.id !== action.payload)
         })
         .addCase(addProject.fulfilled, (state, action) => {
-            return [action.payload, ...state]
+            state.data = [action.payload, ...state.data]
         })
         .addCase(updateProject.fulfilled, (state, action) => {
-            return state.map(proj => proj.id === action.payload.id ? action.payload : proj)
+            state.data = state.data.map(proj => proj.id === action.payload.id ? action.payload : proj)
+        })
+        .addCase(leaveProject.fulfilled, (state, action) => {
+            state.data = state.data.filter(proj => proj.id !== action.payload)
         })
     }
 })
 
-// const selectProjectById = (state: RootState, projectId: number) => state.projects.find(proj => proj.id === projectId)
 
 export const projectSliceReducer = projectSlice.reducer
 
@@ -106,6 +119,7 @@ export const ProjectSliceManager = {
         getData: getProjects,
         deleteProject: deleteProject,
         addProject: addProject,
-        updateProject: updateProject
+        updateProject: updateProject,
+        leaveProject: leaveProject
     }
 }

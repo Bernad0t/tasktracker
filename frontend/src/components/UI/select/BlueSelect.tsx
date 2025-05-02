@@ -1,7 +1,8 @@
 import { SelectHTMLAttributes } from "react";
+import css from "./css.module.scss"
 
 export default function BlueSelect({...props}: SelectHTMLAttributes<HTMLSelectElement>){
     return (
-        <select name="" id="" {...props}>{props.children}</select>
+        <select className={css.css} {...props}>{props.children}</select>
     )
 }

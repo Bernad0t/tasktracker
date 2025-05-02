@@ -1,0 +1,9 @@
+@import "../../../assets/MixinCss/colors.scss";
+
+.css{
+    height: 100%;
+    width: 100%;
+    border: 1px solid $primary-blue;
+    color: $primary-blue;
+    font-size: 80%;
+}

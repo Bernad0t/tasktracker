@@ -1,25 +1,20 @@
-import { HTMLAttributes, ReactNode } from "react"
+import { HTMLAttributes } from "react"
 import css from "./css.module.scss"
 
-interface IBaseEntity<T>{
+interface IBaseEntity{
     id: number
     active?: boolean
-    callback?: (param: T) => void
 }
 
-interface Props<T extends IBaseEntity<T>> extends HTMLAttributes<HTMLDivElement>{
-    entity: T,  
-    handleContextMenu?: React.MouseEventHandler<HTMLDivElement>,
-    children: ReactNode
+interface Props<T extends IBaseEntity> extends HTMLAttributes<HTMLDivElement>{
+    entity: T
 }
 
-export default function EntityOnPanelWrapper<T extends IBaseEntity<T>>({entity, handleContextMenu, children}: Props<T>){
+export default function EntityOnPanelWrapper<T extends IBaseEntity>({entity, children, ...props}: Props<T>){
     return(
         <div 
-            className={css.wrapper} 
-            style={{backgroundColor: entity.active ? "#006FFD" : "", color: entity.active ? "white" : ""}} 
-            onClick={() => entity.callback ? entity.callback(entity) : {} }
-            onContextMenu={handleContextMenu}
+            className={entity.active === undefined ? css.nothovering : entity.active ? css.wrapperActive : css.wrapper}
+            {...props}
         >
             {children}
         </div>
