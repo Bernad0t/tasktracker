@@ -35,3 +35,8 @@ export interface UpdatePriorityProjectDTO{
     project: ProjectDTO
     replacedId: number
 }
+
+export const initialProjectBaseDTO: ProjectBaseDTO = {
+    name: "",
+    description: ""
+}

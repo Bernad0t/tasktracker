@@ -1,24 +1,28 @@
+import { resolve } from "path";
 import db from "../db/db";
-import { ProjectORM } from "../db/orm/userOrm";
+import { ProjectORM, UserProjectORM } from "../db/orm/userOrm";
 import { ProjectRepository } from "../db/repositories/project.rep";
 import { TaskRepostiry } from "../db/repositories/task.rep";
 import { UserRepository } from "../db/repositories/user.rep";
 import { UserProjectRepository } from "../db/repositories/userProject.rep";
-import { CreateProjectDTO, ProjectDTO, ProjectDTORelation, ProjectDTOUserRoles, UpdatePriorityProjectDTO, UserRoleInProjectDTO } from "../schemas/dto/projectDTO";
-import { TaskDTORelation } from "../schemas/dto/taskDTO";
+import { CreateProjectDTO, ProjectDTORelation, ProjectDTOUserRoles, UpdatePriorityProjectDTO, UserRoleInProjectDTO } from "../schemas/dto/projectDTO";
+import { UserDataRolesDTO } from "../schemas/dto/userDTO";
 import createProjectOrder from "./utils/createProjectOrder";
 
 export const ProjectService = {
-    async addProject(project: CreateProjectDTO){
+    async createProject(project: CreateProjectDTO){
+        if (!project.users)
+            throw new Error("Проект без пользователей не может существовать")
         const queryRunner = db.createQueryRunner()
         await queryRunner.connect()
         await queryRunner.startTransaction();
         try{
-            const projectOrm: ProjectORM = await ProjectRepository.addProject(project, queryRunner.manager)
-            for (let user of project.users){
+            const projectOrm: ProjectORM = await ProjectRepository.createProject(project, queryRunner.manager)
+            for (let user of project.users){ // тут создатель
                 await UserRepository.addProject({...projectOrm}, user, queryRunner.manager)
             }
             await queryRunner.commitTransaction();
+            return projectOrm.id
         } catch (error) {
             // Откат транзакции
             await queryRunner.rollbackTransaction();
@@ -40,9 +44,38 @@ export const ProjectService = {
 
     async updateProject(project: ProjectDTOUserRoles){
         await ProjectRepository.updateProject(project)
-        for (const user of project.users){
-            await UserProjectRepository.updateRole(project.id, user.id, user.role)
+    },
+
+    async changeUserComposition(project: ProjectDTORelation){
+        const currentUsers = await ProjectRepository.getUsersInProject(project.id)
+        const arrPromises: Promise<void>[] = []
+
+        for (const newUser of project.users ?? []){
+            const oldFindedUserIn = currentUsers.find(us => us.id === newUser.id)
+            if (!oldFindedUserIn){
+                arrPromises.push(async function(){
+                    const userOrm = await UserRepository.findUserQueryOR({id: newUser.id})
+                    if (userOrm){
+                        const projectOrm = await ProjectRepository.getProjectById(project.id) 
+                        await UserProjectRepository.addUserInProject(projectOrm, userOrm[0], newUser.role)
+                    }
+                }())
+            }
+            else if (newUser.role !== oldFindedUserIn.role){
+                arrPromises.push(async function(){
+                    await UserProjectRepository.updateUserInProject(project.id, newUser.id, newUser.role)
+                }())
+            }
         }
+        const deletingProjectUsers = currentUsers.filter(us => !project.users?.find(newUs => newUs.id === us.id))
+        for (const delUser of deletingProjectUsers){
+            console.log("delUser", delUser)
+            arrPromises.push(async function(){
+                await UserProjectRepository.connectChildAndParent(project.id, undefined, delUser.id)
+            }())
+        }
+        await Promise.all(arrPromises)
+
     },
 
     async deleteProject(projectId: number){
@@ -57,17 +90,26 @@ export const ProjectService = {
         await UserProjectRepository.changePriority(data, userId)
     },
 
-    async getProjects(userId: number): Promise<ProjectDTO[]>{
-        const userprojects = await UserProjectRepository.getProjects(userId)
-        const projects: ProjectDTO[] = userprojects.map(proj => {
+    async getProjects(userId: number): Promise<ProjectDTORelation[]>{
+        const findedprojects = await UserProjectRepository.getProjects(userId)
+        type SupportT = {projId: number, users: UserDataRolesDTO[]}
+        const usersInProjects: SupportT[] = []
+        for (const findedproject of findedprojects){
+            const users = await ProjectRepository.getUsersInProject(findedproject.project.id)
+            usersInProjects.push({projId: findedproject.project.id, users: users})
+        }
+        const ordered = createProjectOrder<UserProjectORM>(findedprojects)
+        const projects: ProjectDTORelation[] = ordered.map(proj => {
             return {
                 ...proj.project,
                 parent: proj.parent?.project,
-                child: proj.child?.project
+                child: proj.child?.project,
+                tasks: [],
+                users: usersInProjects.find(us => us.projId === proj.project.id)?.users
             }
         })
-        const ordered = createProjectOrder(projects)
-        return ordered 
+
+        return projects
     },
 
     async getProjectInfo(projectId: number): Promise<ProjectDTORelation>{
@@ -77,5 +119,15 @@ export const ProjectService = {
         ]);
         project.tasks = tasks
         return project
+    },
+
+    async leave(projectId: number, userId: number){
+        const project = await ProjectRepository.getRelationProject(projectId)
+        if (project.users?.find(us => us.id === userId)){
+            await UserProjectRepository.connectChildAndParent(project.id, undefined, userId)
+            if (project.users.length === 1){ // последний пользователь покинул => удаляем
+                await ProjectRepository.delete({id: projectId})
+            }
+        }
     }
 }

@@ -3,9 +3,10 @@ import { ProjectBaseDTO, ProjectDTO, ProjectDTORelation } from "../../schemas/dt
 import db from "../db";
 import { ProjectORM, UserProjectORM } from "../orm/userOrm";
 import { UserProjectRepository } from "./userProject.rep";
+import { UserDataRolesDTO } from "../../schemas/dto/userDTO";
 
 export const ProjectRepository = db.getRepository(ProjectORM).extend({
-    async addProject(projectData: ProjectBaseDTO, manager?: EntityManager) {
+    async createProject(projectData: ProjectBaseDTO, manager?: EntityManager) {
         const repository = manager?.getRepository(ProjectORM) ?? this
         const savedProject = await repository.save({name: projectData.name, description: projectData.description});
         return savedProject;
@@ -50,9 +51,10 @@ export const ProjectRepository = db.getRepository(ProjectORM).extend({
         const queryRunner = db.createQueryRunner()
         await queryRunner.connect()
         await queryRunner.startTransaction()
+        const ProjectRepository =  queryRunner.manager.getRepository(ProjectORM)
         try{
             await UserProjectRepository.connectChildAndParent(idProject, queryRunner.manager)
-            const result = await this.delete(idProject);
+            const result = await ProjectRepository.delete(idProject);
             if (result.affected === 0) {
                 throw new Error("Project not found");
             }
@@ -74,6 +76,15 @@ export const ProjectRepository = db.getRepository(ProjectORM).extend({
         return project.role
     },
 
+    async getUsersInProject(projectId: number): Promise<UserDataRolesDTO[]>{
+        const project = await this.findOne({
+            where: {id: projectId},
+            relations: ["users", "users.user"]
+        })
+        const returned: UserDataRolesDTO[] = project?.users.map(projuser => {return {role: projuser.role, ...projuser.user}}) ?? []
+        return returned
+    },
+
     async getRelationProject(projectId: number){ // не учел порядок
         const project = await this.findOne({
             where: {id: projectId},
@@ -92,7 +103,7 @@ export const ProjectRepository = db.getRepository(ProjectORM).extend({
     async getProjects(userId: number){
         const project = await this.find({
             where: {users: {user: {id: userId}}},
-            relations: ["parent", "child"]
+            relations: ["users.parent", "users.child"]
         })
         return project
     }

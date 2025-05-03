@@ -1,0 +1,18 @@
+@import "../../../../assets/MixinCss/colors.scss";
+@import "../../../../assets/MixinCss/sizes.scss";
+
+.wrapper{
+    width: 40px;
+    aspect-ratio: 1/1;
+    background-color: $avatar-background;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: $border-radius-avatar;
+}
+
+.wrapper img{
+    max-height: 80%;
+    max-width: 80%;
+}

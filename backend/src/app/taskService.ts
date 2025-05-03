@@ -6,12 +6,12 @@ import { TaskDTO, TaskDTORelation } from "../schemas/dto/taskDTO";
 
 class TaskServiceClass{
     async addTask(task: TaskDTO){
-        const reviewer: UserORM = await UserRepository.findUserQueryOR({id: task.reviewer})
-        const assigned: UserORM = await UserRepository.findUserQueryOR({id: task.assigned})
+        const reviewer: UserORM[] | undefined = await UserRepository.findUserQueryOR({id: task.reviewer})
+        const assigned: UserORM[] | undefined = await UserRepository.findUserQueryOR({id: task.assigned})
         const project: ProjectORM = await ProjectRepository.getProjectById(task.project)
         if (!reviewer || !assigned || !project)
             throw new Error("unreal create task")
-        await TaskRepostiry.addTask(task, project, reviewer, assigned)
+        await TaskRepostiry.addTask(task, project, reviewer[0], assigned[0])
     }
 
     async updateTask(task: TaskDTORelation){

@@ -1,4 +1,4 @@
-import { StatusTask } from "../enums/userEnum"
+import { StatusTask } from "../enums/project"
 import { CommentsDTO } from "./commentsDTO"
 
 export interface TaskDTO{

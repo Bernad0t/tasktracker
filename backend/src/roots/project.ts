@@ -17,13 +17,15 @@ class ProjectController{
         projectRouter.patch('/change-priority', this.changePriority.bind(this))
         projectRouter.get('/get-projects', this.getProjects.bind(this))
         projectRouter.get('/get-info-project', this.getInfoProject.bind(this))
+        projectRouter.patch('/update-users', this.updateUserComposition.bind(this))
+        projectRouter.delete('/leave', this.leave.bind(this))
     }
     
     @handlerError()
     async addProject(req: Request, res: Response){
         const project: CreateProjectDTO = req.body
-        await ProjectService.addProject(project)
-        res.status(200).json(`added projects to ${JSON.stringify(project)}`)
+        const idProject = await ProjectService.createProject(project)
+        res.status(200).json({idProject: idProject})
     }
 
     @handlerError()
@@ -70,7 +72,7 @@ class ProjectController{
     @handlerError()
     async getProjects(req: Request, res: Response){
         const userId = req.tokenPayload.id
-        const projects: ProjectDTO[] = await ProjectService.getProjects(userId)
+        const projects: ProjectDTORelation[] = await ProjectService.getProjects(userId)
         res.status(200).json(projects)
     }
 
@@ -79,6 +81,22 @@ class ProjectController{
         const projectId = Number(req.query.projectId)
         const project: ProjectDTORelation = await ProjectService.getProjectInfo(projectId)
         res.status(200).json(project)
+    }
+
+    @handlerError()
+    @roleValidateAccess()
+    async updateUserComposition(req: Request, res: Response){
+        const project: ProjectDTORelation = req.body
+        await ProjectService.changeUserComposition(project)
+        res.status(200).json("successfull")
+    }
+
+    @handlerError()
+    async leave(req: Request, res: Response){
+        const projectId = Number(req.query.projectId)
+        const userId = req.tokenPayload.id
+        await ProjectService.leave(projectId, userId)
+        res.status(200).json("leave success")
     }
 }
 

@@ -1,12 +1,13 @@
 import { useNavigate } from "react-router"
-import { useAppDispatch } from "./useStore"
+import { useAppDispatch } from "../../../../hooks/useStore"
 import { useCallback, useState } from "react"
-import validateUtil from "../utils/validation.util"
-import { AuthorizationProp } from "../entities/schemas/dto/authorizationDTO"
-import ApiQuery from "../api/QueryController"
-import { UserSliceManager } from "../entities/store/featuries/userSlice"
-import core from "../core/core"
+import validateUtil from "../../../../utils/validation.util"
+import { AuthorizationProp } from "../../../../entities/schemas/dto/authorizationDTO"
+import ApiQuery from "../../../../api/QueryController"
+import { UserSliceManager } from "../../../../entities/store/featuries/userSlice"
+import core from "../../../../core/core"
 import * as Yup from 'yup'
+import { ProjectSliceManager } from "../../../../entities/store/featuries/projectSlice"
 
 export default function useAuthSubmit<T extends AuthorizationProp>(
     initialProps: T, 
@@ -26,9 +27,10 @@ export default function useAuthSubmit<T extends AuthorizationProp>(
         setIsFetching(true)
         validateUtil.validateAuth<T>(schemas, errorsKeys, data).then(() => {
             setErrors(initialProps)
-            methodApi.call(ApiQuery, data)
+            methodApi.call(ApiQuery.authorization, data)
             .then(() => {
                 dispatch(UserSliceManager.fetching.getData())
+                dispatch(ProjectSliceManager.fetching.getData())
                 navigate(core.frontendEndpoints.home)
             })
             .catch((error) => {

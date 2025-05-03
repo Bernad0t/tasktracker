@@ -1,0 +1,14 @@
+@import "../../../../../assets/MixinCss/sizes.scss";
+
+.panel{
+    width: 70px;
+    height: 100%;
+    padding-top: $chat-header;
+}
+
+.menu{
+    width: 100%;
+    height: $chat-header;
+    display: flex;
+    align-items: center;
+}

@@ -1,6 +1,6 @@
 import { InputHTMLAttributes } from "react";
 
-import css from "./authInputCss.module.css"
+import css from "./authInputCss.module.scss"
 
 export default function AuthorizationInput({...props}: InputHTMLAttributes<HTMLInputElement>){
     return(

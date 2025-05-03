@@ -2,6 +2,7 @@
     overflow: auto; /* или scroll */
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE и Edge */
+    overflow-x: hidden;
 }
 
 /* Для Webkit браузеров (Chrome, Safari) */

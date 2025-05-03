@@ -7,11 +7,11 @@ import { CommentCreateDTO } from "../schemas/dto/commentsDTO";
 
 class CommServiceClass{
     async addComm(comm: CommentCreateDTO){
-        const user: UserORM = await UserRepository.findUserQueryOR({id: comm.reviewer})
+        const user: UserORM[] | undefined = await UserRepository.findUserQueryOR({id: comm.reviewer})
         const task: TaskORM | null = await TaskRepostiry.getTaskById(comm.task)
-        if (!user || !task)
+        if (!user || !task || user.length === 0)
             throw new Error("unreal add comment")
-        await CommentsRepository.addComm(comm, task, user)
+        await CommentsRepository.addComm(comm, task, user[0])
     }
 
     async deleteComm(commId: number){

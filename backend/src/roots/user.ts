@@ -10,12 +10,20 @@ const userRouter = express.Router()
 class UserController{ // рефешни токен
     constructor() {
         userRouter.get("/get-data", this.getData.bind(this))
+        userRouter.get("/get-user-by-login", this.getUserByLogin.bind(this))
     }
 
     @handlerError()
     async getData(req: Request, res: Response){
         const userId = req.tokenPayload.id
         const data: UserDataDTO = await UserService.getData(userId)
+        res.status(200).json(data)
+    }
+
+    @handlerError()
+    async getUserByLogin(req: Request, res: Response){
+        const login = String(req.query.login)
+        const data: UserDataDTO[] = await UserService.getUserByLogin(login)
         res.status(200).json(data)
     }
 }

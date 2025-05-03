@@ -7,30 +7,31 @@ import { UserDTORelation } from "../../schemas/dto/userDTO";
 export const UserRepository = db.getRepository(UserORM).extend({
     async findUserQueryOR<T extends Object>(userData: T){
         const condition = Object.keys(userData).map(key => {return {[key]: userData[key as keyof typeof userData]}}) // могут быть undef поля
-        const user = await this.find({
+        const users = await this.find({
             where: condition.filter(cond => cond != undefined) as FindOptionsWhere<UserORM>[]
         })
-        return user[0]
+        return users.length === 0 ? undefined : users
     },
 
     async addProject(project: ProjectORM, userInProject: UserRoleInProjectDTO, manager?: EntityManager){
         const userProjectRep = manager?.getRepository(UserProjectORM) ?? db.getRepository(UserProjectORM)
         const user = await this.findUserQueryOR({id: userInProject.id});
-        const headProject = await userProjectRep.findOne({
+        console.log("project", project, "userInProject", userInProject)
+        const headProjects = await userProjectRep.find({
             where: {
                 user: {id: userInProject.id},
-                parent: IsNull()
-            }
-        }) 
+            },
+            relations: ["child", "parent"]
+        })
+        const headProject = headProjects.find(proj => !proj.parent) ?? null
+        console.log("headProjects", headProjects)
 
         if (!user || !project) {
             throw new Error('User or Project not found');
         }
 
-        console.log("project", project)
-
         const userProject = new UserProjectORM();
-        userProject.user = user;
+        userProject.user = user[0];
         userProject.project = project;
         userProject.role = userInProject.role;
         userProject.child = headProject
@@ -52,7 +53,10 @@ export const UserRepository = db.getRepository(UserORM).extend({
         });
         if (!user)
             throw new Error("user dont exist")
-        const result: UserDTORelation = {...user, projects: user?.projects?.map(userproj => userproj.project) ?? []}
+        const result: UserDTORelation = {
+            id: user.id, email: user.email, username: user.username, projects: user?.projects?.map(userproj => userproj.project) ?? []}
         return result
-    }
+    },
+
+
 })

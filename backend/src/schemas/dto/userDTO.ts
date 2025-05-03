@@ -2,6 +2,7 @@ import { Role } from "../enums/userEnum"
 import { type ProjectDTO } from "./projectDTO"
 
 export interface UserDataDTO{
+    id: number
     email: string,
     username: string
 }

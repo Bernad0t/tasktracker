@@ -1,5 +1,5 @@
 import { HTMLAttributes } from "react"
-import css from "./css.module.css"
+import css from "./css.module.scss"
 
 interface Props extends HTMLAttributes<HTMLDivElement>{
     isEnter: boolean
