@@ -1,6 +1,6 @@
+import { HTMLAttributes } from "react"
 import { UserDataDTO } from "../dto/userDTO"
 
-export interface IAddUser{
+export interface IAddUser extends HTMLAttributes<HTMLDivElement>{
     user: UserDataDTO
-    callback?: (user: UserDataDTO) => void
 }

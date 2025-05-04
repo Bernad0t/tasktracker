@@ -1,19 +1,10 @@
 import { HTMLAttributes } from "react"
 import css from "./css.module.scss"
 
-interface IBaseEntity{
-    id: number
-    active?: boolean
-}
-
-interface Props<T extends IBaseEntity> extends HTMLAttributes<HTMLDivElement>{
-    entity: T
-}
-
-export default function EntityOnPanelWrapper<T extends IBaseEntity>({entity, children, ...props}: Props<T>){
+export default function EntityOnPanelWrapper({children, ...props}: HTMLAttributes<HTMLDivElement>){
     return(
         <div 
-            className={entity.active === undefined ? css.nothovering : entity.active ? css.wrapperActive : css.wrapper}
+            className={`${props.className} ${css.nothoveringEntityOnPanel}`}
             {...props}
         >
             {children}
