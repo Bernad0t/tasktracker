@@ -18,11 +18,10 @@ function TextInfo({user}: {user: UserDataDTO}){
     )
 }
 
-export const OneUser = memo(function ({user, callback}: IAddUser){
+export const OneUser = memo(function ({user, ...props}: IAddUser){
     return(
-        <EntityOnPanelWrapper 
-            entity={user}
-            onClick={() => callback ? callback(user) : {}}
+        <EntityOnPanelWrapper
+            {...props}
         >
             <PersonBaseAvatar/>
             <TextInfo user={user}/>
@@ -46,7 +45,12 @@ export default function AddUserPanel({handleSelect}: {handleSelect: (user: UserD
             </div>
             <LoadingComponent loading={isLoading}>
                 <div className={css.users}>
-                    {users.map(us => <OneUser user={us} callback={handleClick}/>)}
+                    {users.map(us => 
+                    <OneUser 
+                        user={us} 
+                        onClick={() => handleClick(us)}
+                        className={css.wrapperEntityOnPanel}
+                    />)}
                 </div>
             </LoadingComponent>
         </div>

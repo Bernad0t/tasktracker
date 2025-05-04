@@ -38,7 +38,7 @@ const ProjectOnPanel = memo(({project, callback}: Props) => {
     return(
         <>
         <EntityOnPanelWrapper 
-            entity={project}
+            className={project.active ? css.wrapperActiveEntityOnPanel : css.wrapperEntityOnPanel}
             onClick={() => callback(project)}
             onContextMenu={handleContextMenu}
         >
