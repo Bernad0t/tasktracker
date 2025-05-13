@@ -16,7 +16,10 @@ class ServerEndpoints{
         add: `${apiBaseUrl}/protected/project/add-project`,
         update: `${apiBaseUrl}/protected/project/update-project`,
         updateUsersInProject: `${apiBaseUrl}/protected/project/update-users`,
-        leave: `${apiBaseUrl}/protected/project/leave`
+        leave: `${apiBaseUrl}/protected/project/leave`,
+        getSelectedProject: `${apiBaseUrl}/protected/project/get-info-project`
+    }
+    tasks = {
     }
 }
 
