@@ -6,7 +6,7 @@ import EntityOnPanelWrapper from "../EntityOnPanel/EntityOnPanel";
 import { IAddUser } from "../../../entities/schemas/adaptedSchemas/user";
 import PersonBaseAvatar from "../AvatarsBase/PersonBaseAvatar/PersonBaseAvatar";
 import css from "./css.module.scss"
-import LoadingComponent from "../LoadingComponent";
+import LoadingComponent from "../loadingComponent";
 
 function TextInfo({user}: {user: UserDataDTO}){
     return(

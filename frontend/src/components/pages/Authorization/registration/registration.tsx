@@ -9,7 +9,7 @@ import AuthorizationBaseForm from "../components/AuthorizationBaseForm/Authoriza
 import TypeAuthorization from "../components/TypeAuthorization"
 import { InputAuthorizationRow } from "../../../components/AuthorizationRow/AuthorizationRow"
 import { LabelRegistration, PlaceholderRegistration } from "../types"
-import LoadingComponent from "../../../components/LoadingComponent"
+import LoadingComponent from "../../../components/loadingComponent"
 import RegistrationSVGcomp from "../../../components/SVGcomp/registrationSVGcomp/registrationSVGcomp"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useState } from "react"

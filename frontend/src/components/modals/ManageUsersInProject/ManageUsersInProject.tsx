@@ -8,7 +8,7 @@ import BlueSelect from "../../UI/select/BlueSelect";
 import image from "../../../assets/imgs/delete.png"
 import ButtonLikeText from "../../UI/buttons/ButtonLikeText/ButtonLikeText";
 import css from "./css.module.scss"
-import LoadingComponent from "../../components/LoadingComponent";
+import LoadingComponent from "../../components/loadingComponent";
 import ModalBase from "../modalBase/modalBase";
 
 interface Props{
