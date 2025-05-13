@@ -10,7 +10,7 @@ import { InputAuthorizationRow } from '../../../components/AuthorizationRow/Auth
 import ErrorMessage from '../../../components/stylingString/errorMessage';
 import AuthorizationBaseForm from '../components/AuthorizationBaseForm/Authorization';
 import { PlaceholderEnter } from '../types';
-import useAuthSubmit from '../hooks/useAuthSybmit';
+import useAuthSubmit from '../hooks/useAuthSubmit';
 
 const schemas = Validators.getEnterValidateSchema()
 const errorsKeys = Object.keys(initialAuthorizationProp)

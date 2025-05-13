@@ -58,6 +58,10 @@ class ApiQueryClass{
         },
         async leave(projectId: number){
             await authInstance.delete(core.serverEndnpoints.project.leave, {params: {projectId}})
+        },
+        async getSelectedProject(projectId: number){
+            const project = (await authInstance.get(core.serverEndnpoints.project.getSelectedProject)).data
+            return project
         }
     }
 }
