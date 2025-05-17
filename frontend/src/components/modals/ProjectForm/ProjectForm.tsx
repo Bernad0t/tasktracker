@@ -20,7 +20,7 @@ export default function ProjectForm({project, whatIs}: {project?: ProjectBaseDTO
                 <div className={css.wrapperAvatarModule}>
                     <div className={`${css.wrapperAvatar} ${css.wrappers}`}>
                         <div style={{width: "150px", position: "relative"}}>
-                            <ProjectBaseAvatar style={{width: "100%"}}/>
+                            <ProjectBaseAvatar style={{height: "100%"}}/>
                         </div>
                     </div>
                     <div className={`${css.wrappers}`} style={{marginTop: "10px"}}>

@@ -1,31 +1,23 @@
-import css from "./css.module.scss"
-import template_css from "../../../../../assets/MixinCss/classes.module.scss" 
-import { ProjectListAdapted } from "../../../../../entities/schemas/adaptedSchemas/project"
-import { useEffect, useState } from "react"
-import ApiQuery from "../../../../../api/QueryController"
-import { ProjectContext } from "./hooks/useProjectContext"
 import useSortedTasks from "./hooks/useSortedTasks"
 import TaskTypeWrapper from "./components/TaskTypeWrapper/TaskTypeWrapper"
+import { useAppSelector } from "../../../../../hooks/useStore"
+import { ProjectSliceManager } from "../../../../../entities/store/featuries/projectSlice"
+import css from "./css.module.scss"
+import PanelProject from "./components/Panel/Panel"
 
-export default function SelectedProject({project}: {project: ProjectListAdapted}){
-    const [localProject, setLocalProject] = useState(project)
-    const dictTasks = useSortedTasks(localProject.tasks ?? [])
-
-    useEffect(() => {
-        ApiQuery.project.getSelectedProject(project.id)
-        .then((proj) => setLocalProject(proj))
-    }, [project])
-
+export default function SelectedProject(){
+    const project = useAppSelector(ProjectSliceManager.selectors.selectSelected)
+    const dictTasks = useSortedTasks(project?.tasks ?? [])
     return(
-        <div>
-            <ProjectContext.Provider value={localProject}>
-                <div>
-                    Тут добавить можно таску
+        <>{project &&
+            <div className={css.wrapper}>
+                <PanelProject project={project}/>
+                <div className={css.tasks}>
+                    {Array.from(dictTasks?.keys() ?? []).map(
+                        key => <TaskTypeWrapper key={key} statusName={key} tasks={dictTasks?.get(key) ?? []}/>
+                    )}
                 </div>
-                <div>
-                    {/* {dictTasks.keys().map(key => <TaskTypeWrapper key={key} statusName={key} tasks={dictTasks.get(key) ?? []}/>)} */}
-                </div>
-            </ProjectContext.Provider>
-        </div>
+            </div>
+        }</>
     )
 }

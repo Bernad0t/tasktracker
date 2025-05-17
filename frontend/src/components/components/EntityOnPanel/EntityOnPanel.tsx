@@ -1,10 +1,10 @@
 import { HTMLAttributes } from "react"
 import css from "./css.module.scss"
 
-export default function EntityOnPanelWrapper({children, ...props}: HTMLAttributes<HTMLDivElement>){
+export default function EntityOnPanelWrapper({children, className, ...props}: HTMLAttributes<HTMLDivElement>){
     return(
         <div 
-            className={`${props.className} ${css.nothoveringEntityOnPanel}`}
+            className={`${css.nothoveringEntityOnPanel} ${className}`}
             {...props}
         >
             {children}

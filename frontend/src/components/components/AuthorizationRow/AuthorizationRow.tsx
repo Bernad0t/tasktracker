@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, memo, useRef, useState } from "react"
+import { InputHTMLAttributes, memo, ReactNode, useRef, useState } from "react"
 import AuthorizationInput from "../../UI/inputs/AuthorizationInputs/AuthorizationInput"
 
 import css from "./authRow.module.scss"

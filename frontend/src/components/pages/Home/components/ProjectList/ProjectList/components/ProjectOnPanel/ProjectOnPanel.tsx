@@ -5,24 +5,12 @@ import ProjectBaseAvatar from "../../../../../../../components/AvatarsBase/Proje
 import { ProjectListAdapted } from "../../../../../../../../entities/schemas/adaptedSchemas/project";
 import ProjectToolModal from "../../../../../../../modals/Tools/ProjectToolModal";
 import EntityOnPanelWrapper from "../../../../../../../components/EntityOnPanel/EntityOnPanel";
+import TextInfo from "../../../../../../../components/TextInfo/TextInfo";
 
 function AvatarProject(){
     return(
         <div className={css.wrapperAvatar}>
             <ProjectBaseAvatar/>
-        </div>
-    )
-}
-
-function TextInfo({projectName, description, active}: {projectName: string, description?: string, active: boolean}){
-    return(
-        <div className={css.wrapperText}>
-            <div>
-                <b>{projectName}</b>
-            </div>
-            <div className={css.lastMes}>
-                {description}
-            </div>
         </div>
     )
 }
@@ -34,7 +22,6 @@ interface Props{
 
 const ProjectOnPanel = memo(({project, callback}: Props) => {
     const {handleContextMenu, showTools, setShowTools, coordinates} = useContextMenu()
-    console.log("showTools", showTools)
     return(
         <>
         <EntityOnPanelWrapper 
@@ -43,7 +30,7 @@ const ProjectOnPanel = memo(({project, callback}: Props) => {
             onContextMenu={handleContextMenu}
         >
             <AvatarProject/>
-            <TextInfo projectName={project.name} description={project.description} active={project.active}/>
+            <TextInfo title={project.name} description={project.description}/>
         </EntityOnPanelWrapper>
         <ProjectToolModal 
             project={project} 

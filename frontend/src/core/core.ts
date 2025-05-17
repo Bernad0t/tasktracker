@@ -19,7 +19,12 @@ class ServerEndpoints{
         leave: `${apiBaseUrl}/protected/project/leave`,
         getSelectedProject: `${apiBaseUrl}/protected/project/get-info-project`
     }
-    tasks = {
+    task = {
+        add: `${apiBaseUrl}/protected/task/add-task`,
+        update: `${apiBaseUrl}/protected/task/update-task`
+    }
+    comm = {
+        send: `${apiBaseUrl}/protected/comm/add-comm`
     }
 }
 

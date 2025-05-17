@@ -5,3 +5,17 @@
     align-items: center;
     height: 100%;
 }
+
+.tasks{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+    padding: 20px;
+}
+
+.wrapper{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}

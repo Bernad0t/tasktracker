@@ -15,8 +15,8 @@ class TaskController{
     @handlerError()
     async addTask(req: Request, res: Response){
         const task: TaskDTO = req.body
-        await TaskService.addTask(task)
-        res.status(200).json("successful added task")
+        const taskId = await TaskService.addTask(task)
+        res.status(200).json({taskId})
     }
 
     @handlerError()

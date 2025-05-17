@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import ApiQuery from "../../../api/QueryController";
 import { ProjectListAdapted } from "../../schemas/adaptedSchemas/project";
 import { decodeJWT } from "../../../utils/tokenUtil";
@@ -9,6 +9,7 @@ import { ITypeUserSlice, UserSliceManager } from "./userSlice";
 
 interface ITypeSliceData{
     data: ProjectListAdapted[]
+    selected: ProjectListAdapted | null
 }
 
 const getProjects = createAsyncThunk(
@@ -66,13 +67,32 @@ const leaveProject = createAsyncThunk(
     }
 )
 
-const initialState: ITypeSliceData = {data: []}
+const uploadSelected = createAsyncThunk(
+    'projects/select',
+    async (project: ProjectListAdapted, thunkAPI) => {
+        const newProject: ProjectListAdapted = {...await ApiQuery.project.getSelectedProject(project.id), active: true, role: project.role}
+        return newProject
+    }
+)
+
+const initialState: ITypeSliceData = {
+    data: [],
+    selected: null
+}
 
 const projectSlice = createSlice({
     name: "projects",
     initialState: initialState,
     reducers: {
-        
+        updateData(state, action: PayloadAction<ProjectListAdapted[]>){
+            state.data = action.payload
+        },
+        selectSelected(state, action: PayloadAction<ProjectListAdapted>){
+            state.selected = action.payload
+        },
+        updateSelected(state, action: PayloadAction<ProjectListAdapted>){
+            state.selected = action.payload
+        }
     },
     selectors: {
         selectProjects: (state) => {
@@ -80,7 +100,10 @@ const projectSlice = createSlice({
         },
         selectProjectById: (state, projectId: number) => {
             return state.data.find(proj => proj.id === projectId)
-        }
+        },
+        selectSelected: (state) => {
+            return state.selected
+        },
     },
     extraReducers: builder => {
         builder
@@ -89,15 +112,24 @@ const projectSlice = createSlice({
         })
         .addCase(deleteProject.fulfilled, (state, action) => {
             state.data = state.data.filter(proj => proj.id !== action.payload)
+            if (state.selected?.id === action.payload)
+                state.selected = null
         })
         .addCase(addProject.fulfilled, (state, action) => {
             state.data = [action.payload, ...state.data]
         })
         .addCase(updateProject.fulfilled, (state, action) => {
             state.data = state.data.map(proj => proj.id === action.payload.id ? action.payload : proj)
+            if (state.selected?.id === action.payload.id)
+                state.selected = action.payload
         })
         .addCase(leaveProject.fulfilled, (state, action) => {
             state.data = state.data.filter(proj => proj.id !== action.payload)
+            if (state.selected?.id === action.payload)
+                state.selected = null
+        })
+        .addCase(uploadSelected.fulfilled, (state, action) => {
+            state.selected = action.payload
         })
     }
 })
@@ -107,12 +139,15 @@ export const projectSliceReducer = projectSlice.reducer
 
 export const ProjectSliceManager = {
     redusers: {
-
+        updateData: projectSlice.actions.updateData,
+        select: projectSlice.actions.selectSelected,
+        updateSelect: projectSlice.actions.updateSelected
     },
 
     selectors: {
         selectAllProjects: projectSlice.selectors.selectProjects,
-        selectProjectById: projectSlice.selectors.selectProjectById
+        selectProjectById: projectSlice.selectors.selectProjectById,
+        selectSelected: projectSlice.selectors.selectSelected
     },
 
     fetching: {
@@ -120,6 +155,7 @@ export const ProjectSliceManager = {
         deleteProject: deleteProject,
         addProject: addProject,
         updateProject: updateProject,
-        leaveProject: leaveProject
+        leaveProject: leaveProject,
+        uploadSelected: uploadSelected
     }
 }

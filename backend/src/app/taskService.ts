@@ -11,7 +11,8 @@ class TaskServiceClass{
         const project: ProjectORM = await ProjectRepository.getProjectById(task.project)
         if (!reviewer || !assigned || !project)
             throw new Error("unreal create task")
-        await TaskRepostiry.addTask(task, project, reviewer[0], assigned[0])
+        const savedTaskId =  (await TaskRepostiry.addTask(task, project, reviewer[0], assigned[0])).id
+        return savedTaskId
     }
 
     async updateTask(task: TaskDTORelation){

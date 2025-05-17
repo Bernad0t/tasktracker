@@ -6,6 +6,8 @@ import { UserDataDTO } from "../entities/schemas/dto/userDTO"
 import { ProjectBaseDTO, ProjectDTORelation } from "../entities/schemas/dto/projectDTO"
 import { Role } from "../entities/schemas/enums/project"
 import { ProjectListAdapted } from "../entities/schemas/adaptedSchemas/project"
+import { TaskDTO, TaskDTORelation } from "../entities/schemas/dto/taskDTO"
+import { CommentCreateDTO } from "../entities/schemas/dto/commentsDTO"
 
 class ApiQueryClass{
     authorization = {
@@ -59,9 +61,22 @@ class ApiQueryClass{
         async leave(projectId: number){
             await authInstance.delete(core.serverEndnpoints.project.leave, {params: {projectId}})
         },
-        async getSelectedProject(projectId: number){
-            const project = (await authInstance.get(core.serverEndnpoints.project.getSelectedProject)).data
+        async getSelectedProject(projectId: number): Promise<ProjectDTORelation>{
+            const project = (await authInstance.get(core.serverEndnpoints.project.getSelectedProject, {params: {projectId}})).data
             return project
+        },
+    }
+    task = {
+        async addTask(task: TaskDTO): Promise<number>{
+            const taskId = (await authInstance.post(core.serverEndnpoints.task.add, task)).data.taskId
+            return taskId
+        },
+        async sendComm(comm: CommentCreateDTO){
+            const sendedCommId = (await authInstance.post(core.serverEndnpoints.comm.send, comm)).data.commId 
+            return sendedCommId
+        },
+        async updateTask(task: TaskDTORelation){
+            await authInstance.patch(core.serverEndnpoints.task.update, task)
         }
     }
 }

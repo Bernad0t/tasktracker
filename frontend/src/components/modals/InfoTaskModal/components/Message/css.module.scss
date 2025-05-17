@@ -1,0 +1,50 @@
+@import "../../../../../assets/MixinCss/colors.scss";
+
+.wrapper{
+    max-width: 50%;
+    min-height: 40px;
+    min-width: 80px;
+    border-radius: 15px;
+    background-color: $primary-blue;
+    color: white;
+    padding: 7px 10px 7px 10px;
+}
+
+.info, .name{
+    float: right;
+    font-size: 80%;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.name{
+    float: none;
+}
+
+.mesWrapper, .mesWrapperOwner{
+    width: 100%;
+    margin-bottom: 5px;
+    display: flex;
+    font-size: 80%;
+}
+
+.mesWrapperOwner{
+    display: inline-block;
+}
+
+.owner{
+    border-bottom-right-radius: 0px;
+    float: right;
+}
+
+.foreign{
+    border-bottom-left-radius: 0px;
+    float: left;
+    background-color: $focsed-blue;
+}
+
+.avatar{
+    margin-top: auto;
+    height: 30px;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+}

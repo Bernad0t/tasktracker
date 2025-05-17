@@ -6,7 +6,8 @@ import { ProjectORM, UserORM } from "../orm/userOrm";
 export const TaskRepostiry = db.getRepository(TaskORM).extend({
     async addTask(task: TaskDTO, project: ProjectORM, reviewer: UserORM, assigned: UserORM){
         const newTask = new TaskORM({...task, project: project, reviewer: reviewer, assigned: assigned})
-        await this.save(newTask)
+        const savedTask =  await this.save(newTask)
+        return savedTask
     },
 
     async getTaskById(id: number){

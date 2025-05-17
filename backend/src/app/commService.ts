@@ -11,7 +11,8 @@ class CommServiceClass{
         const task: TaskORM | null = await TaskRepostiry.getTaskById(comm.task)
         if (!user || !task || user.length === 0)
             throw new Error("unreal add comment")
-        await CommentsRepository.addComm(comm, task, user[0])
+        const commId = (await CommentsRepository.addComm(comm, task, user[0])).id
+        return commId
     }
 
     async deleteComm(commId: number){

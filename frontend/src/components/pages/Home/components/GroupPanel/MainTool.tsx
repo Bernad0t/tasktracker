@@ -22,7 +22,7 @@ export default function MainTools({buttons}: {buttons: IPanelTools[]}){
         <>
         <div style={{width: "100%", height: "100%"}}>
             {buttons.map((button) => 
-                <OneButtonMemo>{
+                <OneButtonMemo key={button.name}>{
                     <ImageButtonBase src={button.imgSrc} onClick={() => setSelectedNode(button.node)}/>
                 }</OneButtonMemo>
             )}

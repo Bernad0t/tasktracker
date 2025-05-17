@@ -12,8 +12,8 @@ class CommentsController{
 
     async addComment(req: Request, res: Response){
         const comm: CommentCreateDTO = req.body
-        await CommService.addComm(comm)
-        res.status(200).json("successful added comm")
+        const commId = await CommService.addComm(comm)
+        res.status(200).json({commId})
     }
 
     async deleteComm(req: Request, res: Response){

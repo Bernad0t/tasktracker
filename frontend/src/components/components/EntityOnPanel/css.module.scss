@@ -1,1 +1,5 @@
 @import "../../../assets/MixinCss/classes.module.scss";
+
+.nothoveringEntityOnPanel{
+    @extend .nothoveringEntityOnPanel;
+}
