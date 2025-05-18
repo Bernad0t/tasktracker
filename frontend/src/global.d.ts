@@ -6,24 +6,24 @@ declare module '*.module.css' {
 declare module '*.module.scss' {
     const content: { [className: string]: string };
     export default content;
-  }
+}
 
 declare module '*.png' {
     const value: string;
     export = value;
-  }
-  
-  declare module '*.jpg' {
+}
+
+declare module '*.jpg' {
     const value: string;
     export = value;
-  }
-  
-  declare module '*.jpeg' {
+}
+
+declare module '*.jpeg' {
     const value: string;
     export = value;
-  }
-  
-  declare module '*.gif' {
+}
+
+declare module '*.gif' {
     const value: string;
     export = value;
-  }
+}

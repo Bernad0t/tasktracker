@@ -1,20 +1,20 @@
-import { HTMLAttributes, useEffect, useRef, useState } from "react";
-import Loader from "../UI/Loader/loader";
+import { HTMLAttributes, useEffect, useRef, useState } from 'react';
+import Loader from '../UI/Loader/loader';
 
-interface Props extends HTMLAttributes<HTMLDivElement>{
-    loading: boolean
+interface Props extends HTMLAttributes<HTMLDivElement> {
+    loading: boolean;
 }
 
-const LoadingComponent = ({loading, children, ...props}: Props) => {
+const LoadingComponent = ({ loading, children, ...props }: Props) => {
     const [height, setHeight] = useState<number | null>(null);
     const contentRef = useRef<HTMLDivElement>(null); // тобы загрузка по центру страницы была
 
-    useEffect(() => { 
+    useEffect(() => {
         if (contentRef.current) {
             setHeight(contentRef.current.clientHeight);
         }
     }, [loading, children]);
-    
+
     return (
         <>
             {loading ? (
@@ -23,17 +23,19 @@ const LoadingComponent = ({loading, children, ...props}: Props) => {
                         width: '100%',
                         display: 'flex',
                         justifyContent: 'center',
-                        alignItems: "center",
+                        alignItems: 'center',
                         height: height || 'auto', // Устанавливаем высоту
                     }}
                 >
                     <Loader styles={props.style} />
                 </div>
             ) : (
-                <div ref={contentRef} {...props}>{children}</div>
+                <div ref={contentRef} {...props}>
+                    {children}
+                </div>
             )}
         </>
     );
-}
+};
 
-export default LoadingComponent
+export default LoadingComponent;

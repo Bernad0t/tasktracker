@@ -7,17 +7,16 @@ import { Provider } from 'react-redux';
 import ReactModal from 'react-modal';
 
 async function start() {
+    const root = ReactDOM.createRoot(document.getElementById('root')!);
+    ReactModal.setAppElement('#root');
 
-  const root = ReactDOM.createRoot(document.getElementById('root')!)
-  ReactModal.setAppElement('#root');
-
-  root.render(
-    <React.StrictMode>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </React.StrictMode>
-  )
+    root.render(
+        <React.StrictMode>
+            <Provider store={store}>
+                <App />
+            </Provider>
+        </React.StrictMode>,
+    );
 }
 
-start()
+start();

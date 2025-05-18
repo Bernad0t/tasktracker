@@ -1,13 +1,13 @@
-@import "../../../../../assets/MixinCss/colors.scss";
+@import '../../../../../assets/MixinCss/colors.scss';
 
-.inner{
+.inner {
     position: absolute;
     padding-bottom: 15px;
     padding-left: 15px;
     top: 50%;
 }
 
-.content{
+.content {
     width: 150px;
     border: 2px solid $primary-grey;
     border-radius: 5px;
@@ -17,26 +17,26 @@
     padding: 10px;
 }
 
-.row{
+.row {
     width: 100%;
     margin-bottom: 3px;
     display: flex;
     align-items: center;
     opacity: 0.8;
-    &:hover{
+    &:hover {
         cursor: pointer;
         opacity: 1;
         color: $primary-blue;
     }
 }
 
-.rowImg{
+.rowImg {
     width: 20px;
     height: 20px;
     margin-right: 10px;
 }
 
-.rowImg img{
+.rowImg img {
     height: 100%;
     width: 100%;
 }

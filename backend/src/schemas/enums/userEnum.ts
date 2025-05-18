@@ -12,5 +12,6 @@ export enum StatusTask{
     assigned,
     processing,
     done,
-    testing
+    testing,
+    unsigned,
 }

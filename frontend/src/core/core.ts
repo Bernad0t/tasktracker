@@ -1,15 +1,15 @@
-const apiBaseUrl = "http://localhost:8000"
+const apiBaseUrl = 'http://localhost:8000';
 
-class ServerEndpoints{
+class ServerEndpoints {
     auth = {
         enterAuth: `${apiBaseUrl}/authorization/sign-in`,
         regAuth: `${apiBaseUrl}/authorization/sign-up`,
-        updateRefresh: `${apiBaseUrl}/authorization/refresh`
-    }
+        updateRefresh: `${apiBaseUrl}/authorization/refresh`,
+    };
     user = {
         get: `${apiBaseUrl}/protected/user/get-data`,
-        find: `${apiBaseUrl}/protected/user/get-user-by-login`
-    }
+        find: `${apiBaseUrl}/protected/user/get-user-by-login`,
+    };
     project = {
         get: `${apiBaseUrl}/protected/project/get-projects`,
         delete: `${apiBaseUrl}/protected/project/delete-project`,
@@ -17,33 +17,38 @@ class ServerEndpoints{
         update: `${apiBaseUrl}/protected/project/update-project`,
         updateUsersInProject: `${apiBaseUrl}/protected/project/update-users`,
         leave: `${apiBaseUrl}/protected/project/leave`,
-        getSelectedProject: `${apiBaseUrl}/protected/project/get-info-project`
+        getSelectedProject: `${apiBaseUrl}/protected/project/get-info-project`,
+    };
+    task = {
+        add: `${apiBaseUrl}/protected/task/add-task`,
+        update: `${apiBaseUrl}/protected/task/update-task`,
+    };
+    comm = {
+        send: `${apiBaseUrl}/protected/comm/add-comm`,
+    };
+}
+
+class FrontendEndpoints {
+    login = '/login';
+    register = '/register';
+    home = '/';
+}
+
+enum LocalStorageKeys {
+    access_token = 'accessToken',
+}
+
+class Core {
+    constructor() {
+        this.serverEndnpoints = new ServerEndpoints();
+        this.frontendEndpoints = new FrontendEndpoints();
+        this.localStorageKeys = LocalStorageKeys;
     }
-    tasks = {
-    }
+    apiBaseUrl = apiBaseUrl;
+    serverEndnpoints;
+    frontendEndpoints;
+    localStorageKeys;
 }
 
-class FrontendEndpoints{
-    login = "/login"
-    register = "/register"
-    home = "/"
-}
-
-enum LocalStorageKeys{
-    access_token = "accessToken"
-}
-
-class Core{
-    constructor(){
-        this.serverEndnpoints = new ServerEndpoints()
-        this.frontendEndpoints = new FrontendEndpoints()
-        this.localStorageKeys = LocalStorageKeys
-    }
-    apiBaseUrl = apiBaseUrl
-    serverEndnpoints
-    frontendEndpoints
-    localStorageKeys
-}
-
-const core = new Core()
-export default core
+const core = new Core();
+export default core;

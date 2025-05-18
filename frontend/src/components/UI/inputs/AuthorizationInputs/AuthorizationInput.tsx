@@ -1,9 +1,7 @@
-import { InputHTMLAttributes } from "react";
+import { InputHTMLAttributes } from 'react';
 
-import css from "./authInputCss.module.scss"
+import css from './authInputCss.module.scss';
 
-export default function AuthorizationInput({...props}: InputHTMLAttributes<HTMLInputElement>){
-    return(
-        <input {...props} className={css.css}/>
-    )
+export default function AuthorizationInput({ ...props }: InputHTMLAttributes<HTMLInputElement>) {
+    return <input {...props} className={css.css} />;
 }

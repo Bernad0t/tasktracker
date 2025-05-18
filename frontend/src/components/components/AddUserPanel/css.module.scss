@@ -1,26 +1,26 @@
-@import "../../../assets/MixinCss/classes.module.scss";
+@import '../../../assets/MixinCss/classes.module.scss';
 
-.wrapper{
+.wrapper {
     @extend .hide_scroll;
     width: 100%;
     max-height: 400px;
     overflow: hidden;
     padding-bottom: 20px;
-    border-bottom: 1px solid #AFAFAF;
+    border-bottom: 1px solid #afafaf;
 }
 
-.users{
+.users {
     width: 100%;
 }
 
-.oneUser{
+.oneUser {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.wrapperSelect{
+.wrapperSelect {
     height: 30px;
     width: 60px;
     margin-left: 20px;

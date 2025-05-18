@@ -1,8 +1,9 @@
-@import "../../../../assets/MixinCss/colors.scss";
-@import "../../../../assets/MixinCss/sizes.scss";
+@import '../../../../assets/MixinCss/colors.scss';
+@import '../../../../assets/MixinCss/sizes.scss';
 
-.wrapper{
-    width: 40px;
+.wrapper {
+    height: 40px;
+    max-height: 100%;
     aspect-ratio: 1/1;
     background-color: $avatar-background;
     display: flex;
@@ -12,7 +13,7 @@
     border-radius: $border-radius-avatar;
 }
 
-.wrapper img{
+.wrapper img {
     max-height: 80%;
     max-width: 80%;
 }

@@ -1,6 +1,6 @@
-import { HTMLAttributes } from "react"
-import { UserDataDTO } from "../dto/userDTO"
+import { HTMLAttributes } from 'react';
+import { UserDataDTO } from '../dto/userDTO';
 
-export interface IAddUser extends HTMLAttributes<HTMLDivElement>{
-    user: UserDataDTO
+export interface IAddUser extends HTMLAttributes<HTMLDivElement> {
+    user: UserDataDTO;
 }

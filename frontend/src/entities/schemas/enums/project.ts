@@ -1,17 +1,17 @@
-export enum TypeProject{
+export enum TypeProject {
     group,
-    direct
+    direct,
 }
 
-export enum Role{
+export enum Role {
     admin,
-    user
+    user,
 }
 
-export enum StatusTask{
-    assigned,
-    processing,
-    done,
-    testing,
-    unsigned = "unsigned"
+export enum StatusTask { // я беру .keys(), где порядок важен для правильного отображения
+    // unsigned = 4,
+    assigned = 0,
+    processing = 1,
+    testing = 3,
+    done = 2,
 }

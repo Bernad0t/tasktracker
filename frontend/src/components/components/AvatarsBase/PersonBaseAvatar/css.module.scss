@@ -1,8 +1,9 @@
-@import "../../../../assets/MixinCss/colors.scss";
-@import "../../../../assets/MixinCss/sizes.scss";
+@import '../../../../assets/MixinCss/colors.scss';
+@import '../../../../assets/MixinCss/sizes.scss';
 
-.wrapper{
-    width: 40px;
+.wrapper {
+    height: 40px;
+    max-height: 100%;
     aspect-ratio: 1/1;
     background-color: $avatar-background;
     display: flex;
@@ -12,19 +13,19 @@
     margin-right: 15px;
 }
 
-.person{
+.person {
     width: 75%;
     margin-top: 20%;
     height: 100%;
 }
 
-.head_wrapper{
+.head_wrapper {
     width: 100%;
     justify-content: center;
     display: flex;
 }
 
-.head{
+.head {
     width: 50%;
     aspect-ratio: 1/1;
     border-radius: 50%;
@@ -32,7 +33,7 @@
     margin-bottom: 10%;
 }
 
-.body{
+.body {
     background-color: $avatar-person;
     width: 100%;
     aspect-ratio: 1/1;

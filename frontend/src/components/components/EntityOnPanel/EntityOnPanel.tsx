@@ -1,13 +1,18 @@
-import { HTMLAttributes } from "react"
-import css from "./css.module.scss"
+import { forwardRef, HTMLAttributes } from 'react';
+import css from './css.module.scss';
 
-export default function EntityOnPanelWrapper({children, ...props}: HTMLAttributes<HTMLDivElement>){
-    return(
-        <div 
-            className={`${props.className} ${css.nothoveringEntityOnPanel}`}
-            {...props}
-        >
+const EntityOnPanelWrapper = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(({
+    children,
+    className,
+    ...props
+}, ref) => {
+    return (
+        <div ref={ref} className={`${css.nothoveringEntityOnPanel} ${className}`} {...props}>
             {children}
         </div>
-    )
-}
+    );
+})
+
+EntityOnPanelWrapper.displayName = "EntityOnPanelWrapper"
+
+export default EntityOnPanelWrapper

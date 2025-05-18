@@ -1,5 +1,5 @@
-import { HTMLAttributes } from "react";
+import { HTMLAttributes } from 'react';
 
-export interface IToolProps extends HTMLAttributes<HTMLDivElement>{
-    projectId: number
+export interface IToolProps extends HTMLAttributes<HTMLDivElement> {
+    projectId: number;
 }

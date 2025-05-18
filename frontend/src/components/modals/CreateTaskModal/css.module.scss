@@ -1,0 +1,66 @@
+@import '../../../assets/MixinCss/classes.module.scss';
+@import '../../../assets/MixinCss/colors.scss';
+
+.wrapper {
+    width: 100%;
+    position: relative;
+    height: 100%;
+}
+
+.wrapAssignedTitle {
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.content {
+    @extend .hide_scroll;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.req {
+    color: red;
+}
+
+.assignedTitle {
+    color: white;
+    width: 100%;
+    background-color: $primary-blue;
+    border-left: 5px solid $focsed-blue;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+.oneUser,
+.oneUserAssigned {
+    @extend .wrapperEntityOnPanel;
+    &:hover {
+        background-color: rgb(231, 231, 231);
+        color: black;
+    }
+}
+
+.oneUserAssigned {
+    border: 1px solid $avatar-person;
+}
+
+.but {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}
+
+.users {
+    width: 100%;
+    margin-top: 20px;
+}
