@@ -27,6 +27,8 @@ export const OneUser = memo(function ({ user, ...props }: IAddUser) {
     );
 });
 
+OneUser.displayName = "OneUser"
+
 export default function AddUserPanel({
     handleSelect,
 }: {

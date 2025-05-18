@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-duplicate-enum-values */
 export enum LabelRegistration { // совпадать с regProps должен
     login = 'Логин',
     password = 'Придумайте пароль',

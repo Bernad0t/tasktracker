@@ -3,7 +3,7 @@ import ApiQuery from '../../../../../../../../api/QueryController';
 import { TaskDTORelation } from '../../../../../../../../entities/schemas/dto/taskDTO';
 import { StatusTask } from '../../../../../../../../entities/schemas/enums/project';
 import { ProjectSliceManager } from '../../../../../../../../entities/store/featuries/projectSlice';
-import { useAppDispatch, useAppSelector } from '../../../../../../../../hooks/useStore';
+import { useAppDispatch } from '../../../../../../../../hooks/useStore';
 import { store } from '../../../../../../../../entities/store/store';
 
 export default function useHandleDrop(

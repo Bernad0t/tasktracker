@@ -48,6 +48,8 @@ const OneRow = memo(function ({
     );
 });
 
+OneRow.displayName = "OneRow"
+
 export default function ManageUsersInProject({ projectId, isOpen, handleClose }: Props) {
     const project = useAppSelector(state =>
         ProjectSliceManager.selectors.selectProjectById(state, projectId),

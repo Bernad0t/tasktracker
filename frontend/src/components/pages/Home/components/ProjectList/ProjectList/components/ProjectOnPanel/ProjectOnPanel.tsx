@@ -44,4 +44,6 @@ const ProjectOnPanel = memo(({ project, callback }: Props) => {
     );
 });
 
+ProjectOnPanel.displayName = "ProjectOnPanel"
+
 export default ProjectOnPanel;

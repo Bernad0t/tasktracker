@@ -46,6 +46,8 @@ const OneTask = memo(function ({ task }: { task: TaskDTORelation }) {
     );
 });
 
+OneTask.displayName = "OneTask"
+
 export default function TaskTypeWrapper({
     tasks,
     statusName,

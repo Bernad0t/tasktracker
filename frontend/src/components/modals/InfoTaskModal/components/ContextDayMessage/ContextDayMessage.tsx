@@ -38,4 +38,6 @@ const ContextDayMessage = memo(function ({
     );
 });
 
+ContextDayMessage.displayName = "ContextDayMessage"
+
 export default ContextDayMessage;

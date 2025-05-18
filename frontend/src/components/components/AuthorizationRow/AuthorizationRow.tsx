@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, memo, ReactNode, useRef, useState } from 'react';
+import { InputHTMLAttributes, memo, useRef, useState } from 'react';
 import AuthorizationInput from '../../UI/inputs/AuthorizationInputs/AuthorizationInput';
 
 import css from './authRow.module.scss';
@@ -11,7 +11,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
     error?: string | undefined;
 }
 
-function OneRow({ keyField, onChange, error, ...props }: Props) {
+function OneRow({ onChange, error, ...props }: Props) {
     const refType = useRef(props.type);
     const [type, setType] = useState(props.type ?? 'text');
     return (

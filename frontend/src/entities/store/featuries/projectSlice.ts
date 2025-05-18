@@ -69,7 +69,7 @@ const leaveProject = createAsyncThunk('projects/leave', async (projectId: number
 
 const uploadSelected = createAsyncThunk(
     'projects/select',
-    async (project: ProjectListAdapted, thunkAPI) => {
+    async (project: ProjectListAdapted) => {
         const newProject: ProjectListAdapted = {
             ...(await ApiQuery.project.getSelectedProject(project.id)),
             active: true,

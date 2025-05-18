@@ -13,4 +13,6 @@ const EntityOnPanelWrapper = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivEl
     );
 })
 
+EntityOnPanelWrapper.displayName = "EntityOnPanelWrapper"
+
 export default EntityOnPanelWrapper

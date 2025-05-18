@@ -17,4 +17,6 @@ const ListToolBase = forwardRef<HTMLDivElement, Props>(({ img, label, ...props }
     );
 });
 
+ListToolBase.displayName = "ListToolBase"
+
 export default ListToolBase;
