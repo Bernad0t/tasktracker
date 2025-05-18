@@ -1,29 +1,28 @@
-@import "../../../../../../../../assets/MixinCss/colors.scss";
-@import "../../../../../../../../assets/MixinCss/classes.module.scss";
+@import '../../../../../../../../assets/MixinCss/colors.scss';
+@import '../../../../../../../../assets/MixinCss/classes.module.scss';
 
-
-.wrapperChat{
+.wrapperChat {
     height: 60px;
     width: 100%;
     padding: 10px;
     display: flex;
     align-items: center;
-    &:hover{
+    &:hover {
         background-color: $primary-blue;
         color: white;
         cursor: pointer;
-        .newMess{
+        .newMess {
             background-color: white;
             color: $primary-blue;
         }
-        .lastMes{
+        .lastMes {
             color: white;
         }
     }
 }
 
-.lastMes{
-    color: #AFAFAF;
+.lastMes {
+    color: #afafaf;
     font-size: 80%;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -31,12 +30,12 @@
     width: 90%;
 }
 
-.wrapperNewMess{
+.wrapperNewMess {
     height: 24px;
     width: 24px;
 }
 
-.newMess{
+.newMess {
     border-radius: 50%;
     background-color: $primary-blue;
     color: white;
@@ -48,16 +47,20 @@
     width: 100%;
 }
 
-.wrapperAvatar{
+.wrapperAvatar {
     margin-right: 15px;
 }
 
-.wrapperText{
+.wrapperText {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     flex: 1;
     height: 100%;
     padding-top: 3px;
-    line-height: 1.5
+    line-height: 1.5;
+}
+
+.isDragging{
+    display: none;
 }

@@ -1,4 +1,4 @@
-@import "./colors.scss";
+@import './colors.scss';
 
 .hide_scroll {
     overflow: auto; /* или scroll */
@@ -23,9 +23,9 @@
     right: 0;
     bottom: 0;
     z-index: 1000;
-  }
-  
-  .modalContent {
+}
+
+.modalContent {
     width: 400px;
     height: 300px;
     border-radius: 12px; /* Закруглённые углы */
@@ -33,9 +33,11 @@
     padding: 20px; /* Отступ внутри окна */
     border: 1px solid white; /* Убираем стандартную рамку */
     position: relative;
-  }
+}
 
-  .wrapperEntityOnPanel, .wrapperActiveEntityOnPanel, .nothoveringEntityOnPanel{
+.wrapperEntityOnPanel,
+.wrapperActiveEntityOnPanel,
+.nothoveringEntityOnPanel {
     height: 60px;
     width: 100%;
     padding: 10px;
@@ -43,19 +45,20 @@
     align-items: center;
 }
 
-.wrapperEntityOnPanel:hover, .wrapperActiveEntityOnPanel{
+.wrapperEntityOnPanel:hover,
+.wrapperActiveEntityOnPanel {
     background-color: $primary-blue;
     color: white;
     cursor: pointer;
-    .newMess{
+    .newMess {
         background-color: white;
         color: $primary-blue;
     }
-    .lastMes{
+    .lastMes {
         color: white;
     }
 }
 
-.wrapperActiveEntityOnPanel:hover{
+.wrapperActiveEntityOnPanel:hover {
     cursor: pointer;
 }

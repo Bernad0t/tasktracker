@@ -1,15 +1,15 @@
-.css{
+.css {
     padding-left: 20px;
     backdrop-filter: blur(10px);
     height: 40px;
     width: 100%;
     border-radius: 12px;
-    border: 1px solid #C5C6CC;
+    border: 1px solid #c5c6cc;
     background: rgba(255, 255, 255, 0.1);
 }
 
-.css:focus{
-    border-color: #006FFD;
-    color: #006FFD;
+.css:focus {
+    border-color: #006ffd;
+    color: #006ffd;
     outline: none;
 }

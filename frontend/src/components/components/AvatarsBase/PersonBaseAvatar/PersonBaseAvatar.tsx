@@ -1,15 +1,15 @@
-import { HTMLAttributes } from "react";
-import css from "./css.module.scss"
+import { HTMLAttributes } from 'react';
+import css from './css.module.scss';
 
-export default function PersonBaseAvatar({...props}: HTMLAttributes<HTMLDivElement>){
-    return(
+export default function PersonBaseAvatar({ ...props }: HTMLAttributes<HTMLDivElement>) {
+    return (
         <div className={css.wrapper} {...props}>
             <div className={css.person}>
                 <div className={css.head_wrapper}>
-                    <div className={css.head}/>
+                    <div className={css.head} />
                 </div>
-                <div className={css.body}/>
+                <div className={css.body} />
             </div>
         </div>
-    )
+    );
 }

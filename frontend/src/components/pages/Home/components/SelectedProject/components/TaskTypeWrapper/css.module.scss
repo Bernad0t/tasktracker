@@ -1,62 +1,64 @@
-@import "../../../../../../../assets/MixinCss/classes.module.scss";
-@import "../../../../../../../assets/MixinCss/colors.scss";
+@import '../../../../../../../assets/MixinCss/classes.module.scss';
+@import '../../../../../../../assets/MixinCss/colors.scss';
 
-.wrapper{
+.wrapper {
     width: 220px;
     height: 400px;
-    border: 1px solid #AFAFAF;
+    border: 1px solid #afafaf;
     border-radius: 10px;
     padding: 10px;
     display: flex;
     flex-direction: column;
 }
 
-.wrapDroping{
+.wrapDroping {
     border: 2px solid rgb(180, 180, 21);
 }
 
-.label{
+.label {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.wrapTasks{
+.wrapTasks {
     @extend .hide_scroll;
     display: flex;
     flex-direction: column;
     flex: 1;
 }
 
-.oneTask, .assigned, .dragOneTask{
+.oneTask,
+.assigned{
     width: 100%;
     padding: 5px;
     display: flex;
     flex-direction: column;
-    &:hover{
+    &:hover {
         background-color: aliceblue;
         cursor: pointer;
     }
 }
 
-.dragOneTask{
-    background-color: aliceblue;
-    cursor: grab;
+.dragOneTask {
+    // background-color: aliceblue;
+    // cursor: grab;
+    display: none;
 }
 
-.wrapEntity{
+.wrapEntity {
     height: 50px;
 }
 
-.avatar{
+.avatar {
     margin-right: 10px;
 }
 
-.assigned{
+.assigned {
     border: 1px solid $avatar-person;
 }
 
-.date{
+.date {
     font-size: 70%;
     align-items: center;
     display: flex;

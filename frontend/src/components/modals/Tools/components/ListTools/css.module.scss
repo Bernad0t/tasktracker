@@ -1,11 +1,11 @@
 $tool-background-color: rgb(243, 243, 243);
 
-.wrapWrapper{
+.wrapWrapper {
     width: 500px;
-    position: relative;;
+    position: relative;
 }
 
-.wrapper{
+.wrapper {
     width: 50%;
     border-radius: 5px;
     background-color: $tool-background-color;
@@ -13,7 +13,7 @@ $tool-background-color: rgb(243, 243, 243);
     box-shadow: 0px 0px 3px 1px rgb(167, 167, 167);
 }
 
-.labelWithMenu{
+.labelWithMenu {
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -22,7 +22,7 @@ $tool-background-color: rgb(243, 243, 243);
     }
 }
 
-.hiddenBar{
+.hiddenBar {
     position: absolute;
     right: 0;
 }

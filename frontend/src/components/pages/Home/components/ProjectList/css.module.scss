@@ -1,7 +1,7 @@
-@import "../../../../../assets/MixinCss/sizes.scss";
-@import "../../../../../assets/MixinCss/colors.scss";
+@import '../../../../../assets/MixinCss/sizes.scss';
+@import '../../../../../assets/MixinCss/colors.scss';
 
-.wrap{
+.wrap {
     background-color: $primary-background;
     width: 300px;
     height: 100%;
@@ -9,7 +9,7 @@
     border-right: 2px solid $primary-grey;
 }
 
-.typeChat{
+.typeChat {
     width: 100%;
     height: $chat-header;
     display: flex;
@@ -19,11 +19,11 @@
     font-size: 18px;
 }
 
-.type:hover{
+.type:hover {
     cursor: pointer;
 }
 
-.input_wrap{
+.input_wrap {
     width: 100%;
     height: $chat-height;
     display: flex;

@@ -1,12 +1,12 @@
-@import "../../../../../assets/MixinCss/sizes.scss";
+@import '../../../../../assets/MixinCss/sizes.scss';
 
-.panel{
+.panel {
     width: 70px;
     height: 100%;
     padding-top: $chat-header;
 }
 
-.menu{
+.menu {
     width: 100%;
     height: $chat-header;
     display: flex;

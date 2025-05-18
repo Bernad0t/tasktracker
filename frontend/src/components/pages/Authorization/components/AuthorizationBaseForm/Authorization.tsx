@@ -1,18 +1,16 @@
-import { HTMLAttributes } from "react"
-import css from "./css.module.scss"
+import { HTMLAttributes } from 'react';
+import css from './css.module.scss';
 
-interface Props extends HTMLAttributes<HTMLDivElement>{
-    isEnter: boolean
+interface Props extends HTMLAttributes<HTMLDivElement> {
+    isEnter: boolean;
 }
 
-export default function AuthorizationBaseForm({children, isEnter, ...props}: Props){
-    return(
+export default function AuthorizationBaseForm({ children, isEnter, ...props }: Props) {
+    return (
         <div className={css.main}>
             <div className={isEnter ? css.enter : css.reg} {...props}>
-                <div className={css.inner}>
-                    {children}
-                </div>
+                <div className={css.inner}>{children}</div>
             </div>
         </div>
-    )
+    );
 }

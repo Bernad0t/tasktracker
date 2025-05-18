@@ -1,3 +1,4 @@
-export enum DraggingTypes{
-    task = "task"
+export enum DraggingTypes {
+    task = 'task',
+    project = 'project'
 }

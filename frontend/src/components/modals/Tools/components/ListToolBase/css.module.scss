@@ -1,4 +1,4 @@
-.wrapper{
+.wrapper {
     width: 100%;
     height: 30px;
     overflow: hidden;
@@ -7,24 +7,23 @@
     justify-content: space-around;
     align-items: center;
     height: 30px;
-    &:hover{
+    &:hover {
         background-color: rgb(216, 216, 216);
         cursor: pointer;
     }
-
 }
 
-.wrapperImg{
+.wrapperImg {
     width: 20px;
     height: 20px;
-    img{
+    img {
         height: 100%;
         width: 100%;
     }
     margin-right: 35px;
 }
 
-.textWrap{
+.textWrap {
     flex: 1;
     font-size: 90%;
 }

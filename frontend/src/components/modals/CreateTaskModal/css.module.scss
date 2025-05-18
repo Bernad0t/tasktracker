@@ -1,36 +1,36 @@
-@import "../../../assets/MixinCss/classes.module.scss";
-@import "../../../assets/MixinCss/colors.scss";
+@import '../../../assets/MixinCss/classes.module.scss';
+@import '../../../assets/MixinCss/colors.scss';
 
-.wrapper{
+.wrapper {
     width: 100%;
     position: relative;
     height: 100%;
 }
 
-.wrapAssignedTitle{
+.wrapAssignedTitle {
     display: flex;
     width: 100%;
     align-items: center;
 }
 
-.header{
+.header {
     width: 100%;
     display: flex;
     justify-content: center;
 }
 
-.content{
+.content {
     @extend .hide_scroll;
     display: flex;
     flex-direction: column;
     flex: 1;
 }
 
-.req{
+.req {
     color: red;
 }
 
-.assignedTitle{
+.assignedTitle {
     color: white;
     width: 100%;
     background-color: $primary-blue;
@@ -41,25 +41,26 @@
     margin-top: 20px;
 }
 
-.oneUser, .oneUserAssigned{
+.oneUser,
+.oneUserAssigned {
     @extend .wrapperEntityOnPanel;
-    &:hover{
-        background-color:rgb(231, 231, 231);
+    &:hover {
+        background-color: rgb(231, 231, 231);
         color: black;
     }
 }
 
-.oneUserAssigned{
+.oneUserAssigned {
     border: 1px solid $avatar-person;
 }
 
-.but{
+.but {
     position: absolute;
     width: 100%;
     bottom: 0;
 }
 
-.users{
+.users {
     width: 100%;
     margin-top: 20px;
 }

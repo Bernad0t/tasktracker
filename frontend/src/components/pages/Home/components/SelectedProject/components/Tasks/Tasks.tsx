@@ -1,7 +1,3 @@
-export default function Tasks(){
-    return(
-        <div>
-            
-        </div>
-    )
+export default function Tasks() {
+    return <div></div>;
 }
