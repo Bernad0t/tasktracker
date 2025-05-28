@@ -3,12 +3,27 @@ import css from './css.module.scss';
 import { IPanelTools } from '../../types';
 import ImageButtonBase from '../../../../UI/buttons/ImageButtonBase/ImageButtonBase';
 import ModalBase from '../../../../modals/modalBase/modalBase';
+import leave from "../../../../../assets/imgs/leaveBlue.png"
+import core from '../../../../../core/core';
+import ApiQuery from '../../../../../api/QueryController';
 
-function OneButton({ children }: { children: ReactNode }) {
-    return <div className={css.oneBut}>{children}</div>;
+function OneButton({ children, className }: { children: ReactNode, className?: string}) {
+    return <div className={`${css.oneBut} ${className}`}>{children}</div>;
 }
 
 const OneButtonMemo = memo(OneButton);
+
+function LogOut(){
+    const logOut = () => {
+        ApiQuery.user.logOut()
+        .then(() => localStorage.removeItem(core.localStorageKeys.access_token))
+    }
+    return(
+        <OneButtonMemo className={css.logout}>
+            <ImageButtonBase src={leave} onClick={logOut}/>
+        </OneButtonMemo >
+    )
+}
 
 export default function MainTools({ buttons }: { buttons: IPanelTools[] }) {
     const [selectedNode, setSelectedNode] = useState<ReactNode | null>(null);
@@ -25,6 +40,7 @@ export default function MainTools({ buttons }: { buttons: IPanelTools[] }) {
                         }
                     </OneButtonMemo>
                 ))}
+                <LogOut/>
             </div>
             <ModalBase isOpen={!!selectedNode} onRequestClose={() => setSelectedNode(null)}>
                 {selectedNode}

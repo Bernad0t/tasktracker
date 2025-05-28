@@ -44,16 +44,17 @@ class ApiQueryClass {
                         { params: { login }, signal: signal },
                     )
                 ).data ?? [];
-            console.log('finded', data);
             return data;
         },
+        async logOut(){
+            await authInstance.delete(core.serverEndnpoints.user.logout)
+        }
     };
     project = {
         async getProjects() {
             const data = (
                 await authInstance.get<ProjectDTORelation[]>(core.serverEndnpoints.project.get)
             ).data;
-            console.log('getetd ptoj api', data);
             return data;
         },
         async deleteProject(id: number) {

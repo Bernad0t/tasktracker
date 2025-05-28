@@ -6,7 +6,6 @@ import { ProjectSliceManager } from '../../../../../../entities/store/featuries/
 import { ProjectListAdapted } from '../../../../../../entities/schemas/adaptedSchemas/project';
 
 export default function ProjectList() {
-    // скорее всего тут надо будет фетчить по group и typechat
     const projects = useAppSelector(ProjectSliceManager.selectors.selectAllProjects);
     const dispatch = useAppDispatch();
 

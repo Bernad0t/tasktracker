@@ -13,7 +13,6 @@ export default function MainWrapper({ buttons, children, ...props }: Props) {
         <div className={css.main}>
             <RegistrationSVGcomp />
             <div className={css.wrapper} {...props}>
-                {' '}
                 {/* по умолчанию все блюрит */}
                 <MainPanelTools buttons={buttons ?? []} />
                 <div className={css.child}>{children}</div>

@@ -8,6 +8,8 @@ export interface ProjectBaseDTO {
     description?: string;
 }
 
+export type ProjectBaseDTOKeys = keyof ProjectBaseDTO
+
 export interface ProjectDTO extends ProjectBaseDTO {
     id: number;
     parent?: ProjectDTO;

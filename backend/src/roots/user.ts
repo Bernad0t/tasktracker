@@ -11,6 +11,7 @@ class UserController{ // рефешни токен
     constructor() {
         userRouter.get("/get-data", this.getData.bind(this))
         userRouter.get("/get-user-by-login", this.getUserByLogin.bind(this))
+        userRouter.delete("/logout", this.logout.bind(this))
     }
 
     @handlerError()
@@ -25,6 +26,12 @@ class UserController{ // рефешни токен
         const login = String(req.query.login)
         const data: UserDataDTO[] = await UserService.getUserByLogin(login)
         res.status(200).json(data)
+    }
+
+    @handlerError()
+    async logout(req: Request, res: Response){
+        res.clearCookie("refreshToken")
+        res.status(200).json("successful logout")
     }
 }
 

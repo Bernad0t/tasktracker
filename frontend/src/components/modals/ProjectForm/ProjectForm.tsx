@@ -1,13 +1,15 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import LoadingComponent from '../../components/loadingComponent';
 import css from './css.module.scss';
 import ProjectBaseAvatar from '../../components/AvatarsBase/ProjectAvatarBase/ProjectBaseAvatar';
 import { InputAuthorizationRow } from '../../components/AuthorizationRow/AuthorizationRow';
 import { LabelsProjectForm, PlaceholdersProjectForm, TypeManipulateWihProjectForm } from './types';
 import AuthorizationBatton from '../../UI/buttons/AuthorizationButtons/AuthorizationButton';
-import { initialProjectBaseDTO, ProjectBaseDTO } from '../../../entities/schemas/dto/projectDTO';
+import { initialProjectBaseDTO, ProjectBaseDTO, ProjectBaseDTOKeys } from '../../../entities/schemas/dto/projectDTO';
 import useSaveChanges from './hooks/useSaveChanges';
 import ErrorMessage from '../../components/stylingString/errorMessage';
+
+const keysUpdatable: ProjectBaseDTOKeys[] = ["name", "description"]
 
 export default function ProjectForm({
     project,
@@ -17,9 +19,7 @@ export default function ProjectForm({
     whatIs: TypeManipulateWihProjectForm;
 }) {
     // предполагается, что ModalBase оборачивает этот компонент
-    const [localProject, setLocalProject] = useState(project ?? initialProjectBaseDTO); // добавление пользователей на страннице проекта будет
-    const keysUpdatable = useRef(Object.keys(initialProjectBaseDTO));
-
+    const [localProject, setLocalProject] = useState(project ?? initialProjectBaseDTO); 
     const { isLoading, handleSubmit, error } = useSaveChanges(whatIs);
     return (
         <div className={css.wrapper}>
@@ -35,7 +35,7 @@ export default function ProjectForm({
                     </div>
                 </div>
                 <div className={css.info}>
-                    {keysUpdatable.current.map(key => (
+                    {keysUpdatable.map(key => (
                         <InputAuthorizationRow
                             key={key}
                             label={LabelsProjectForm[key as keyof typeof LabelsProjectForm]}

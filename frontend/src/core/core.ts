@@ -9,6 +9,7 @@ class ServerEndpoints {
     user = {
         get: `${apiBaseUrl}/protected/user/get-data`,
         find: `${apiBaseUrl}/protected/user/get-user-by-login`,
+        logout: `${apiBaseUrl}/protected/user/logout`,
     };
     project = {
         get: `${apiBaseUrl}/protected/project/get-projects`,
