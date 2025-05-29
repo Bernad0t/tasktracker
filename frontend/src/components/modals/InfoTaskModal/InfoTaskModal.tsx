@@ -107,6 +107,7 @@ export default function InfoTaskModal({
                             <div ref={messagesEndRef} /> {/* Невидимый якорь для прокрутки */}
                         </div>
                         <ChatInput
+                            value={inputValue}
                             onKeyDown={handleKeyDown}
                             className={css.inputWrap}
                             onChange={(e) => setInputValue(e.target.value)}
