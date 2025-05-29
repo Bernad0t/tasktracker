@@ -1,5 +1,5 @@
 import { InputHTMLAttributes } from 'react';
-import lupa from '../../../../assets/imgs/lupa.png';
+import lupa from '@assets/imgs/lupa.png';
 import css from './css.module.scss';
 
 export default function SearchInput({ ...props }: InputHTMLAttributes<HTMLInputElement>) {

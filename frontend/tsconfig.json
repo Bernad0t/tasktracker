@@ -16,7 +16,7 @@
         "noEmit": true,
         "jsx": "react-jsx",
         "paths": {
-            "@assets/*": ["./src/assets"]
+            "@assets/*": ["./src/assets/*"],
         }
     },
     "include": ["src"]

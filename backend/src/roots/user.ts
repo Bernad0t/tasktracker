@@ -30,6 +30,7 @@ class UserController{ // рефешни токен
 
     @handlerError()
     async logout(req: Request, res: Response){
+        console.log("cookie", req.cookies)
         res.clearCookie("refreshToken")
         res.status(200).json("successful logout")
     }

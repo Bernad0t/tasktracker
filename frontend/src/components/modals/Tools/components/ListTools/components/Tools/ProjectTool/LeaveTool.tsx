@@ -1,6 +1,6 @@
 import ListToolBase from '../../../../ListToolBase/ListToolBase';
 import { IToolProps } from '../types';
-import imageLeave from '../../../../../../../../assets/imgs/leave.png';
+import imageLeave from '@assets/imgs/leave.png';
 import { useAppDispatch } from '../../../../../../../../hooks/useStore';
 import { ProjectSliceManager } from '../../../../../../../../entities/store/featuries/projectSlice';
 import { useGetManageProjectModalContext } from '../../../../../hooks/useManageProjectModalContext';

@@ -1,5 +1,5 @@
 # Using node.js to develop and build
-FROM node:16 AS builder
+FROM node:18 AS builder
 
 # Setting the working directory inside the container
 WORKDIR /app

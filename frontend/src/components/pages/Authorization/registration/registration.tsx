@@ -74,7 +74,6 @@ export default function Registration() {
                                         ? 'password'
                                         : 'text'
                                 }
-                                keyField={key}
                                 placeholder={
                                     PlaceholderRegistration[
                                         key as keyof typeof PlaceholderRegistration

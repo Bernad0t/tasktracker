@@ -69,7 +69,7 @@ export default function TaskTypeWrapper({
     }));
     const setRefs = (node: HTMLDivElement | null) => {
         divRef.current = node;
-        drop(node);
+        drop(node); 
     };
     return (
         <div ref={setRefs} className={`${css.wrapper} ${isOver ? css.wrapDroping : ''}`}>

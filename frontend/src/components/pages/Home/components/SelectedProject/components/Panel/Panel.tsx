@@ -1,5 +1,5 @@
 import css from './css.module.scss';
-import plusImg from '../../../../../../../assets/imgs/add.png';
+import plusImg from '@assets/imgs/add.png';
 import EntityOnPanelWrapper from '../../../../../../components/EntityOnPanel/EntityOnPanel';
 import { ImgHTMLAttributes, useState } from 'react';
 import CreateTaskModal from '../../../../../../modals/CreateTaskModal/CreateTaskModal';

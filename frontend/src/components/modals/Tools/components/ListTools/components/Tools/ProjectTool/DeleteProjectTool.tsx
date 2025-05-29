@@ -1,6 +1,6 @@
 import { HTMLAttributes } from 'react';
 import ListToolBase from '../../../../ListToolBase/ListToolBase';
-import imageDel from '../../../../../../../../assets/imgs/redDelete.png';
+import imageDel from '@assets/imgs/redDelete.png';
 import { useAppDispatch } from '../../../../../../../../hooks/useStore';
 import { ProjectSliceManager } from '../../../../../../../../entities/store/featuries/projectSlice';
 import { IToolProps } from '../types';

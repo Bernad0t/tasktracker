@@ -32,7 +32,6 @@ export const EnterForm = () => {
                     key={key}
                     placeholder={PlaceholderEnter[key as keyof typeof PlaceholderEnter]}
                     type={key.toLowerCase().indexOf('password') !== -1 ? 'password' : 'text'}
-                    keyField={key}
                     value={data[key as keyof typeof data]}
                     onChange={e => setData(prev => ({ ...prev, [key]: e.target.value }))}
                     error={errors[key as keyof typeof errors]}

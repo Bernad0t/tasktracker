@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { TaskDTORelation } from '../../../entities/schemas/dto/taskDTO';
 import { ProjectSliceManager } from '../../../entities/store/featuries/projectSlice';
 import { UserSliceManager } from '../../../entities/store/featuries/userSlice';
@@ -23,7 +23,7 @@ export default function InfoTaskModal({
     const user = useAppSelector(UserSliceManager.selectors.selectUser);
     const project = useAppSelector(ProjectSliceManager.selectors.selectSelected);
     const messagesEndRef = useRef<HTMLDivElement>(null);
-    const inputRef = useRef<HTMLInputElement>(null);
+    const [inputValue, setInputValue] = useState("")
     const dispatch = useAppDispatch();
 
     // Автопрокрутка при изменении сообщений
@@ -36,7 +36,7 @@ export default function InfoTaskModal({
     };
 
     const handleSend = (newcomm: CommentCreateDTO) => {
-        if (inputRef.current && project) {
+        if (inputValue && project) {
             ApiQuery.task.sendComm(newcomm).then(id =>
                 dispatch(
                     ProjectSliceManager.redusers.updateSelect({
@@ -52,14 +52,14 @@ export default function InfoTaskModal({
                     }),
                 ),
             );
-            inputRef.current.value = '';
+            setInputValue("");
         }
     };
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Enter' && inputRef.current) {
+        if (event.key === 'Enter' && inputValue) {
             const newComm: CommentCreateDTO = {
-                description: inputRef.current?.value,
+                description: inputValue,
                 reviewer: user.id,
                 date: new Date(),
                 task: task.id,
@@ -107,9 +107,9 @@ export default function InfoTaskModal({
                             <div ref={messagesEndRef} /> {/* Невидимый якорь для прокрутки */}
                         </div>
                         <ChatInput
-                            ref={inputRef}
                             onKeyDown={handleKeyDown}
                             className={css.inputWrap}
+                            onChange={(e) => setInputValue(e.target.value)}
                         />
                     </div>
                 </div>

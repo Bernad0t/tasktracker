@@ -22,6 +22,7 @@ interface Props {
 
 const ProjectOnPanel = memo(({ project, callback }: Props) => {
     const { handleContextMenu, showTools, setShowTools, coordinates } = useContextMenu();
+    console.log("proj", project) 
     return (
         <>
             <EntityOnPanelWrapper

@@ -9,16 +9,16 @@ export default function ProjectList() {
     const projects = useAppSelector(ProjectSliceManager.selectors.selectAllProjects);
     const dispatch = useAppDispatch();
 
-    const handleClick = useCallback(
+    const handleClick = useCallback( // из-за него все проекты ререндерятся
         (project: ProjectListAdapted) => {
-            const newChats = projects.map(proj =>
+            const newProjects = projects.map(proj =>
                 proj.id === project.id
-                    ? { ...proj, active: true, numberNewMessage: 0 }
+                    ? { ...proj, active: true}
                     : proj.active
                       ? { ...proj, active: false }
                       : proj,
             );
-            dispatch(ProjectSliceManager.redusers.updateData(newChats));
+            dispatch(ProjectSliceManager.redusers.updateData(newProjects));
             dispatch(ProjectSliceManager.fetching.uploadSelected(project));
         },
         [dispatch, projects],

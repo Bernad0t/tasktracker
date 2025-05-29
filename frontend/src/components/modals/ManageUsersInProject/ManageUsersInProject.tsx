@@ -5,7 +5,7 @@ import { Role } from '../../../entities/schemas/enums/project';
 import { UserDataDTO, UserDataRolesDTO } from '../../../entities/schemas/dto/userDTO';
 import AddUserPanel, { OneUser } from '../../components/AddUserPanel/AddUserPanel';
 import BlueSelect from '../../UI/select/BlueSelect';
-import image from '../../../assets/imgs/delete.png';
+import image from '@assets/imgs/delete.png';
 import ButtonLikeText from '../../UI/buttons/ButtonLikeText/ButtonLikeText';
 import css from './css.module.scss';
 import LoadingComponent from '../../components/loadingComponent';

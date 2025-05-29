@@ -81,7 +81,6 @@ export default function CreateTaskModal({
 
     useEffect(() => {
         !isOpen && reset();
-        return () => console.log('dem CreateTaskModal');
     }, [isOpen, reset]);
 
     return (

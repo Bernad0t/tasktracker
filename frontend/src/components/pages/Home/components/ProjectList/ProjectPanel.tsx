@@ -1,4 +1,4 @@
-import scss_union from '../../../../../assets/MixinCss/classes.module.scss';
+import scss_union from '@assets/MixinCss/classes.module.scss';
 import css from './css.module.scss';
 import ProjectList from './ProjectList/ProjectList';
 

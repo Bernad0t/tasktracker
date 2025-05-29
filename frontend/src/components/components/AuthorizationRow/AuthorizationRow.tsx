@@ -7,7 +7,6 @@ import ErrorMessage from '../stylingString/errorMessage';
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
     label?: string;
-    keyField?: string;
     error?: string | undefined;
 }
 

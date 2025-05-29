@@ -7,7 +7,7 @@ import ProjectForm from '../../../../../../ProjectForm/ProjectForm';
 import { useAppSelector } from '../../../../../../../../hooks/useStore';
 import { ProjectSliceManager } from '../../../../../../../../entities/store/featuries/projectSlice';
 import { TypeManipulateWihProjectForm } from '../../../../../../ProjectForm/types';
-import imageChange from '../../../../../../../../assets/imgs/rename.png';
+import imageChange from '@assets/imgs/rename.png';
 
 export default function UpdateProjectTool({ projectId, ...props }: IToolProps) {
     const [isOpen, setIsOpen] = useState(false); // нужно не спешить с закрытием основного модального окна. при закрытии вложенного буду закрывать оба

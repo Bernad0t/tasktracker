@@ -1,5 +1,5 @@
 import { IPanelTools } from '../types';
-import addImg from '../../../../assets/imgs/add.png';
+import addImg from '@assets/imgs/add.png';
 import ProjectForm from '../../../modals/ProjectForm/ProjectForm';
 import { useRef } from 'react';
 import { TypeManipulateWihProjectForm } from '../../../modals/ProjectForm/types';

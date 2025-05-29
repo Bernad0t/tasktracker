@@ -39,7 +39,6 @@ export default function ProjectForm({
                         <InputAuthorizationRow
                             key={key}
                             label={LabelsProjectForm[key as keyof typeof LabelsProjectForm]}
-                            keyField={key}
                             placeholder={
                                 PlaceholdersProjectForm[key as keyof typeof PlaceholdersProjectForm]
                             }

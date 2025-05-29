@@ -1,6 +1,6 @@
 import { HTMLAttributes } from 'react';
 import css from './css.module.scss';
-import projImg from '../../../../assets/imgs/projAvatar.png';
+import projImg from '@assets/imgs/projAvatar.png';
 
 export default function ProjectBaseAvatar({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
     return (

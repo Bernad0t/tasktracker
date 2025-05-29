@@ -3,9 +3,10 @@ import css from './css.module.scss';
 import { IPanelTools } from '../../types';
 import ImageButtonBase from '../../../../UI/buttons/ImageButtonBase/ImageButtonBase';
 import ModalBase from '../../../../modals/modalBase/modalBase';
-import leave from "../../../../../assets/imgs/leaveBlue.png"
+import leave from "@assets/imgs/leaveBlue.png"
 import core from '../../../../../core/core';
 import ApiQuery from '../../../../../api/QueryController';
+import { useNavigate } from 'react-router-dom';
 
 function OneButton({ children, className }: { children: ReactNode, className?: string}) {
     return <div className={`${css.oneBut} ${className}`}>{children}</div>;
@@ -14,9 +15,13 @@ function OneButton({ children, className }: { children: ReactNode, className?: s
 const OneButtonMemo = memo(OneButton);
 
 function LogOut(){
+    const navigate = useNavigate()
     const logOut = () => {
         ApiQuery.user.logOut()
-        .then(() => localStorage.removeItem(core.localStorageKeys.access_token))
+        .then(() => {
+            localStorage.removeItem(core.localStorageKeys.access_token)
+            navigate(core.frontendEndpoints.login)
+        })
     }
     return(
         <OneButtonMemo className={css.logout}>

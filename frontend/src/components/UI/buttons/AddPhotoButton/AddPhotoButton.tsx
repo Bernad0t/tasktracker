@@ -2,9 +2,9 @@ import { HTMLAttributes, useRef, useState } from 'react';
 import ImageButtonBase from '../ImageButtonBase/ImageButtonBase';
 
 import css from './css.module.scss';
-import photo from '../../../../../../assets/img/camera.png';
-import deleteImg from '../../../../../../assets/img/delete.png';
-import galery from '../../../../../../assets/img/galery.png';
+import photo from '@assets/img/camera.png';
+import deleteImg from '@assets/img/delete.png';
+import galery from '@assets/img/galery.png';
 
 interface RowProps extends HTMLAttributes<HTMLDivElement> {
     imgSrc: string;

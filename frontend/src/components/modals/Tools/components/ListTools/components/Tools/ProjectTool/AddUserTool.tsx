@@ -1,6 +1,6 @@
 import ListToolBase from '../../../../ListToolBase/ListToolBase';
 import { IToolProps } from '../types';
-import image from '../../../../../../../../assets/imgs/profilePassive.png';
+import image from '@assets/imgs/profilePassive.png';
 import ManageUsersInProject from '../../../../../../ManageUsersInProject/ManageUsersInProject';
 import { useCallback, useState } from 'react';
 import { useGetManageProjectModalContext } from '../../../../../hooks/useManageProjectModalContext';
