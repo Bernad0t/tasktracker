@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { TaskDTORelation } from '../../../entities/schemas/dto/taskDTO';
 import { ProjectSliceManager } from '../../../entities/store/featuries/projectSlice';
 import { UserSliceManager } from '../../../entities/store/featuries/userSlice';
@@ -10,6 +10,66 @@ import css from './css.module.scss';
 import ModalBase from '../modalBase/modalBase';
 import ApiQuery from '../../../api/QueryController';
 import { CommentCreateDTO } from '../../../entities/schemas/dto/commentsDTO';
+import { UserDataDTO, UserDataRolesDTO } from '../../../entities/schemas/dto/userDTO';
+import changeImg from '@assets/imgs/rename.png';
+import AutoHeightModal from '../modalBase/AutoHeightModal';
+import { OneUser } from '../../components/AddUserPanel/AddUserPanel';
+import { ProjectListAdapted } from '../../../entities/schemas/adaptedSchemas/project';
+
+function UsersBar({
+    assigned,
+    reviewer,
+    task,
+}: {
+    assigned: UserDataRolesDTO | undefined;
+    reviewer: UserDataRolesDTO | undefined;
+    task: TaskDTORelation;
+}) {
+    const [isOpen, setIsOpen] = useState(false);
+    const selectedProject = useAppSelector(ProjectSliceManager.selectors.selectSelected);
+    const dispatch = useAppDispatch();
+    const handleClick = useCallback((user: UserDataDTO) => {
+        if (selectedProject){
+            const newProject: ProjectListAdapted = {
+                ...selectedProject,
+                tasks: selectedProject?.tasks?.map(tsk => tsk.id === task.id ? {...tsk, assigned: user.id} : tsk),
+            };
+            ApiQuery.task.updateTask({...task, assigned: user.id})
+            .then(() => {
+                dispatch(ProjectSliceManager.redusers.updateSelect(newProject))
+                setIsOpen(false)
+            })
+        }
+    }, []);
+    return (
+        <>
+            <BlueScroll label={'Исполнители'} />
+            <div className={css.description}>
+                <div>
+                    <b>Назначил:</b>
+                    {reviewer?.username}
+                </div>
+                <div className={css.assigned}>
+                    <b>Исполнитель:</b>
+                    {assigned?.username}
+                    <div>
+                        <img src={changeImg} alt="" onClick={() => setIsOpen(true)} />
+                    </div>
+                </div>
+            </div>
+            <AutoHeightModal isOpen={isOpen} onRequestClose={() => setIsOpen(false)}>
+                {selectedProject?.users?.map(us => (
+                    <OneUser
+                        key={us.id}
+                        user={us}
+                        onClick={() => handleClick(us)}
+                        className={css.wrapperEntityOnPanel}
+                    />
+                ))}
+            </AutoHeightModal>
+        </>
+    );
+}
 
 export default function InfoTaskModal({
     task,
@@ -23,7 +83,7 @@ export default function InfoTaskModal({
     const user = useAppSelector(UserSliceManager.selectors.selectUser);
     const project = useAppSelector(ProjectSliceManager.selectors.selectSelected);
     const messagesEndRef = useRef<HTMLDivElement>(null);
-    const [inputValue, setInputValue] = useState("")
+    const [inputValue, setInputValue] = useState('');
     const dispatch = useAppDispatch();
 
     // Автопрокрутка при изменении сообщений
@@ -52,7 +112,7 @@ export default function InfoTaskModal({
                     }),
                 ),
             );
-            setInputValue("");
+            setInputValue('');
         }
     };
 
@@ -61,7 +121,7 @@ export default function InfoTaskModal({
             const newComm: CommentCreateDTO = {
                 description: inputValue,
                 reviewer: user.id,
-                date: new Date(),
+                date: new Date().toISOString(),
                 task: task.id,
             };
             handleSend(newComm);
@@ -78,40 +138,39 @@ export default function InfoTaskModal({
                     <div className={css.block}>
                         <BlueScroll label={'Описание задачи'} />
                         <div className={css.description}>{task.description}</div>
-                        <BlueScroll label={'Исполнители'} />
-                        <div className={css.description}>
-                            <div>
-                                <b>Назначил:</b>{' '}
-                                {project?.users?.find(us => us.id === task.reviewer)?.username}
-                            </div>
-                            <div>
-                                <b>Исполнитель:</b>{' '}
-                                {project?.users?.find(us => us.id === task.assigned)?.username}
-                            </div>
-                        </div>
+                        <UsersBar
+                            assigned={project?.users?.find(us => us.id === task.assigned)}
+                            reviewer={project?.users?.find(us => us.id === task.reviewer)}
+                            task={task}
+                        />
                         <BlueScroll label="Дедлайн" />
                         <div className={css.description}>{task.deadline ?? 'Нет'}</div>
                     </div>
-                    <div className={css.chatBlock}>
-                        <div className={css.chatWrap}>
-                            {project &&
-                                task.comments?.map((comm, index) => (
-                                    <ContextDayMessage
-                                        key={comm.id}
-                                        curMes={comm}
-                                        prevMes={task.comments && task.comments[index - 1]}
-                                        senderIsOwner={comm.reviewer === user.id}
-                                        project={project}
-                                    />
-                                ))}
-                            <div ref={messagesEndRef} /> {/* Невидимый якорь для прокрутки */}
+                    <div className={css.chatPart}>
+                        <span className={css.labelChat}>
+                            <h3>Чат</h3>
+                        </span>
+                        <div className={css.chatBlock}>
+                            <div className={css.chatWrap}>
+                                {project &&
+                                    task.comments?.map((comm, index) => (
+                                        <ContextDayMessage
+                                            key={comm.id}
+                                            curMes={comm}
+                                            prevMes={task.comments && task.comments[index - 1]}
+                                            senderIsOwner={comm.reviewer === user.id}
+                                            project={project}
+                                        />
+                                    ))}
+                                <div ref={messagesEndRef} /> {/* Невидимый якорь для прокрутки */}
+                            </div>
+                            <ChatInput
+                                value={inputValue}
+                                onKeyDown={handleKeyDown}
+                                className={css.inputWrap}
+                                onChange={e => setInputValue(e.target.value)}
+                            />
                         </div>
-                        <ChatInput
-                            value={inputValue}
-                            onKeyDown={handleKeyDown}
-                            className={css.inputWrap}
-                            onChange={(e) => setInputValue(e.target.value)}
-                        />
                     </div>
                 </div>
             </div>

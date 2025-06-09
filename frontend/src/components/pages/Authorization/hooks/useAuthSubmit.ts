@@ -32,6 +32,7 @@ export default function useAuthSubmit<T extends AuthorizationProp>(
                 methodApi
                     .call(ApiQuery.authorization, data)
                     .then(() => {
+                        dispatch(ProjectSliceManager.redusers.reset())
                         dispatch(UserSliceManager.fetching.getData());
                         dispatch(ProjectSliceManager.fetching.getData());
                         navigate(core.frontendEndpoints.home);

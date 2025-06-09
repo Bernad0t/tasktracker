@@ -30,7 +30,9 @@ export default function useHandleDrop(
         (task: TaskDTORelation, { x, y }: { x: number; y: number }) => {
             const currentProject = ProjectSliceManager.selectors.selectSelected(store.getState()); // почему-то замыкание странно работает, не обновляя project
             if (checkIfInsideDiv(x, y) && currentProject) {
-                const newTask = { ...task, status: typeWrapper };
+                const newTask: TaskDTORelation = {
+                    ...(currentProject.tasks?.find(projTask => projTask.id === task.id) ?? task), status: typeWrapper
+                };
                 dispatch(
                     ProjectSliceManager.redusers.updateSelect({
                         ...currentProject,

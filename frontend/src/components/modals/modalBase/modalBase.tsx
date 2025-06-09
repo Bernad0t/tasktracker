@@ -8,6 +8,11 @@ export default function ModalBase({ className, ...props }: ReactModal.Props) {
             overlayClassName={props.overlayClassName ?? css.overlay}
             className={`${css.modalContent} ${className}`}
         >
+            <div className={css.closeWrap}>
+                <button className={css.close} onClick={props.onRequestClose}>
+                    <b>x</b>
+                </button>
+            </div>
             {props.children}
         </ReactModal>
     );

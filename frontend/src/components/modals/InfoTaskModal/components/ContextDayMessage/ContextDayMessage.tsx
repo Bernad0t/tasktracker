@@ -17,7 +17,6 @@ const ContextDayMessage = memo(function ({
     senderIsOwner: boolean;
     project: ProjectListAdapted;
 }) {
-    console.log('curMes', curMes);
     const sender = useMemo(
         () => project.users?.find(us => us.id === curMes.reviewer),
         [curMes.reviewer, project.users],

@@ -95,8 +95,13 @@ const projectSlice = createSlice({
             state.selected = action.payload;
         },
         updateSelected(state, action: PayloadAction<ProjectListAdapted>) {
+            console.log("state.selected, action.payload", state.selected, action.payload)
             state.selected = action.payload;
         },
+        reset(state){
+            state.data = []
+            state.selected = null
+        }
     },
     selectors: {
         selectProjects: state => {
@@ -125,7 +130,7 @@ const projectSlice = createSlice({
                 state.data = state.data.map(proj =>
                     proj.id === action.payload.id ? action.payload : proj,
                 );
-                if (state.selected?.id === action.payload.id) state.selected = action.payload;
+                if (state.selected?.id === action.payload.id) state.selected = {...action.payload, tasks: state.selected.tasks};
             })
             .addCase(leaveProject.fulfilled, (state, action) => {
                 state.data = state.data.filter(proj => proj.id !== action.payload);
@@ -144,6 +149,7 @@ export const ProjectSliceManager = {
         updateData: projectSlice.actions.updateData,
         select: projectSlice.actions.selectSelected,
         updateSelect: projectSlice.actions.updateSelected,
+        reset: projectSlice.actions.reset
     },
 
     selectors: {

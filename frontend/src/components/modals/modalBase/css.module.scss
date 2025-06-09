@@ -1,3 +1,5 @@
+@import '../../../assets/MixinCss/colors.scss';
+
 .overlay {
     position: fixed;
     top: 0;
@@ -10,16 +12,36 @@
     align-items: center;
 }
 
-.modalContent,
-.thinModal {
+.modalContent {
     width: 500px;
     height: 90vh;
     padding: 60px 80px 60px 80px;
     border-radius: 41px;
     background-color: white;
+    position: relative;
 }
 
 .thinModal {
     width: 300px;
     border-radius: 21px;
+}
+
+.close{
+    color: $focsed-blue;
+    background: none;
+    border: none;
+    height: 30px;
+    font-size: 100%;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    z-index: 1;
+}
+
+.modalContentAuto{
+    height: auto;
+    width: 300px;
+    min-height: 200px;
+    padding: 20px 10px 20px 10px;
+    border-radius: 20px;
 }

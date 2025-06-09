@@ -1,6 +1,6 @@
 export interface CommentCreateDTO {
     description: string;
-    date: Date;
+    date: Date | string;
     reviewer: number;
     task: number;
 }

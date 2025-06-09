@@ -2,6 +2,7 @@ import { TaskDTO, TaskDTORelation } from "../../schemas/dto/taskDTO";
 import db from "../db";
 import { TaskORM } from "../orm/taskOrm";
 import { ProjectORM, UserORM } from "../orm/userOrm";
+import { UserRepository } from "./user.rep";
 
 export const TaskRepostiry = db.getRepository(TaskORM).extend({
     async addTask(task: TaskDTO, project: ProjectORM, reviewer: UserORM, assigned: UserORM){
@@ -18,9 +19,12 @@ export const TaskRepostiry = db.getRepository(TaskORM).extend({
     async updateTask(task: TaskDTORelation){
         const updatableKeys = ["name", "description","status", "deadline" ]
         let taskOrm = await this.getTaskById(task.id)
+        const newAssigned = await UserRepository.findUserQueryOR({id: task.assigned})
         if (!taskOrm)
             throw new Error("task dont exist")
         updatableKeys.forEach(key => taskOrm = {...taskOrm, [key]: task[key as keyof typeof task]} as TaskORM)
+        if (newAssigned)
+            taskOrm.assigned = newAssigned[0]
         await this.save(taskOrm)
     },
 

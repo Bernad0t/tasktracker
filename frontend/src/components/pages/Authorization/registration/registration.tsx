@@ -43,6 +43,7 @@ export default function Registration() {
         ApiQuery.authorization
             .register(data)
             .then(() => {
+                dispatch(ProjectSliceManager.redusers.reset());
                 dispatch(UserSliceManager.fetching.getData());
                 dispatch(ProjectSliceManager.fetching.getData());
                 navigate(core.frontendEndpoints.home);
